@@ -1,0 +1,10 @@
+﻿<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlocacaoVeiuculo.App">
+    <Application.Resources>
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor" Value="Black" />
+            <Setter Property="BarTextColor" Value="#FF804D00"   />
+        </Style>
+    </Application.Resources>
+</Application>

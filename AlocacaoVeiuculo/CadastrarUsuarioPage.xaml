@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlocacaoVeiuculo.CadastrarUsuarioPage"
+             BackgroundColor="Black"
+             Title="Cadastrar Usuário">
+
+    <StackLayout Padding="20">
+        <Label Text="Acessar" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
+        <Entry x:Name="entryNome" Placeholder="Nome" TextColor="White" BackgroundColor="#FF252521"/>
+        <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True" TextColor="White" BackgroundColor="#FF252521"/>
+        <Button Text="Acessar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnAcessarButtonClicked"/>
+        <Button Text="Cadastrar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnCadastrarButtonClicked"/>
+
+        <StackLayout x:Name="CadastroLayout" IsVisible="False" BackgroundColor="#FF252521" Padding="20">
+            <Label Text="Cadastro" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
+            <Entry x:Name="entryCpf" Placeholder="CPF" TextColor="White" BackgroundColor="#FF252521"/>
+            <Label Text="Data de Nascimento" TextColor="White"/>
+            <DatePicker x:Name="entryDataNascimento" TextColor="White" BackgroundColor="#FF252521"/>
+            <Entry x:Name="entryTelefone" Placeholder="Telefone" TextColor="White" BackgroundColor="#FF252521"/>
+            <Button Text="Salvar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnSalvarButtonClicked"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlocacaoVeiuculo.MainPage"
+             BackgroundColor="Black"
+             Title="Aluguel de carros">
+
+    <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" Padding="10">
+        <Image Source="background_image.jpg" Aspect="AspectFill" Grid.RowSpan="2" />
+
+        <StackLayout VerticalOptions="Center" Padding="30" Grid.Row="0">
+            <Label Text="Pesquise. Compare. Alugue."
+                   FontSize="Large" 
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold" />
+            <Label Text="Aluguel de carros com os melhores preços"
+                   FontSize="Medium" 
+                   TextColor="White"
+                   HorizontalOptions="Center" />
+        </StackLayout>
+
+        <StackLayout BackgroundColor="Black" Padding="20" Grid.Row="1" Spacing="10" VerticalOptions="End">
+            <Label Text="Retirar o carro em" TextColor="White" FontAttributes="Bold"/>
+            <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" TextColor="White" BackgroundColor="#FF252521"/>
+
+            <Grid ColumnDefinitions="*,*,*" Padding="0">
+                <StackLayout Grid.Column="0" Spacing="5">
+                    <Label Text="Data e hora de retirada" TextColor="White" FontAttributes="Bold"/>
+                    <DatePicker x:Name="datePickerRetirada" BackgroundColor="#FF252521" TextColor="White"/>
+                    <TimePicker x:Name="timePickerRetirada" BackgroundColor="#FF252521" TextColor="White" Format="t"/>
+                </StackLayout>
+
+                <StackLayout Grid.Column="1" Spacing="5">
+                    <Label Text="Data e hora de devolução" TextColor="White" FontAttributes="Bold"/>
+                    <DatePicker x:Name="datePickerDevolucao" BackgroundColor="#FF252521" TextColor="White"/>
+                    <TimePicker x:Name="timePickerDevolucao" BackgroundColor="#FF252521" TextColor="White" Format="t"/>
+                </StackLayout>
+
+                <StackLayout Grid.Column="2" Spacing="5">
+                    <Label Text="Residência" TextColor="White" FontAttributes="Bold"/>
+                    <Picker x:Name="pickerResidencia" BackgroundColor="#FF252521" TextColor="White" SelectedIndex="0">
+                        <Picker.Items>
+                            <x:String>Brasil</x:String>
+                            <x:String>Argentina</x:String>
+                            <x:String>Chile</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </StackLayout>
+            </Grid>
+
+            <Button Text="Pesquisar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnPesquisarClicked"/>
+        </StackLayout>
+
+        <!-- Botão OnEntrarClicked -->
+        <Button Text="Entrar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnEntrarClicked" HorizontalOptions="End" VerticalOptions="Start" Grid.Row="0" Grid.Column="1"/>
+        <!-- Botão OnCadastrarVeiculoClicked -->
+        <Button Text="Cadastrar Veículo" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnCadastrarVeiculoClicked" HorizontalOptions="Start" VerticalOptions="Start" Grid.Row="0" Grid.Column="2"/>
+    </Grid>
+</ContentPage>
