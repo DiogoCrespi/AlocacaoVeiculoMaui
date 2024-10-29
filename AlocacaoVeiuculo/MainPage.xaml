@@ -6,7 +6,6 @@
              Title="Aluguel de carros">
 
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" Padding="10">
-        <Image Source="background_image.jpg" Aspect="AspectFill" Grid.RowSpan="2" />
 
         <StackLayout VerticalOptions="Center" Padding="30" Grid.Row="0">
             <Label Text="Pesquise. Compare. Alugue."
