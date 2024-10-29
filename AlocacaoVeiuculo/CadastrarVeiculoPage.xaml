@@ -2,63 +2,100 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AlocacaoVeiuculo.CadastrarVeiculoPage"
+             Title="Cadastrar Veículo">
 
     <Grid>
-        <!-- Definindo duas colunas: uma para o formulário e outra para a imagem -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
 
-        <!-- Picker para selecionar entre carro e moto -->
-        <Picker x:Name="pickerTipoVeiculo" Title="Tipo de Veículo" TextColor="White" BackgroundColor="#FF252521" SelectedIndexChanged="OnTipoVeiculoChanged">
-            <Picker.Items>
-                <x:String>Carro</x:String>
-                <x:String>Moto</x:String>
-            </Picker.Items>
-        </Picker>
+        <!-- Imagem de fundo cobrindo toda a tela -->
+        <Image Source="bkg_cadastro_carro.jpg"
+               Aspect="AspectFill"
+               Opacity="0.3"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand" />
 
-        <!-- Seção de Cadastro de Carro -->
-        <StackLayout x:Name="carroSection" IsVisible="False">
-            <Label Text="Cadastrar Carro" FontSize="Large" TextColor="White" HorizontalOptions="Center" />
-            <Entry x:Name="entryPlacaCarro" Placeholder="Placa" TextColor="White" BackgroundColor="#FF252521"/>
-            <Picker x:Name="pickerModeloCarro" Title="Modelo de Carro" TextColor="White" BackgroundColor="#FF252521" />
-            <Picker x:Name="pickerAnoCarro" Title="Ano" TextColor="White" BackgroundColor="#FF252521" />
-            <Entry x:Name="entryQuilometragemCarro" Placeholder="Quilometragem" TextColor="White" BackgroundColor="#FF252521"/>
-            <Picker x:Name="pickerTipoCombustivelCarro" Title="Tipo de Combustível" BackgroundColor="#FF252521" TextColor="White">
-                <Picker.Items>
-                    <x:String>Gasolina</x:String>
-                    <x:String>Álcool</x:String>
-                    <x:String>Diesel</x:String>
-                    <x:String>Elétrico</x:String>
-                </Picker.Items>
-            </Picker>
-            <Picker x:Name="pickerNumeroPortasCarro" Title="Número de Portas" BackgroundColor="#FF252521" TextColor="White">
-                <Picker.Items>
-                    <x:String>2</x:String>
-                    <x:String>4</x:String>
-                </Picker.Items>
-            </Picker>
-        </StackLayout>
+        <!-- Conteúdo da página sobreposto -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Seção de Cadastro de Moto -->
-        <StackLayout x:Name="motoSection" IsVisible="False">
-            <Label Text="Cadastrar Moto" FontSize="Large" TextColor="White" HorizontalOptions="Center" />
-            <Entry x:Name="entryPlacaMoto" Placeholder="Placa" TextColor="White" BackgroundColor="#FF252521"/>
-           <Picker x:Name="pickerModeloMoto" Title="Modelo de Moto" TextColor="White" BackgroundColor="#FF252521" />
-            <Picker x:Name="pickerAnoMoto" Title="Ano" TextColor="White" BackgroundColor="#FF252521" />
-            <Entry x:Name="entryQuilometragemMoto" Placeholder="Quilometragem" TextColor="White" BackgroundColor="#FF252521"/>
-            <Picker x:Name="pickerTipoCombustivelMoto" Title="Tipo de Combustível" BackgroundColor="#FF252521" TextColor="White">
-                <Picker.Items>
-                    <x:String>Gasolina</x:String>
-                    <x:String>Álcool</x:String>
-                    <x:String>Diesel</x:String>
-                    <x:String>Elétrico</x:String>
-                </Picker.Items>
-            </Picker>
-        </StackLayout>
+            <!-- Formulário de Cadastro de Veículo na coluna esquerda dentro de um Frame para bordas arredondadas -->
+            <Frame Grid.Column="0" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="#80000000" CornerRadius="15">
+                <StackLayout>
 
-        <!-- Botão de Salvar -->
-        <Button Text="Salvar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnSalvarClicked"/>
-    </StackLayout>
+                    <!-- Picker para selecionar entre carro e moto -->
+                    <Frame Padding="10" BackgroundColor="#FF252521" CornerRadius="15" HasShadow="False" WidthRequest="500">
+                        <StackLayout Spacing="5">
+                            <Label Text="Cadastro de Veículo" FontSize="24" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" />
+
+                            <Label Text="Tipo de Veículo" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
+                            <Picker x:Name="pickerTipoVeiculo" Title="Tipo de Veículo" TextColor="White" BackgroundColor="#FF252521" SelectedIndexChanged="OnTipoVeiculoChanged">
+                                <Picker.Items>
+                                    <x:String>Carro</x:String>
+                                    <x:String>Moto</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Seção de Cadastro de Carro -->
+                    <Frame x:Name="carroSection" IsVisible="False" Padding="10" BackgroundColor="#FF252521" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
+                        <StackLayout Spacing="5">
+                            <Label Text="Cadastrar Carro" FontSize="Large" TextColor="White" HorizontalOptions="Center" />
+                            <Entry x:Name="entryPlacaCarro" Placeholder="Placa" TextColor="White" BackgroundColor="#FF252521"/>
+                            <Picker x:Name="pickerModeloCarro" Title="Modelo de Carro" TextColor="White" BackgroundColor="#FF252521" />
+                            <Picker x:Name="pickerAnoCarro" Title="Ano" TextColor="White" BackgroundColor="#FF252521" />
+                            <Entry x:Name="entryQuilometragemCarro" Placeholder="Quilometragem" TextColor="White" BackgroundColor="#FF252521"/>
+                            <Picker x:Name="pickerTipoCombustivelCarro" Title="Tipo de Combustível" BackgroundColor="#FF252521" TextColor="White">
+                                <Picker.Items>
+                                    <x:String>Gasolina</x:String>
+                                    <x:String>Álcool</x:String>
+                                    <x:String>Diesel</x:String>
+                                    <x:String>Elétrico</x:String>
+                                </Picker.Items>
+                            </Picker>
+                            <Picker x:Name="pickerNumeroPortasCarro" Title="Número de Portas" BackgroundColor="#FF252521" TextColor="White">
+                                <Picker.Items>
+                                    <x:String>2</x:String>
+                                    <x:String>4</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Seção de Cadastro de Moto -->
+                    <Frame x:Name="motoSection" IsVisible="False" Padding="10" BackgroundColor="#FF252521" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
+                        <StackLayout Spacing="5">
+                            <Label Text="Cadastrar Moto" FontSize="Large" TextColor="White" HorizontalOptions="Center" />
+                            <Entry x:Name="entryPlacaMoto" Placeholder="Placa" TextColor="White" BackgroundColor="#FF252521"/>
+                            <Picker x:Name="pickerModeloMoto" Title="Modelo de Moto" TextColor="White" BackgroundColor="#FF252521" />
+                            <Picker x:Name="pickerAnoMoto" Title="Ano" TextColor="White" BackgroundColor="#FF252521" />
+                            <Entry x:Name="entryQuilometragemMoto" Placeholder="Quilometragem" TextColor="White" BackgroundColor="#FF252521"/>
+                            <Picker x:Name="pickerTipoCombustivelMoto" Title="Tipo de Combustível" BackgroundColor="#FF252521" TextColor="White">
+                                <Picker.Items>
+                                    <x:String>Gasolina</x:String>
+                                    <x:String>Álcool</x:String>
+                                    <x:String>Diesel</x:String>
+                                    <x:String>Elétrico</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Botão de Salvar -->
+                    <Button Text="Salvar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnSalvarClicked" Margin="0,0,0,0" HorizontalOptions="Center" />
+                </StackLayout>
+            </Frame>
+
+            <!-- Colocando a imagem na coluna direita -->
+            <Image Source="car_cadastro.png" 
+                   Grid.Column="1"
+                   Aspect="AspectFit" 
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   Margin="20,0,0,0" />
+        </Grid>
+    </Grid>
+
 </ContentPage>

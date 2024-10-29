@@ -7,6 +7,10 @@
 
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" Padding="10">
 
+        <!-- Imagem de fundo cobrindo toda a tela -->
+        <Image Source="background_image.jpg" Aspect="AspectFill" Grid.RowSpan="2" Opacity="100" />
+
+        <!-- Texto principal sobreposto -->
         <StackLayout VerticalOptions="Center" Padding="30" Grid.Row="0">
             <Label Text="Pesquise. Compare. Alugue."
                    FontSize="Large" 
@@ -19,7 +23,8 @@
                    HorizontalOptions="Center" />
         </StackLayout>
 
-        <StackLayout BackgroundColor="Black" Padding="20" Grid.Row="1" Spacing="10" VerticalOptions="End">
+        <!-- Formulário de pesquisa com fundo transparente -->
+        <StackLayout BackgroundColor="#80000000" Padding="20" Grid.Row="1" Spacing="10" VerticalOptions="End">
             <Label Text="Retirar o carro em" TextColor="White" FontAttributes="Bold"/>
             <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" TextColor="White" BackgroundColor="#FF252521"/>
 
@@ -53,6 +58,7 @@
 
         <!-- Botão OnEntrarClicked -->
         <Button Text="Entrar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnEntrarClicked" HorizontalOptions="End" VerticalOptions="Start" Grid.Row="0" Grid.Column="1"/>
+
         <!-- Botão OnCadastrarVeiculoClicked -->
         <Button Text="Cadastrar Veículo" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnCadastrarVeiculoClicked" HorizontalOptions="Start" VerticalOptions="Start" Grid.Row="0" Grid.Column="2"/>
     </Grid>

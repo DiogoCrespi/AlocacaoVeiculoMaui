@@ -48,6 +48,30 @@
             DisplayAlert("Opções Selecionadas", resultado, "OK");
         }
 
+        private async void OnEntrarClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var cadastrarUsuarioPage = new CadastrarUsuarioPage(new UsuarioRepositorio());
+                await Navigation.PushAsync(cadastrarUsuarioPage);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
+        }
 
+        private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var cadastrarVeiculoPage = new CadastrarVeiculoPage(veiculoRepositorio);
+                await Navigation.PushAsync(cadastrarVeiculoPage);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
+        }
     }
 }

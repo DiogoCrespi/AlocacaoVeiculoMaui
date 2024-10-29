@@ -2,23 +2,55 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AlocacaoVeiuculo.CadastrarUsuarioPage"
-             BackgroundColor="Black"
-             Title="Cadastrar Usuário">
+             Title="Login Usuário">
 
-    <StackLayout Padding="20">
-        <Label Text="Acessar" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
-        <Entry x:Name="entryNome" Placeholder="Nome" TextColor="White" BackgroundColor="#FF252521"/>
-        <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True" TextColor="White" BackgroundColor="#FF252521"/>
-        <Button Text="Acessar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnAcessarButtonClicked"/>
-        <Button Text="Cadastrar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnCadastrarButtonClicked"/>
+    <Grid>
 
-        <StackLayout x:Name="CadastroLayout" IsVisible="False" BackgroundColor="#FF252521" Padding="20">
-            <Label Text="Cadastro" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
-            <Entry x:Name="entryCpf" Placeholder="CPF" TextColor="White" BackgroundColor="#FF252521"/>
-            <Label Text="Data de Nascimento" TextColor="White"/>
-            <DatePicker x:Name="entryDataNascimento" TextColor="White" BackgroundColor="#FF252521"/>
-            <Entry x:Name="entryTelefone" Placeholder="Telefone" TextColor="White" BackgroundColor="#FF252521"/>
-            <Button Text="Salvar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnSalvarButtonClicked"/>
-        </StackLayout>
-    </StackLayout>
+        <!-- Imagem de fundo cobrindo toda a tela -->
+        <Image Source="bkg_cadastro_carro.jpg" 
+               Aspect="AspectFill" 
+               Opacity="0.3" 
+               HorizontalOptions="FillAndExpand" 
+               VerticalOptions="FillAndExpand" />
+
+        <!-- Conteúdo da página sobreposto -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Colocando a imagem decorativa na coluna esquerda -->
+            <Image Source="cat_login.png" 
+                   Grid.Column="0"
+                   Aspect="AspectFit" 
+                   HorizontalOptions="EndAndExpand"
+                   VerticalOptions="Center"
+                   Margin="30,0,0,0" />
+
+            <!-- Formulário de Login na coluna direita dentro de um Frame para bordas arredondadas e fundo semi-transparente -->
+            <Frame Grid.Column="1" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="#80000000" CornerRadius="15" WidthRequest="300">
+                <StackLayout Spacing="20">
+                    <Label Text="LOGIN" TextColor="White" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center"/>
+                    <Entry x:Name="entryNome" Placeholder="Usuário" TextColor="White" BackgroundColor="#FF252521" />
+                    <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True" TextColor="White" BackgroundColor="#FF252521" />
+                    <Button Text="Login" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnAcessarButtonClicked" />
+
+                    <Button Text="Cadastrar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnCadastrarButtonClicked" Margin="0,0,0,0" />
+
+                    <!-- Layout de Cadastro dentro de um Frame para bordas arredondadas e fundo semi-transparente -->
+                    <Frame x:Name="CadastroLayout" IsVisible="False" BackgroundColor="#FF252521" Padding="20" CornerRadius="15" HasShadow="False" Margin="0,0,0,0">
+                        <StackLayout>
+                            <Label Text="Cadastro" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
+                            <Entry x:Name="entryCpf" Placeholder="CPF" TextColor="White" BackgroundColor="#FF252521"/>
+                            <Label Text="Data de Nascimento" TextColor="White"/>
+                            <DatePicker x:Name="entryDataNascimento" TextColor="White" BackgroundColor="#FF252521"/>
+                            <Entry x:Name="entryTelefone" Placeholder="Telefone" TextColor="White" BackgroundColor="#FF252521"/>
+                            <Button Text="Salvar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnSalvarButtonClicked"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </Grid>
 </ContentPage>
