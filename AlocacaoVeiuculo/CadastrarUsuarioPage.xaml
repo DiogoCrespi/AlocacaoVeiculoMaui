@@ -7,46 +7,49 @@
     <Grid>
 
         <!-- Imagem de fundo cobrindo toda a tela -->
-        <Image Source="bkg_cadastro_carro.jpg" 
+        <Image Source="loginbackgroundimage.jpg" 
                Aspect="AspectFill" 
-               Opacity="0.3" 
+               Opacity="0.9"
                HorizontalOptions="FillAndExpand" 
                VerticalOptions="FillAndExpand" />
 
         <!-- Conteúdo da página sobreposto -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Colocando a imagem decorativa na coluna esquerda -->
-            <Image Source="cat_login.png" 
+            <!--<Image Source="cat_login.png" 
                    Grid.Column="0"
                    Aspect="AspectFit" 
                    HorizontalOptions="EndAndExpand"
                    VerticalOptions="Center"
-                   Margin="30,0,0,0" />
+                   Margin="30,0,0,0" />-->
 
             <!-- Formulário de Login na coluna direita dentro de um Frame para bordas arredondadas e fundo semi-transparente -->
-            <Frame Grid.Column="1" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="#80000000" CornerRadius="15" WidthRequest="300">
+            <Frame Grid.Column="0" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="#80000000" CornerRadius="15" WidthRequest="300">
                 <StackLayout Spacing="20">
                     <Label Text="LOGIN" TextColor="White" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center"/>
                     <Entry x:Name="entryNome" Placeholder="Usuário" TextColor="White" BackgroundColor="#FF252521" />
                     <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True" TextColor="White" BackgroundColor="#FF252521" />
-                    <Button Text="Login" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnAcessarButtonClicked" />
 
-                    <Button Text="Cadastrar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnCadastrarButtonClicked" Margin="0,0,0,0" />
+                    <Button Text="Login" BackgroundColor="White" TextColor="Black" FontAttributes="Bold" CornerRadius="10" Clicked="OnAcessarButtonClicked" />
+
+                    <Button Text="Cadastrar" BackgroundColor="White" TextColor="Black" FontAttributes="Bold" CornerRadius="10" Clicked="OnCadastrarButtonClicked" />
 
                     <!-- Layout de Cadastro dentro de um Frame para bordas arredondadas e fundo semi-transparente -->
                     <Frame x:Name="CadastroLayout" IsVisible="False" BackgroundColor="#FF252521" Padding="20" CornerRadius="15" HasShadow="False" Margin="0,0,0,0">
-                        <StackLayout>
-                            <Label Text="Cadastro" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <StackLayout Spacing="20">
+                            <Label Text="CADASTRO" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/>
                             <Entry x:Name="entryCpf" Placeholder="CPF" TextColor="White" BackgroundColor="#FF252521"/>
                             <Label Text="Data de Nascimento" TextColor="White"/>
                             <DatePicker x:Name="entryDataNascimento" TextColor="White" BackgroundColor="#FF252521"/>
                             <Entry x:Name="entryTelefone" Placeholder="Telefone" TextColor="White" BackgroundColor="#FF252521"/>
-                            <Button Text="Salvar" BackgroundColor="#FF804D00" TextColor="White" Clicked="OnSalvarButtonClicked"/>
+
+                            <Button Text="Salvar" BackgroundColor="White" TextColor="Black" FontAttributes="Bold" CornerRadius="10" Clicked="OnSalvarButtonClicked"/>
+
                         </StackLayout>
                     </Frame>
                 </StackLayout>

@@ -8,15 +8,17 @@
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" Padding="10">
 
         <!-- Imagem de fundo cobrindo toda a tela -->
-        <Image Source="background_image.jpg" Aspect="AspectFill" Grid.RowSpan="2" Opacity="100" />
+        <Image Source="background_image.png" Aspect="AspectFill" Grid.RowSpan="2" Opacity="100" />
 
         <!-- Texto principal sobreposto -->
         <StackLayout VerticalOptions="Center" Padding="30" Grid.Row="0">
             <Label Text="Pesquise. Compare. Alugue."
                    FontSize="Large" 
-                   TextColor="White"
+                   TextColor="white"
                    HorizontalOptions="Center"
-                   FontAttributes="Bold" />
+                   FontAttributes="Bold" 
+                   FontAutoScalingEnabled="True"
+                   />
             <Label Text="Aluguel de carros com os melhores preços"
                    FontSize="Medium" 
                    TextColor="White"
@@ -24,7 +26,7 @@
         </StackLayout>
 
         <!-- Formulário de pesquisa com fundo transparente -->
-        <StackLayout BackgroundColor="#80000000" Padding="20" Grid.Row="1" Spacing="10" VerticalOptions="End">
+        <StackLayout BackgroundColor="#80000000" Padding="15" Margin="25" Grid.Row="1" Spacing="10" VerticalOptions="End">
             <Label Text="Retirar o carro em" TextColor="White" FontAttributes="Bold"/>
             <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" TextColor="White" BackgroundColor="#FF252521"/>
 

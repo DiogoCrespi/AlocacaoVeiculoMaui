@@ -57,7 +57,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\car_cadastro.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Images\bkg_cadastro_carro.jpg" />
+	  <None Remove="Resources\Images\CadastroVeiculoImagem.png" />
 	  <None Remove="Resources\Images\car_cad.png" />
 	  <None Remove="Resources\Images\car_cadastro.png" />
 	  <None Remove="Resources\Images\cat_login.png" />
