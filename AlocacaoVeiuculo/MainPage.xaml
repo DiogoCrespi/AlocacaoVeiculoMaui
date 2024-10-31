@@ -8,7 +8,7 @@
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" Padding="10">
 
         <!-- Imagem de fundo cobrindo toda a tela -->
-        <Image Source="background_image.png" Aspect="AspectFill" Grid.RowSpan="2" Opacity="0.9" />
+        <Image Source="background_image.png" Aspect="AspectFill" Grid.RowSpan="2" Opacity="0.5" />
 
         <!-- Texto principal sobreposto -->
         <StackLayout VerticalOptions="Center" Padding="30" Grid.Row="0">
