@@ -17,11 +17,9 @@ namespace AlocacaoVeiuculo
             veiculoRepositorio = repositorio;
             modeloRepositorio = new ModeloRepositorio();
 
-            // Preencher os pickers de modelo de carro e moto
             pickerModeloCarro.ItemsSource = modeloRepositorio.ObterModelosCarro();
             pickerModeloMoto.ItemsSource = modeloRepositorio.ObterModelosMoto();
 
-            // Populando os pickers de ano com um intervalo de anos (ex: de 1980 a 2024)
             var anos = Enumerable.Range(1980, DateTime.Now.Year - 1979).ToList();
             pickerAnoCarro.ItemsSource = anos;
             pickerAnoMoto.ItemsSource = anos;
@@ -41,7 +39,7 @@ namespace AlocacaoVeiuculo
             }
         }
 
-        private async void OnSalvarClicked(object sender, EventArgs e, Moto moto)
+        private async void OnSalvarClicked(object sender, EventArgs e)
         {
             if (pickerTipoVeiculo.SelectedItem == null)
             {
@@ -98,12 +96,12 @@ namespace AlocacaoVeiuculo
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {moto.Modelo} - {moto.Placa}", "OK");
             }
 
-            // Mostrar todos os veículos cadastrados
             string carrosCadastrados = string.Join("\n", veiculoRepositorio.ObterCarros().ConvertAll(c => $"{c.Modelo} - {c.Placa}"));
             string motosCadastradas = string.Join("\n", veiculoRepositorio.ObterMotos().ConvertAll(m => $"{m.Modelo} - {m.Placa}"));
 
             await DisplayAlert("Veículos Cadastrados", $"Carros:\n{carrosCadastrados}\n\nMotos:\n{motosCadastradas}", "OK");
             await Navigation.PopAsync();
         }
+
     }
 }

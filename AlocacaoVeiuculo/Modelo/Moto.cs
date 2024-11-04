@@ -1,4 +1,4 @@
-namespace AlocacaoVeiuculo
+namespace AlocacaoVeiuculo.Modelo
 {
     public class Moto
     {

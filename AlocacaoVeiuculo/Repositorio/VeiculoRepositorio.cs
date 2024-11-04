@@ -1,3 +1,6 @@
+using AlocacaoVeiuculo.Modelo;
+using System.Collections.Generic;
+
 namespace AlocacaoVeiuculo
 {
     public class VeiculoRepositorio

@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
+using AlocacaoVeiuculo.Data;
+using System.IO;
 
-namespace AlocacaoVeiuculo.Data
+namespace AlocacaoVeiuculo
 {
-    public class SQLiteData
+    public class SQLiteData : ISQLiteBD
     {
+        public SQLiteAsyncConnection GetConnection()
+        {
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "AlocacaoVeiculo.db3");
+            return new SQLiteAsyncConnection(dbPath);
+        }
     }
 }
