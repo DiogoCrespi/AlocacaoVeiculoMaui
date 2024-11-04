@@ -4,6 +4,14 @@
              x:Class="AlocacaoVeiuculo.CadastrarVeiculoPage"
              Title="Cadastro de veículo">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid>
 
         <!-- Imagem de fundo cobrindo toda a tela -->
@@ -21,19 +29,17 @@
             </Grid.ColumnDefinitions>
 
             <!-- Formulário de Cadastro de Veículo na coluna esquerda dentro de um Frame para bordas arredondadas -->
-            <Frame Grid.Column="0" Padding="15" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="#80000000" CornerRadius="15">
+            <Frame Grid.Column="0" Padding="15" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="{StaticResource BackgroundOverlay}" CornerRadius="15">
                 <StackLayout>
 
                     <!-- Picker para selecionar entre carro e moto -->
-                    <Frame Padding="10" BackgroundColor="#FF252521" CornerRadius="15" HasShadow="False" WidthRequest="500">
+                    <Frame Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500">
                         <StackLayout Spacing="5">
-                            <Label Text="Oque gostaria de cadastrar hoje ?" FontSize="24" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" />
-
-                            <!-- <Label Text="Tipo de Veículo" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center"/> -->
+                            <Label Text="Oque gostaria de cadastrar hoje ?" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource White}" HorizontalOptions="Center" />
 
                             <Label />
 
-                            <Picker x:Name="pickerTipoVeiculo" Title="Tipo de Veículo" TitleColor="White" SelectedIndexChanged="OnTipoVeiculoChanged">
+                            <Picker x:Name="pickerTipoVeiculo" Title="Tipo de Veículo" TitleColor="{StaticResource White}" SelectedIndexChanged="OnTipoVeiculoChanged">
                                 <Picker.Items>
                                     <x:String>Carro</x:String>
                                     <x:String>Moto</x:String>
@@ -43,14 +49,13 @@
                     </Frame>
 
                     <!-- Seção de Cadastro de Carro -->
-                    <Frame x:Name="carroSection" IsVisible="False" Padding="10" BackgroundColor="#FF252521" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
+                    <Frame x:Name="carroSection" IsVisible="False" Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
                         <StackLayout Spacing="5">
-                            <!-- <Label Text="Cadastrar Carro" FontSize="Large" TextColor="White" HorizontalOptions="Center" /> -->
-                            <Entry x:Name="entryPlacaCarro" Placeholder="Placa"  BackgroundColor="#FF252521"/>
-                            <Picker x:Name="pickerModeloCarro" Title="Modelo de Carro" BackgroundColor="#FF252521" />
-                            <Picker x:Name="pickerAnoCarro" Title="Ano" BackgroundColor="#FF252521" />
-                            <Entry x:Name="entryQuilometragemCarro" Placeholder="Quilometragem" BackgroundColor="#FF252521"/>
-                            <Picker x:Name="pickerTipoCombustivelCarro" Title="Tipo de Combustível" BackgroundColor="#FF252521">
+                            <Entry x:Name="entryPlacaCarro" Placeholder="Placa" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Picker x:Name="pickerModeloCarro" Title="Modelo de Carro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Picker x:Name="pickerAnoCarro" Title="Ano" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Entry x:Name="entryQuilometragemCarro" Placeholder="Quilometragem" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Picker x:Name="pickerTipoCombustivelCarro" Title="Tipo de Combustível" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}">
                                 <Picker.Items>
                                     <x:String>Gasolina</x:String>
                                     <x:String>Álcool</x:String>
@@ -58,7 +63,7 @@
                                     <x:String>Elétrico</x:String>
                                 </Picker.Items>
                             </Picker>
-                            <Picker x:Name="pickerNumeroPortasCarro" Title="Número de Portas" BackgroundColor="#FF252521">
+                            <Picker x:Name="pickerNumeroPortasCarro" Title="Número de Portas" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}">
                                 <Picker.Items>
                                     <x:String>2</x:String>
                                     <x:String>4</x:String>
@@ -68,14 +73,13 @@
                     </Frame>
 
                     <!-- Seção de Cadastro de Moto -->
-                    <Frame x:Name="motoSection" IsVisible="False" Padding="10" BackgroundColor="#FF252521" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
+                    <Frame x:Name="motoSection" IsVisible="False" Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
                         <StackLayout Spacing="5">
-                            <!-- <Label Text="Cadastrar Moto" FontSize="Large" TextColor="White" HorizontalOptions="Center" /> -->
-                            <Entry x:Name="entryPlacaMoto" Placeholder="Placa" TextColor="White" BackgroundColor="#FF252521"/>
-                            <Picker x:Name="pickerModeloMoto" Title="Modelo de Moto" TextColor="White" BackgroundColor="#FF252521" />
-                            <Picker x:Name="pickerAnoMoto" Title="Ano" TextColor="White" BackgroundColor="#FF252521" />
-                            <Entry x:Name="entryQuilometragemMoto" Placeholder="Quilometragem" TextColor="White" BackgroundColor="#FF252521"/>
-                            <Picker x:Name="pickerTipoCombustivelMoto" Title="Tipo de Combustível" BackgroundColor="#FF252521" TextColor="White">
+                            <Entry x:Name="entryPlacaMoto" Placeholder="Placa" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
+                            <Picker x:Name="pickerModeloMoto" Title="Modelo de Moto" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
+                            <Picker x:Name="pickerAnoMoto" Title="Ano" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
+                            <Entry x:Name="entryQuilometragemMoto" Placeholder="Quilometragem" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
+                            <Picker x:Name="pickerTipoCombustivelMoto" Title="Tipo de Combustível" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}">
                                 <Picker.Items>
                                     <x:String>Gasolina</x:String>
                                     <x:String>Álcool</x:String>
@@ -87,7 +91,7 @@
                     </Frame>
 
                     <!-- Botão de Salvar -->
-                    <Button Text="Salvar" BackgroundColor="White" TextColor="Black" FontAttributes="Bold"  Clicked="OnSalvarClicked" Margin="0,10,0,0" HorizontalOptions="Center" />
+                    <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" Margin="0,10,0,0" HorizontalOptions="Center" />
                 </StackLayout>
             </Frame>
 
