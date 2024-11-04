@@ -8,8 +8,8 @@ namespace AlocacaoVeiuculo
 {
     public partial class CadastrarVeiculoPage : ContentPage
     {
-        private VeiculoRepositorio veiculoRepositorio;
-        private ModeloRepositorio modeloRepositorio;
+        private readonly VeiculoRepositorio veiculoRepositorio;
+        private readonly ModeloRepositorio modeloRepositorio;
 
         public CadastrarVeiculoPage(VeiculoRepositorio repositorio)
         {
@@ -69,7 +69,7 @@ namespace AlocacaoVeiuculo
                     NumeroPortas = int.Parse(pickerNumeroPortasCarro.SelectedItem.ToString())
                 };
 
-                veiculoRepositorio.AdicionarCarro(carro);
+                await veiculoRepositorio.AdicionarCarro(carro);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {carro.Modelo} - {carro.Placa}", "OK");
             }
             else if (pickerTipoVeiculo.SelectedItem.ToString() == "Moto")
@@ -92,16 +92,18 @@ namespace AlocacaoVeiuculo
                     TipoCombustivel = pickerTipoCombustivelMoto.SelectedItem.ToString()
                 };
 
-                veiculoRepositorio.AdicionarMoto(moto);
+                await veiculoRepositorio.AdicionarMoto(moto);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {moto.Modelo} - {moto.Placa}", "OK");
             }
 
-            string carrosCadastrados = string.Join("\n", veiculoRepositorio.ObterCarros().ConvertAll(c => $"{c.Modelo} - {c.Placa}"));
-            string motosCadastradas = string.Join("\n", veiculoRepositorio.ObterMotos().ConvertAll(m => $"{m.Modelo} - {m.Placa}"));
+            var carrosCadastrados = await veiculoRepositorio.ObterCarros();
+            var motosCadastradas = await veiculoRepositorio.ObterMotos();
 
-            await DisplayAlert("Veículos Cadastrados", $"Carros:\n{carrosCadastrados}\n\nMotos:\n{motosCadastradas}", "OK");
+            string carrosListados = string.Join("\n", carrosCadastrados.Select(c => $"{c.Modelo} - {c.Placa}"));
+            string motosListadas = string.Join("\n", motosCadastradas.Select(m => $"{m.Modelo} - {m.Placa}"));
+
+            await DisplayAlert("Veículos Cadastrados", $"Carros:\n{carrosListados}\n\nMotos:\n{motosListadas}", "OK");
             await Navigation.PopAsync();
         }
-
     }
 }

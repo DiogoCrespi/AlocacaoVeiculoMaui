@@ -1,4 +1,10 @@
-﻿namespace AlocacaoVeiuculo
+﻿using AlocacaoVeiuculo.Modelo;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+
+namespace AlocacaoVeiuculo
 {
     public partial class MainPage : ContentPage
     {
@@ -22,8 +28,32 @@
             horaDevolucao = DateTime.Now.TimeOfDay;
             residencia = "Brasil";
         }
+        private async void OnEntrarClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var cadastrarUsuarioPage = new CadastrarUsuarioPage(new UsuarioRepositorio());
+                await Navigation.PushAsync(cadastrarUsuarioPage);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
+        }
+        private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var cadastrarVeiculoPage = new CadastrarVeiculoPage(veiculoRepositorio);
+                await Navigation.PushAsync(cadastrarVeiculoPage);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
+        }
 
-        private void OnPesquisarClicked(object sender, EventArgs e)
+        private async void OnPesquisarClicked(object sender, EventArgs e)
         {
             localRetirada = entryLocalRetirada.Text;
             dataRetirada = datePickerRetirada.Date;
@@ -40,37 +70,24 @@
                 residencia = "Brasil";
             }
 
-            string resultado = $"Local de Retirada: {localRetirada}\n" +
-                               $"Data de Retirada: {dataRetirada.ToShortDateString()} às {horaRetirada}\n" +
-                               $"Data de Devolução: {dataDevolucao.ToShortDateString()} às {horaDevolucao}\n" +
-                               $"Residência: {residencia}";
+            var veiculosEncontrados = await veiculoRepositorio.PesquisarVeiculos(localRetirada, dataRetirada, dataDevolucao, residencia);
 
-            DisplayAlert("Opções Selecionadas", resultado, "OK");
-        }
+            if (veiculosEncontrados.Count > 0)
+            {
+                string resultado = string.Join("\n", veiculosEncontrados.Select(v =>
+                {
+                    if (v is Carro carro)
+                        return $"Carro: {carro.Modelo} - Placa: {carro.Placa}";
+                    if (v is Moto moto)
+                        return $"Moto: {moto.Modelo} - Placa: {moto.Placa}";
+                    return string.Empty;
+                }));
 
-        private async void OnEntrarClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var cadastrarUsuarioPage = new CadastrarUsuarioPage(new UsuarioRepositorio());
-                await Navigation.PushAsync(cadastrarUsuarioPage);
+                await DisplayAlert("Veículos Encontrados", resultado, "OK");
             }
-            catch (Exception ex)
+            else
             {
-                await DisplayAlert("Erro", ex.Message, "OK");
-            }
-        }
-
-        private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
-        {
-            try
-            {
-                var cadastrarVeiculoPage = new CadastrarVeiculoPage(veiculoRepositorio);
-                await Navigation.PushAsync(cadastrarVeiculoPage);
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Nenhum veículo encontrado", "Nenhum veículo atende aos critérios de pesquisa.", "OK");
             }
         }
     }

@@ -1,6 +1,8 @@
-﻿using SQLite;
+﻿
+using SQLite;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Maui.Storage;
 using AlocacaoVeiuculo.Modelo;
 
 namespace AlocacaoVeiuculo.Services
@@ -17,7 +19,6 @@ namespace AlocacaoVeiuculo.Services
                 database = new SQLiteAsyncConnection(dbPath);
                 await database.CreateTableAsync<Carro>();
                 await database.CreateTableAsync<Moto>();
-                await database.CreateTableAsync<Usuario>();
             }
             return database;
         }

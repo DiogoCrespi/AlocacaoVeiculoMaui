@@ -1,31 +1,51 @@
 using AlocacaoVeiuculo.Modelo;
+using AlocacaoVeiuculo.Services;
+using SQLite;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AlocacaoVeiuculo
 {
     public class VeiculoRepositorio
     {
-        private List<Carro> carros = new();
-        private List<Moto> motos = new();
+        private readonly SQLiteAsyncConnection database;
 
-        public void AdicionarCarro(Carro carro)
+        public VeiculoRepositorio()
         {
-            carros.Add(carro);
+            database = DatabaseService.GetDatabaseAsync().Result;
         }
 
-        public void AdicionarMoto(Moto moto)
+        public Task<int> AdicionarCarro(Carro carro)
         {
-            motos.Add(moto);
+            return database.InsertAsync(carro);
         }
 
-        public List<Carro> ObterCarros()
+        public Task<int> AdicionarMoto(Moto moto)
         {
-            return carros;
+            return database.InsertAsync(moto);
         }
 
-        public List<Moto> ObterMotos()
+        public Task<List<Carro>> ObterCarros()
         {
-            return motos;
+            return database.Table<Carro>().ToListAsync();
+        }
+
+        public Task<List<Moto>> ObterMotos()
+        {
+            return database.Table<Moto>().ToListAsync();
+        }
+
+        public async Task<List<object>> PesquisarVeiculos(string localRetirada, DateTime dataRetirada, DateTime dataDevolucao, string residencia)
+        {
+            var carros = await database.Table<Carro>().Where(c => c.Modelo.Contains(localRetirada)).ToListAsync();
+            var motos = await database.Table<Moto>().Where(m => m.Modelo.Contains(localRetirada)).ToListAsync();
+
+            var resultado = new List<object>();
+            resultado.AddRange(carros);
+            resultado.AddRange(motos);
+
+            return resultado;
         }
     }
 }
