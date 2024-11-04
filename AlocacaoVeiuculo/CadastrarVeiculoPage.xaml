@@ -91,7 +91,7 @@
                     </Frame>
 
                     <!-- Botão de Salvar -->
-                    <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" Margin="0,10,0,0" HorizontalOptions="Center" />
+                    <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
                 </StackLayout>
             </Frame>
 

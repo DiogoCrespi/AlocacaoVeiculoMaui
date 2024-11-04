@@ -55,13 +55,14 @@
                 </StackLayout>
             </Grid>
 
-            <Button Text="Pesquisar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnPesquisarClicked"/>
+            <Button Text="Pesquisar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnPesquisarClicked" FontAttributes="Bold" CornerRadius="7"/>
         </StackLayout>
 
         <!-- Botão OnEntrarClicked -->
-        <Button Text="Entrar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnEntrarClicked" HorizontalOptions="End" VerticalOptions="Start" Grid.Row="0" Grid.Column="1"/>
+        <Button Text="Entrar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnEntrarClicked"  FontAttributes="Bold" CornerRadius="7"  HorizontalOptions="End" VerticalOptions="Start" Grid.Row="0" Grid.Column="1"/>
 
         <!-- Botão OnCadastrarVeiculoClicked -->
-        <Button Text="Cadastrar Veículo" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnCadastrarVeiculoClicked" HorizontalOptions="Start" VerticalOptions="Start" Grid.Row="0" Grid.Column="2"/>
+        <Button Text="Cadastrar Veículo" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}"   Clicked="OnCadastrarVeiculoClicked" FontAttributes="Bold" CornerRadius="7" HorizontalOptions="Start" VerticalOptions="Start" Grid.Row="0" Grid.Column="2"/>
+
     </Grid>
 </ContentPage>
