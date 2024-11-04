@@ -1,3 +1,9 @@
+using AlocacaoVeiuculo.Modelo;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+
 namespace AlocacaoVeiuculo
 {
     public partial class CadastrarVeiculoPage : ContentPage
@@ -35,7 +41,7 @@ namespace AlocacaoVeiuculo
             }
         }
 
-        private async void OnSalvarClicked(object sender, EventArgs e)
+        private async void OnSalvarClicked(object sender, EventArgs e, Moto moto)
         {
             if (pickerTipoVeiculo.SelectedItem == null)
             {
