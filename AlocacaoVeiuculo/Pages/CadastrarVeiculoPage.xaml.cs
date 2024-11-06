@@ -8,8 +8,8 @@ namespace AlocacaoVeiuculo
 {
     public partial class CadastrarVeiculoPage : ContentPage
     {
-        private readonly VeiculoRepositorio veiculoRepositorio;
-        private readonly ModeloRepositorio modeloRepositorio;
+        private VeiculoRepositorio veiculoRepositorio;
+        private ModeloRepositorio modeloRepositorio;
 
         public CadastrarVeiculoPage(VeiculoRepositorio repositorio)
         {
@@ -69,7 +69,7 @@ namespace AlocacaoVeiuculo
                     NumeroPortas = int.Parse(pickerNumeroPortasCarro.SelectedItem.ToString())
                 };
 
-                await veiculoRepositorio.AdicionarCarro(carro);
+                veiculoRepositorio.AdicionarCarro(carro);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {carro.Modelo} - {carro.Placa}", "OK");
             }
             else if (pickerTipoVeiculo.SelectedItem.ToString() == "Moto")
@@ -92,18 +92,16 @@ namespace AlocacaoVeiuculo
                     TipoCombustivel = pickerTipoCombustivelMoto.SelectedItem.ToString()
                 };
 
-                await veiculoRepositorio.AdicionarMoto(moto);
+                veiculoRepositorio.AdicionarMoto(moto);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {moto.Modelo} - {moto.Placa}", "OK");
             }
 
-            var carrosCadastrados = await veiculoRepositorio.ObterCarros();
-            var motosCadastradas = await veiculoRepositorio.ObterMotos();
+            string carrosCadastrados = string.Join("\n", veiculoRepositorio.ObterCarros().ConvertAll(c => $"{c.Modelo} - {c.Placa}"));
+            string motosCadastradas = string.Join("\n", veiculoRepositorio.ObterMotos().ConvertAll(m => $"{m.Modelo} - {m.Placa}"));
 
-            string carrosListados = string.Join("\n", carrosCadastrados.Select(c => $"{c.Modelo} - {c.Placa}"));
-            string motosListadas = string.Join("\n", motosCadastradas.Select(m => $"{m.Modelo} - {m.Placa}"));
-
-            await DisplayAlert("Veículos Cadastrados", $"Carros:\n{carrosListados}\n\nMotos:\n{motosListadas}", "OK");
+            await DisplayAlert("Veículos Cadastrados", $"Carros:\n{carrosCadastrados}\n\nMotos:\n{motosCadastradas}", "OK");
             await Navigation.PopAsync();
         }
+
     }
 }
