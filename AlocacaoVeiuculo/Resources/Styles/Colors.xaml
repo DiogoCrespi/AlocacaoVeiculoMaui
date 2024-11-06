@@ -9,7 +9,7 @@
     <Color x:Key="PrimaryDark">#80000000</Color>
     <Color x:Key="PrimaryDarkText">#242424</Color>
     <Color x:Key="Secondary">White</Color>
-    <Color x:Key="SecondaryDarkText">#FF804D00</Color>
+    <Color x:Key="SecondaryDarkText">#80000000</Color>
     <Color x:Key="Tertiary">#FF252521</Color>
 
     <!-- Novas cores baseadas no layout -->
