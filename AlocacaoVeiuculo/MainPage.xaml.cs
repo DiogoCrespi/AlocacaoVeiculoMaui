@@ -1,4 +1,5 @@
 ﻿using AlocacaoVeiuculo.Data;
+using AlocacaoVeiuculo.Modelo;
 using Microsoft.Maui.Controls;
 using System;
 
@@ -12,6 +13,7 @@ namespace AlocacaoVeiuculo
         private DateTime dataDevolucao;
         private TimeSpan horaDevolucao;
         private string residencia;
+        private Usuario usuarioLogado;
 
         public MainPage()
         {
@@ -23,6 +25,12 @@ namespace AlocacaoVeiuculo
             dataDevolucao = DateTime.Now;
             horaDevolucao = DateTime.Now.TimeOfDay;
             residencia = "Brasil";
+        }
+
+        public void MostrarBotaoUsuarioLogado(Usuario usuario)
+        {
+            usuarioLogado = usuario;
+            btnUsuarioLogado.IsVisible = true;
         }
 
         private void OnPesquisarClicked(object sender, EventArgs e)
@@ -54,12 +62,34 @@ namespace AlocacaoVeiuculo
         {
             try
             {
-                var cadastrarUsuarioPage = new CadastrarUsuarioPage();
+                var cadastrarUsuarioPage = new CadastrarUsuarioPage(this);
                 await Navigation.PushAsync(cadastrarUsuarioPage);
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Erro", ex.Message, "OK");
+            }
+        }
+
+        private async void OnUsuarioLogadoClicked(object sender, EventArgs e)
+        {
+            if (usuarioLogado != null)
+            {
+                string mensagem = $"Nome: {usuarioLogado.Nome}\nCPF: {usuarioLogado.Cpf}\nData de Nascimento: {usuarioLogado.DataNascimento.ToShortDateString()}\nTelefone: {usuarioLogado.Telefone}";
+
+                var acao = await DisplayActionSheet(mensagem, "Cancelar", null, "Minhas Reservas", "Sair");
+
+                if (acao == "Minhas Reservas")
+                {
+                    // Código para abrir a tela de "Minhas Reservas"
+                    await DisplayAlert("Ação", "Minhas Reservas selecionado.", "OK");
+                }
+                else if (acao == "Sair")
+                {
+                    usuarioLogado = null;
+                    btnUsuarioLogado.IsVisible = false;
+                    await DisplayAlert("Logout", "Você saiu da conta.", "OK");
+                }
             }
         }
 

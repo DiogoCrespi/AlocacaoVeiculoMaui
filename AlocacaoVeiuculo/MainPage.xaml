@@ -58,6 +58,9 @@
             <Button Text="Pesquisar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnPesquisarClicked" FontAttributes="Bold" CornerRadius="7"/>
         </StackLayout>
 
+        
+        
+        
         <AbsoluteLayout>
             <!-- Botão "Cadastrar Veículo" posicionado no canto superior esquerdo -->
             <Button 
@@ -76,6 +79,7 @@
 
             <!-- Botão "Entrar" posicionado no canto superior direito -->
             <Button 
+                
         Text="Entrar" 
         BackgroundColor="{StaticResource ButtonBackground}" 
         TextColor="{StaticResource ButtonText}" 
@@ -88,6 +92,23 @@
         AbsoluteLayout.LayoutFlags="PositionProportional" 
         HorizontalOptions="End" 
         VerticalOptions="Start"/>
+
+
+            <Button 
+        x:Name="btnUsuarioLogado"
+        Text="Usuário" 
+        BackgroundColor="{StaticResource ButtonBackground}" 
+        TextColor="{StaticResource ButtonText}" 
+        Clicked="OnUsuarioLogadoClicked"  
+        FontAttributes="Bold" 
+        CornerRadius="7"  
+        WidthRequest="100"
+        HeightRequest="30"
+        AbsoluteLayout.LayoutBounds="0.9, 0, AutoSize, AutoSize" 
+        AbsoluteLayout.LayoutFlags="PositionProportional" 
+        HorizontalOptions="End" 
+        VerticalOptions="Start"
+        IsVisible="False" />
         </AbsoluteLayout>
 
 

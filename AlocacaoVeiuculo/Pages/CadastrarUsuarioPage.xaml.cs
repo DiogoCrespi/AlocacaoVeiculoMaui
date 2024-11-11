@@ -9,11 +9,13 @@ namespace AlocacaoVeiuculo
     public partial class CadastrarUsuarioPage : ContentPage
     {
         private UsuarioData usuarioData;
+        private MainPage mainPage;
 
-        public CadastrarUsuarioPage()
+        public CadastrarUsuarioPage(MainPage mainPage)
         {
             InitializeComponent();
             usuarioData = new UsuarioData();
+            this.mainPage = mainPage;
         }
 
         private async void OnAcessarButtonClicked(object sender, EventArgs e)
@@ -38,6 +40,12 @@ namespace AlocacaoVeiuculo
             {
                 string mensagem = $"Nome: {nome}\nSenha: {usuario.Senha}\nCPF: {usuario.Cpf}\nData de Nascimento: {usuario.DataNascimento.ToShortDateString()}\nTelefone: {usuario.Telefone}";
                 await DisplayAlert("Usuário Encontrado", mensagem, "OK");
+
+                // Torna o botão visível na MainPage
+                mainPage.MostrarBotaoUsuarioLogado(usuario);
+
+                // Navegar de volta à MainPage, se desejado
+                await Navigation.PopAsync();
             }
             else
             {
