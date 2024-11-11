@@ -33,7 +33,7 @@ namespace AlocacaoVeiuculo
             btnUsuarioLogado.IsVisible = true;
         }
 
-        private void OnPesquisarClicked(object sender, EventArgs e)
+        private async void OnPesquisarClicked(object sender, EventArgs e)
         {
             localRetirada = entryLocalRetirada.Text;
             dataRetirada = datePickerRetirada.Date;
@@ -50,13 +50,27 @@ namespace AlocacaoVeiuculo
                 residencia = "Brasil";
             }
 
+            var reserva = new Reserva
+            {
+                LocalRetirada = localRetirada,
+                DataRetirada = dataRetirada,
+                HoraRetirada = horaRetirada,
+                DataDevolucao = dataDevolucao,
+                HoraDevolucao = horaDevolucao,
+                Residencia = residencia
+            };
+
+            var reservaData = new ReservaData();
+            await reservaData.AdicionarReservaAsync(reserva);
+
             string resultado = $"Local de Retirada: {localRetirada}\n" +
                                $"Data de Retirada: {dataRetirada.ToShortDateString()} às {horaRetirada}\n" +
                                $"Data de Devolução: {dataDevolucao.ToShortDateString()} às {horaDevolucao}\n" +
                                $"Residência: {residencia}";
 
-            DisplayAlert("Opções Selecionadas", resultado, "OK");
+            await DisplayAlert("Opções Selecionadas", resultado, "OK");
         }
+
 
         private async void OnEntrarClicked(object sender, EventArgs e)
         {
