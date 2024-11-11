@@ -19,6 +19,7 @@ namespace AlocacaoVeiuculo.Services
                 database = new SQLiteAsyncConnection(dbPath);
                 await database.CreateTableAsync<Carro>();
                 await database.CreateTableAsync<Moto>();
+                await database.CreateTableAsync<ModeloVeiculo>();
             }
             return database;
         }

@@ -65,7 +65,7 @@
         {
             try
             {
-                var cadastrarVeiculoPage = new CadastrarVeiculoPage(veiculoRepositorio);
+                var cadastrarVeiculoPage = new CadastrarVeiculoPage();
                 await Navigation.PushAsync(cadastrarVeiculoPage);
             }
             catch (Exception ex)
@@ -73,5 +73,6 @@
                 await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
+
     }
 }

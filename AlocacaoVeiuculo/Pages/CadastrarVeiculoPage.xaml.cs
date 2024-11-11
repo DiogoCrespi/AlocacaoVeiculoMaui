@@ -1,28 +1,41 @@
 using AlocacaoVeiuculo.Modelo;
+using AlocacaoVeiuculo.Data;
+using Microsoft.Maui.Controls;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
+using System.Collections.Generic;
 
 namespace AlocacaoVeiuculo
 {
     public partial class CadastrarVeiculoPage : ContentPage
     {
-        private VeiculoRepositorio veiculoRepositorio;
-        private ModeloRepositorio modeloRepositorio;
+        private CarroData carroData;
+        private MotoData motoData;
+        private ModeloVeiculoData modeloVeiculoData;
 
-        public CadastrarVeiculoPage(VeiculoRepositorio repositorio)
+        public CadastrarVeiculoPage()
         {
             InitializeComponent();
-            veiculoRepositorio = repositorio;
-            modeloRepositorio = new ModeloRepositorio();
+            carroData = new CarroData();
+            motoData = new MotoData();
+            modeloVeiculoData = new ModeloVeiculoData();
 
-            pickerModeloCarro.ItemsSource = modeloRepositorio.ObterModelosCarro();
-            pickerModeloMoto.ItemsSource = modeloRepositorio.ObterModelosMoto();
+            CarregarModelosAsync();
 
             var anos = Enumerable.Range(1980, DateTime.Now.Year - 1979).ToList();
             pickerAnoCarro.ItemsSource = anos;
             pickerAnoMoto.ItemsSource = anos;
+        }
+
+        private async Task CarregarModelosAsync()
+        {
+            var modelos = await modeloVeiculoData.ObterModelosAsync();
+            var modelosCarro = modelos.Where(m => m.Tipo == "Carro").Select(m => m.Nome).ToList();
+            var modelosMoto = modelos.Where(m => m.Tipo == "Moto").Select(m => m.Nome).ToList();
+
+            pickerModeloCarro.ItemsSource = modelosCarro;
+            pickerModeloMoto.ItemsSource = modelosMoto;
         }
 
         private void OnTipoVeiculoChanged(object sender, EventArgs e)
@@ -69,7 +82,7 @@ namespace AlocacaoVeiuculo
                     NumeroPortas = int.Parse(pickerNumeroPortasCarro.SelectedItem.ToString())
                 };
 
-                veiculoRepositorio.AdicionarCarro(carro);
+                await carroData.AdicionarCarroAsync(carro);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {carro.Modelo} - {carro.Placa}", "OK");
             }
             else if (pickerTipoVeiculo.SelectedItem.ToString() == "Moto")
@@ -92,16 +105,15 @@ namespace AlocacaoVeiuculo
                     TipoCombustivel = pickerTipoCombustivelMoto.SelectedItem.ToString()
                 };
 
-                veiculoRepositorio.AdicionarMoto(moto);
+                await motoData.AdicionarMotoAsync(moto);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {moto.Modelo} - {moto.Placa}", "OK");
             }
 
-            string carrosCadastrados = string.Join("\n", veiculoRepositorio.ObterCarros().ConvertAll(c => $"{c.Modelo} - {c.Placa}"));
-            string motosCadastradas = string.Join("\n", veiculoRepositorio.ObterMotos().ConvertAll(m => $"{m.Modelo} - {m.Placa}"));
+            var carrosCadastrados = string.Join("\n", (await carroData.ObterCarrosAsync()).Select(c => $"{c.Modelo} - {c.Placa}"));
+            var motosCadastradas = string.Join("\n", (await motoData.ObterMotosAsync()).Select(m => $"{m.Modelo} - {m.Placa}"));
 
             await DisplayAlert("Veículos Cadastrados", $"Carros:\n{carrosCadastrados}\n\nMotos:\n{motosCadastradas}", "OK");
             await Navigation.PopAsync();
         }
-
     }
 }
