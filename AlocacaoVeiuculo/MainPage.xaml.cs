@@ -1,9 +1,11 @@
-﻿namespace AlocacaoVeiuculo
+﻿using AlocacaoVeiuculo.Data;
+using Microsoft.Maui.Controls;
+using System;
+
+namespace AlocacaoVeiuculo
 {
     public partial class MainPage : ContentPage
     {
-        private VeiculoRepositorio veiculoRepositorio = new();
-
         private string localRetirada;
         private DateTime dataRetirada;
         private TimeSpan horaRetirada;
@@ -52,7 +54,7 @@
         {
             try
             {
-                var cadastrarUsuarioPage = new CadastrarUsuarioPage(new UsuarioRepositorio());
+                var cadastrarUsuarioPage = new CadastrarUsuarioPage();
                 await Navigation.PushAsync(cadastrarUsuarioPage);
             }
             catch (Exception ex)
@@ -73,6 +75,5 @@
                 await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
-
     }
 }

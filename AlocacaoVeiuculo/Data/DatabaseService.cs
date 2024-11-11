@@ -20,6 +20,7 @@ namespace AlocacaoVeiuculo.Services
                 await database.CreateTableAsync<Carro>();
                 await database.CreateTableAsync<Moto>();
                 await database.CreateTableAsync<ModeloVeiculo>();
+                await database.CreateTableAsync<Usuario>();
             }
             return database;
         }

@@ -1,20 +1,26 @@
+using AlocacaoVeiuculo.Modelo;
+using AlocacaoVeiuculo.Data;
+using Microsoft.Maui.Controls;
+using System;
+using System.Threading.Tasks;
+
 namespace AlocacaoVeiuculo
 {
     public partial class CadastrarUsuarioPage : ContentPage
     {
-        private UsuarioRepositorio usuarioRepositorio;
+        private UsuarioData usuarioData;
 
-        public CadastrarUsuarioPage(UsuarioRepositorio repositorio)
+        public CadastrarUsuarioPage()
         {
             InitializeComponent();
-            usuarioRepositorio = repositorio;
+            usuarioData = new UsuarioData();
         }
 
-        private void OnAcessarButtonClicked(object sender, EventArgs e)
+        private async void OnAcessarButtonClicked(object sender, EventArgs e)
         {
             if (entryNome == null || entrySenha == null)
             {
-                DisplayAlert("Erro", "Campos de nome e senha não podem ser nulos.", "OK");
+                await DisplayAlert("Erro", "Campos de nome e senha não podem ser nulos.", "OK");
                 return;
             }
 
@@ -23,30 +29,30 @@ namespace AlocacaoVeiuculo
 
             if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(senha))
             {
-                DisplayAlert("Erro", "Nome ou senha não podem estar vazios.", "OK");
+                await DisplayAlert("Erro", "Nome ou senha não podem estar vazios.", "OK");
                 return;
             }
 
-            if (usuarioRepositorio.UsuarioExistente(nome) && usuarioRepositorio.ObterUsuario(nome).senha == senha)
+            var usuario = await usuarioData.ObterUsuarioPorNomeAsync(nome);
+            if (usuario != null && usuario.Senha == senha)
             {
-                var usuario = usuarioRepositorio.ObterUsuario(nome);
-                string mensagem = $"Nome: {nome}\nSenha: {usuario.senha}\nCPF: {usuario.cpf}\nData de Nascimento: {usuario.dataNascimento.ToShortDateString()}\nTelefone: {usuario.telefone}";
-                DisplayAlert("Usuário Encontrado", mensagem, "OK");
+                string mensagem = $"Nome: {nome}\nSenha: {usuario.Senha}\nCPF: {usuario.Cpf}\nData de Nascimento: {usuario.DataNascimento.ToShortDateString()}\nTelefone: {usuario.Telefone}";
+                await DisplayAlert("Usuário Encontrado", mensagem, "OK");
             }
             else
             {
-                DisplayAlert("Erro", "Nome ou senha inválidos.", "OK");
+                await DisplayAlert("Erro", "Nome ou senha inválidos.", "OK");
                 entryNome.Text = string.Empty;
                 entrySenha.Text = string.Empty;
                 CadastroLayout.IsVisible = true;
             }
         }
 
-        private void OnCadastrarButtonClicked(object sender, EventArgs e)
+        private async void OnCadastrarButtonClicked(object sender, EventArgs e)
         {
             if (entryNome == null || entrySenha == null)
             {
-                DisplayAlert("Erro", "Campos de nome e senha não podem ser nulos.", "OK");
+                await DisplayAlert("Erro", "Campos de nome e senha não podem ser nulos.", "OK");
                 return;
             }
 
@@ -55,21 +61,21 @@ namespace AlocacaoVeiuculo
 
             if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(senha))
             {
-                DisplayAlert("Erro", "Nome ou senha não podem estar vazios.", "OK");
+                await DisplayAlert("Erro", "Nome ou senha não podem estar vazios.", "OK");
                 CadastroLayout.IsVisible = true;
                 return;
             }
 
-            if (usuarioRepositorio.UsuarioExistente(nome))
+            if (await usuarioData.UsuarioExistenteAsync(nome))
             {
-                DisplayAlert("Erro", "Usuário já cadastrado.", "OK");
+                await DisplayAlert("Erro", "Usuário já cadastrado.", "OK");
                 return;
             }
 
             CadastroLayout.IsVisible = true;
         }
 
-        private void OnSalvarButtonClicked(object sender, EventArgs e)
+        private async void OnSalvarButtonClicked(object sender, EventArgs e)
         {
             string nome = entryNome.Text;
             string senha = entrySenha.Text;
@@ -77,8 +83,17 @@ namespace AlocacaoVeiuculo
             DateTime dataNascimento = entryDataNascimento.Date;
             string telefone = entryTelefone.Text;
 
-            usuarioRepositorio.AdicionarUsuario(nome, senha, cpf, dataNascimento, telefone);
-            DisplayAlert("Cadastro Realizado", $"Nome: {nome}\nCPF: {cpf}\nData de Nascimento: {dataNascimento.ToShortDateString()}\nTelefone: {telefone}", "OK");
+            var novoUsuario = new Usuario
+            {
+                Nome = nome,
+                Senha = senha,
+                Cpf = cpf,
+                DataNascimento = dataNascimento,
+                Telefone = telefone
+            };
+
+            await usuarioData.AdicionarUsuarioAsync(novoUsuario);
+            await DisplayAlert("Cadastro Realizado", $"Nome: {nome}\nCPF: {cpf}\nData de Nascimento: {dataNascimento.ToShortDateString()}\nTelefone: {telefone}", "OK");
 
             entryNome.Text = string.Empty;
             entrySenha.Text = string.Empty;
