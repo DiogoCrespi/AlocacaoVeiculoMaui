@@ -58,11 +58,38 @@
             <Button Text="Pesquisar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnPesquisarClicked" FontAttributes="Bold" CornerRadius="7"/>
         </StackLayout>
 
-        <!-- Botão OnEntrarClicked -->
-        <Button Text="Entrar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnEntrarClicked"  FontAttributes="Bold" CornerRadius="7"  HorizontalOptions="End" VerticalOptions="Start" Grid.Row="0" Grid.Column="1"/>
+        <AbsoluteLayout>
+            <!-- Botão "Cadastrar Veículo" posicionado no canto superior esquerdo -->
+            <Button 
+        Text="Cadastrar Veículo" 
+        BackgroundColor="{StaticResource ButtonBackground}" 
+        TextColor="{StaticResource ButtonText}" 
+        Clicked="OnCadastrarVeiculoClicked"  
+        FontAttributes="Bold" 
+        CornerRadius="7"  
+        WidthRequest="150"
+        HeightRequest="30"
+        AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize" 
+        AbsoluteLayout.LayoutFlags="PositionProportional" 
+        HorizontalOptions="Start" 
+        VerticalOptions="Start"/>
 
-        <!-- Botão OnCadastrarVeiculoClicked -->
-        <Button Text="Cadastrar Veículo" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}"   Clicked="OnCadastrarVeiculoClicked" FontAttributes="Bold" CornerRadius="7" HorizontalOptions="Start" VerticalOptions="Start" Grid.Row="0" Grid.Column="2"/>
+            <!-- Botão "Entrar" posicionado no canto superior direito -->
+            <Button 
+        Text="Entrar" 
+        BackgroundColor="{StaticResource ButtonBackground}" 
+        TextColor="{StaticResource ButtonText}" 
+        Clicked="OnEntrarClicked"  
+        FontAttributes="Bold" 
+        CornerRadius="7"  
+        WidthRequest="100"
+        HeightRequest="30"
+        AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize" 
+        AbsoluteLayout.LayoutFlags="PositionProportional" 
+        HorizontalOptions="End" 
+        VerticalOptions="Start"/>
+        </AbsoluteLayout>
+
 
     </Grid>
 </ContentPage>

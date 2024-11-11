@@ -95,14 +95,7 @@
                 </StackLayout>
             </Frame>
 
-            <!-- Colocando a imagem na coluna direita -->
-            <Image Source="cadastroveiculoimagem.png" 
-                   Grid.Column="1"
-                   Aspect="AspectFit" 
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   Margin="0,0,80,0">
-            </Image>
+           
         </Grid>
     </Grid>
 
