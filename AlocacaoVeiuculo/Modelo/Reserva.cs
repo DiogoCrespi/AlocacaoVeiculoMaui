@@ -12,6 +12,6 @@ namespace AlocacaoVeiuculo.Modelo
         public TimeSpan HoraRetirada { get; set; }
         public DateTime DataDevolucao { get; set; }
         public TimeSpan HoraDevolucao { get; set; }
-        public string Residencia { get; set; }
+      //  public string Residencia { get; set; }
     }
 }
