@@ -13,6 +13,7 @@ namespace AlocacaoVeiuculo
         private CarroData carroData;
         private MotoData motoData;
         private ModeloVeiculoData modeloVeiculoData;
+        private DisponibilidadeData disponibilidadeData;
 
         public CadastrarVeiculoPage()
         {
@@ -20,6 +21,7 @@ namespace AlocacaoVeiuculo
             carroData = new CarroData();
             motoData = new MotoData();
             modeloVeiculoData = new ModeloVeiculoData();
+            disponibilidadeData = new DisponibilidadeData();
 
             CarregarModelosAsync();
 
@@ -51,6 +53,26 @@ namespace AlocacaoVeiuculo
                 motoSection.IsVisible = true;
             }
         }
+        private async void OnTipoDisponibilidadeVeiculoChanged(object sender, EventArgs e)
+        {
+            disponibilidadeCarroSection.IsVisible = false;
+            disponibilidadeMotoSection.IsVisible = false;
+
+            if (pickerDisponibilidadeTipoVeiculo.SelectedItem?.ToString() == "Carro")
+            {
+                var carros = await carroData.ObterCarrosAsync();
+                pickerDisponibilidadeCarro.ItemsSource = carros.Any() ? carros : new List<Carro> { new Carro { Modelo = "Nenhum veículo cadastrado" } };
+                pickerDisponibilidadeCarro.ItemDisplayBinding = new Binding("Modelo");
+                disponibilidadeCarroSection.IsVisible = true;
+            }
+            else if (pickerDisponibilidadeTipoVeiculo.SelectedItem?.ToString() == "Moto")
+            {
+                var motos = await motoData.ObterMotosAsync();
+                pickerDisponibilidadeMoto.ItemsSource = motos.Any() ? motos : new List<Moto> { new Moto { Modelo = "Nenhum veículo cadastrado" } };
+                pickerDisponibilidadeMoto.ItemDisplayBinding = new Binding("Modelo");
+                disponibilidadeMotoSection.IsVisible = true;
+            }
+        }
 
         private async void OnSalvarClicked(object sender, EventArgs e)
         {
@@ -62,16 +84,6 @@ namespace AlocacaoVeiuculo
 
             if (pickerTipoVeiculo.SelectedItem.ToString() == "Carro")
             {
-                if (pickerModeloCarro.SelectedItem == null ||
-                    pickerAnoCarro.SelectedItem == null ||
-                    string.IsNullOrEmpty(entryQuilometragemCarro.Text) ||
-                    pickerTipoCombustivelCarro.SelectedItem == null ||
-                    pickerNumeroPortasCarro.SelectedItem == null)
-                {
-                    await DisplayAlert("Erro", "Preencha todos os campos corretamente.", "OK");
-                    return;
-                }
-
                 var carro = new Carro
                 {
                     Placa = entryPlacaCarro.Text,
@@ -87,15 +99,6 @@ namespace AlocacaoVeiuculo
             }
             else if (pickerTipoVeiculo.SelectedItem.ToString() == "Moto")
             {
-                if (pickerModeloMoto.SelectedItem == null ||
-                    pickerAnoMoto.SelectedItem == null ||
-                    string.IsNullOrEmpty(entryQuilometragemMoto.Text) ||
-                    pickerTipoCombustivelMoto.SelectedItem == null)
-                {
-                    await DisplayAlert("Erro", "Preencha todos os campos corretamente.", "OK");
-                    return;
-                }
-
                 var moto = new Moto
                 {
                     Placa = entryPlacaMoto.Text,
@@ -108,12 +111,72 @@ namespace AlocacaoVeiuculo
                 await motoData.AdicionarMotoAsync(moto);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {moto.Modelo} - {moto.Placa}", "OK");
             }
+        }
 
-            var carrosCadastrados = string.Join("\n", (await carroData.ObterCarrosAsync()).Select(c => $"{c.Modelo} - {c.Placa}"));
-            var motosCadastradas = string.Join("\n", (await motoData.ObterMotosAsync()).Select(m => $"{m.Modelo} - {m.Placa}"));
+        private async void OnSalvarDisponibilidadeClicked(object sender, EventArgs e)
+        {
+            if (pickerDisponibilidadeTipoVeiculo.SelectedItem == null)
+            {
+                await DisplayAlert("Erro", "Selecione o tipo de veículo.", "OK");
+                return;
+            }
 
-            await DisplayAlert("Veículos Cadastrados", $"Carros:\n{carrosCadastrados}\n\nMotos:\n{motosCadastradas}", "OK");
-            await Navigation.PopAsync();
+            string tipoVeiculo = pickerDisponibilidadeTipoVeiculo.SelectedItem.ToString();
+            int veiculoId;
+
+            if (tipoVeiculo == "Carro")
+            {
+                var carroSelecionado = pickerDisponibilidadeCarro.SelectedItem as Carro;
+                if (carroSelecionado == null || carroSelecionado.Modelo == "Nenhum veículo cadastrado")
+                {
+                    await DisplayAlert("Erro", "Selecione um veículo válido.", "OK");
+                    return;
+                }
+                veiculoId = carroSelecionado.Id;
+            }
+            else if (tipoVeiculo == "Moto")
+            {
+                var motoSelecionado = pickerDisponibilidadeMoto.SelectedItem as Moto;
+                if (motoSelecionado == null || motoSelecionado.Modelo == "Nenhum veículo cadastrado")
+                {
+                    await DisplayAlert("Erro", "Selecione um veículo válido.", "OK");
+                    return;
+                }
+                veiculoId = motoSelecionado.Id;
+            }
+            else
+            {
+                await DisplayAlert("Erro", "Tipo de veículo inválido.", "OK");
+                return;
+            }
+
+            var disponibilidade = new Disponibilidade
+            {
+                VeiculoId = veiculoId,
+                TipoVeiculo = tipoVeiculo,
+                DataInicio = tipoVeiculo == "Carro" ? dateInicioDisponibilidadeCarro.Date : dateInicioDisponibilidadeMoto.Date,
+                HoraInicio = tipoVeiculo == "Carro" ? timeInicioDisponibilidadeCarro.Time : timeInicioDisponibilidadeMoto.Time,
+                DataFim = tipoVeiculo == "Carro" ? dateFimDisponibilidadeCarro.Date : dateFimDisponibilidadeMoto.Date,
+                HoraFim = tipoVeiculo == "Carro" ? timeFimDisponibilidadeCarro.Time : timeFimDisponibilidadeMoto.Time
+            };
+
+            await disponibilidadeData.AdicionarDisponibilidadeAsync(disponibilidade);
+            await DisplayAlert("Cadastro Realizado", "Disponibilidade cadastrada com sucesso.", "OK");
+
+            ResetDisponibilidadeFields();
+        }
+
+        private void ResetDisponibilidadeFields()
+        {
+            dateInicioDisponibilidadeCarro.Date = DateTime.Today;
+            timeInicioDisponibilidadeCarro.Time = DateTime.Now.TimeOfDay;
+            dateFimDisponibilidadeCarro.Date = DateTime.Today;
+            timeFimDisponibilidadeCarro.Time = DateTime.Now.TimeOfDay;
+            dateInicioDisponibilidadeMoto.Date = DateTime.Today;
+            timeInicioDisponibilidadeMoto.Time = DateTime.Now.TimeOfDay;
+            dateFimDisponibilidadeMoto.Date = DateTime.Today;
+            timeFimDisponibilidadeMoto.Time = DateTime.Now.TimeOfDay;
         }
     }
+
 }

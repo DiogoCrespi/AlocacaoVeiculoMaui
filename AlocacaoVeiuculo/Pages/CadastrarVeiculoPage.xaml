@@ -90,10 +90,68 @@
                         </StackLayout>
                     </Frame>
 
+
                     <!-- Botão de Salvar -->
                     <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
+
+                    <!-- Picker para selecionar entre carro e moto para disponibilidade -->
+                    <Picker x:Name="pickerDisponibilidadeTipoVeiculo" Title="Tipo de Veículo" TitleColor="{StaticResource White}" SelectedIndexChanged="OnTipoDisponibilidadeVeiculoChanged">
+                        <Picker.Items>
+                            <x:String>Carro</x:String>
+                            <x:String>Moto</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+
+                    <!-- Seção de Disponibilidade de Carro -->
+                    <Frame x:Name="disponibilidadeCarroSection" IsVisible="False" Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
+                        <StackLayout Spacing="5">
+                            <Picker x:Name="pickerDisponibilidadeCarro" Title="Selecione o Carro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <!-- Campos de Data e Hora de Disponibilidade para Carro -->
+                            <Label Text="Data de Início" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <DatePicker x:Name="dateInicioDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Label Text="Hora de Início" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <TimePicker x:Name="timeInicioDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Label Text="Data de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <DatePicker x:Name="dateFimDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Label Text="Hora de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <TimePicker x:Name="timeFimDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Button Text="Salvar Disponibilidade do Carro" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarDisponibilidadeClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Seção de Disponibilidade de Moto -->
+                    <Frame x:Name="disponibilidadeMotoSection" IsVisible="False" Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
+                        <StackLayout Spacing="5">
+                            <Picker x:Name="pickerDisponibilidadeMoto" Title="Selecione a Moto" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <!-- Campos de Data e Hora de Disponibilidade para Moto -->
+                            <Label Text="Data de Início" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <DatePicker x:Name="dateInicioDisponibilidadeMoto" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Label Text="Hora de Início" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <TimePicker x:Name="timeInicioDisponibilidadeMoto" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Label Text="Data de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <DatePicker x:Name="dateFimDisponibilidadeMoto" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Label Text="Hora de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                            <TimePicker x:Name="timeFimDisponibilidadeMoto" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                            <Button Text="Salvar Disponibilidade da Moto" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarDisponibilidadeClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Frame>
+
+
                 </StackLayout>
             </Frame>
+           
+
+
+                  
 
            
         </Grid>
