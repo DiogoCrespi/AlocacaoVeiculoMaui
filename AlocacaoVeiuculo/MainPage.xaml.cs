@@ -2,6 +2,8 @@
 using AlocacaoVeiuculo.Modelo;
 using Microsoft.Maui.Controls;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AlocacaoVeiuculo
 {
@@ -39,8 +41,7 @@ namespace AlocacaoVeiuculo
                 DataRetirada = dataRetirada,
                 HoraRetirada = horaRetirada,
                 DataDevolucao = dataDevolucao,
-                HoraDevolucao = horaDevolucao,
-                Residencia = residencia
+                HoraDevolucao = horaDevolucao
             };
 
             var reservaData = new ReservaData();
@@ -51,8 +52,7 @@ namespace AlocacaoVeiuculo
 
             string resultado = $"Local de Retirada: {localRetirada}\n" +
                                $"Data de Retirada: {dataRetirada.ToShortDateString()} às {horaRetirada}\n" +
-                               $"Data de Devolução: {dataDevolucao.ToShortDateString()} às {horaDevolucao}\n" +
-                               $"Residência: {residencia}\n\n" +
+                               $"Data de Devolução: {dataDevolucao.ToShortDateString()} às {horaDevolucao}\n\n" +
                                "Veículos Disponíveis:\n";
 
             if (veiculosDisponiveis.Any())
@@ -97,6 +97,7 @@ namespace AlocacaoVeiuculo
         }
     
 
+
     public void MostrarBotaoUsuarioLogado(Usuario usuario)
         {
             usuarioLogado = usuario;
@@ -126,7 +127,7 @@ namespace AlocacaoVeiuculo
 
                 if (acao == "Minhas Reservas")
                 {
-                    // Código para abrir a tela de "Minhas Reservas"
+                    
                     await DisplayAlert("Ação", "Minhas Reservas selecionado.", "OK");
                 }
                 else if (acao == "Sair")

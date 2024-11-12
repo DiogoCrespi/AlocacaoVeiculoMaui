@@ -42,21 +42,25 @@ namespace AlocacaoVeiuculo
 
         private void OnTipoVeiculoChanged(object sender, EventArgs e)
         {
-            if (pickerTipoVeiculo.SelectedItem.ToString() == "Carro")
+            disponibilidadeCarroSection.IsVisible = false;
+            disponibilidadeMotoSection.IsVisible = false;
+
+            if (pickerTipoVeiculo.SelectedItem?.ToString() == "Carro")
             {
                 carroSection.IsVisible = true;
                 motoSection.IsVisible = false;
             }
-            else if (pickerTipoVeiculo.SelectedItem.ToString() == "Moto")
+            else if (pickerTipoVeiculo.SelectedItem?.ToString() == "Moto")
             {
                 carroSection.IsVisible = false;
                 motoSection.IsVisible = true;
             }
         }
+
         private async void OnTipoDisponibilidadeVeiculoChanged(object sender, EventArgs e)
         {
-            disponibilidadeCarroSection.IsVisible = false;
-            disponibilidadeMotoSection.IsVisible = false;
+            carroSection.IsVisible = false;
+            motoSection.IsVisible = false;
 
             if (pickerDisponibilidadeTipoVeiculo.SelectedItem?.ToString() == "Carro")
             {
@@ -64,6 +68,7 @@ namespace AlocacaoVeiuculo
                 pickerDisponibilidadeCarro.ItemsSource = carros.Any() ? carros : new List<Carro> { new Carro { Modelo = "Nenhum veículo cadastrado" } };
                 pickerDisponibilidadeCarro.ItemDisplayBinding = new Binding("Modelo");
                 disponibilidadeCarroSection.IsVisible = true;
+                disponibilidadeMotoSection.IsVisible = false;
             }
             else if (pickerDisponibilidadeTipoVeiculo.SelectedItem?.ToString() == "Moto")
             {
@@ -71,11 +76,14 @@ namespace AlocacaoVeiuculo
                 pickerDisponibilidadeMoto.ItemsSource = motos.Any() ? motos : new List<Moto> { new Moto { Modelo = "Nenhum veículo cadastrado" } };
                 pickerDisponibilidadeMoto.ItemDisplayBinding = new Binding("Modelo");
                 disponibilidadeMotoSection.IsVisible = true;
+                disponibilidadeCarroSection.IsVisible = false;
             }
         }
 
+
         private async void OnSalvarClicked(object sender, EventArgs e)
         {
+
             if (pickerTipoVeiculo.SelectedItem == null)
             {
                 await DisplayAlert("Erro", "Selecione o tipo de veículo.", "OK");
@@ -96,6 +104,7 @@ namespace AlocacaoVeiuculo
 
                 await carroData.AdicionarCarroAsync(carro);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {carro.Modelo} - {carro.Placa}", "OK");
+                carroSection.IsVisible = false;
             }
             else if (pickerTipoVeiculo.SelectedItem.ToString() == "Moto")
             {
@@ -110,7 +119,12 @@ namespace AlocacaoVeiuculo
 
                 await motoData.AdicionarMotoAsync(moto);
                 await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {moto.Modelo} - {moto.Placa}", "OK");
+                motoSection.IsVisible = false;
             }
+
+            
+            carroSection.IsVisible = false;
+            motoSection.IsVisible = false;
         }
 
         private async void OnSalvarDisponibilidadeClicked(object sender, EventArgs e)
@@ -123,6 +137,7 @@ namespace AlocacaoVeiuculo
 
             string tipoVeiculo = pickerDisponibilidadeTipoVeiculo.SelectedItem.ToString();
             int veiculoId;
+            string veiculoDetalhes;
 
             if (tipoVeiculo == "Carro")
             {
@@ -133,6 +148,12 @@ namespace AlocacaoVeiuculo
                     return;
                 }
                 veiculoId = carroSelecionado.Id;
+                veiculoDetalhes = $"Carro: {carroSelecionado.Modelo}\n" +
+                                  $"Placa: {carroSelecionado.Placa}\n" +
+                                  $"Ano: {carroSelecionado.Ano}\n" +
+                                  $"Quilometragem: {carroSelecionado.Quilometragem}\n" +
+                                  $"Combustível: {carroSelecionado.TipoCombustivel}\n" +
+                                  $"Portas: {carroSelecionado.NumeroPortas}";
             }
             else if (tipoVeiculo == "Moto")
             {
@@ -143,6 +164,11 @@ namespace AlocacaoVeiuculo
                     return;
                 }
                 veiculoId = motoSelecionado.Id;
+                veiculoDetalhes = $"Moto: {motoSelecionado.Modelo}\n" +
+                                  $"Placa: {motoSelecionado.Placa}\n" +
+                                  $"Ano: {motoSelecionado.Ano}\n" +
+                                  $"Quilometragem: {motoSelecionado.Quilometragem}\n" +
+                                  $"Combustível: {motoSelecionado.TipoCombustivel}";
             }
             else
             {
@@ -161,9 +187,14 @@ namespace AlocacaoVeiuculo
             };
 
             await disponibilidadeData.AdicionarDisponibilidadeAsync(disponibilidade);
-            await DisplayAlert("Cadastro Realizado", "Disponibilidade cadastrada com sucesso.", "OK");
 
+            await DisplayAlert("Cadastro Realizado",
+                $"Disponibilidade cadastrada com sucesso para o seguinte veículo:\n\n{veiculoDetalhes}", "OK");
+
+           
             ResetDisponibilidadeFields();
+            disponibilidadeCarroSection.IsVisible = false;
+            disponibilidadeMotoSection.IsVisible = false;
         }
 
         private void ResetDisponibilidadeFields()

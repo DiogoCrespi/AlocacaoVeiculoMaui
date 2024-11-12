@@ -26,11 +26,12 @@
         </StackLayout>
 
         <!-- Formulário de pesquisa com fundo transparente -->
+        <!-- Formulário de pesquisa com fundo transparente -->
         <StackLayout BackgroundColor="{StaticResource BackgroundOverlay}" Padding="15" Margin="25" Grid.Row="1" Spacing="10" VerticalOptions="End">
             <Label Text="Retirar o carro em" TextColor="{StaticResource White}" FontAttributes="Bold"/>
             <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
 
-            <Grid ColumnDefinitions="*,*,*" Padding="0">
+            <Grid ColumnDefinitions="*,*" Padding="0">
                 <StackLayout Grid.Column="0" Spacing="5">
                     <Label Text="Data e hora de retirada" TextColor="{StaticResource White}" FontAttributes="Bold"/>
                     <DatePicker x:Name="datePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
@@ -47,9 +48,10 @@
             <Button Text="Pesquisar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnPesquisarClicked" FontAttributes="Bold" CornerRadius="7"/>
         </StackLayout>
 
-        
-        
-        
+
+
+
+
         <AbsoluteLayout>
             <!-- Botão "Cadastrar Veículo" posicionado no canto superior esquerdo -->
             <Button 

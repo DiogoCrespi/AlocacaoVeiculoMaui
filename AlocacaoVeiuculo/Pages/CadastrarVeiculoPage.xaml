@@ -46,7 +46,7 @@
                                 </Picker.Items>
                             </Picker>
                         </StackLayout>
-
+                    
                     <!-- Seção de Cadastro de Carro -->
                     <Frame x:Name="carroSection" IsVisible="False" Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
                         <StackLayout Spacing="5">
