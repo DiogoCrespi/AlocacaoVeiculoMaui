@@ -41,17 +41,12 @@ namespace AlocacaoVeiuculo
                 string mensagem = $"Nome: {nome}\nSenha: {usuario.Senha}\nCPF: {usuario.Cpf}\nData de Nascimento: {usuario.DataNascimento.ToShortDateString()}\nTelefone: {usuario.Telefone}";
                 await DisplayAlert("Usuário Encontrado", mensagem, "OK");
 
-                // Torna o botão visível na MainPage
                 mainPage.MostrarBotaoUsuarioLogado(usuario);
-
-                // Navegar de volta à MainPage, se desejado
                 await Navigation.PopAsync();
             }
             else
             {
                 await DisplayAlert("Erro", "Nome ou senha inválidos.", "OK");
-                entryNome.Text = string.Empty;
-                entrySenha.Text = string.Empty;
                 CadastroLayout.IsVisible = true;
             }
         }

@@ -12,7 +12,6 @@ namespace AlocacaoVeiuculo
         private TimeSpan horaRetirada;
         private DateTime dataDevolucao;
         private TimeSpan horaDevolucao;
-        private string residencia;
         private Usuario usuarioLogado;
 
         public MainPage()
@@ -24,7 +23,6 @@ namespace AlocacaoVeiuculo
             horaRetirada = DateTime.Now.TimeOfDay;
             dataDevolucao = DateTime.Now;
             horaDevolucao = DateTime.Now.TimeOfDay;
-            residencia = "Brasil";
         }
 
         private async void OnPesquisarClicked(object sender, EventArgs e)
@@ -34,15 +32,6 @@ namespace AlocacaoVeiuculo
             horaRetirada = timePickerRetirada.Time;
             dataDevolucao = datePickerDevolucao.Date;
             horaDevolucao = timePickerDevolucao.Time;
-
-            if (pickerResidencia.SelectedItem != null)
-            {
-                residencia = pickerResidencia.SelectedItem.ToString();
-            }
-            else
-            {
-                residencia = "Brasil";
-            }
 
             var reserva = new Reserva
             {

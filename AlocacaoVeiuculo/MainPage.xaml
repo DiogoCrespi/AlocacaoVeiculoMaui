@@ -42,17 +42,6 @@
                     <DatePicker x:Name="datePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
                     <TimePicker x:Name="timePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" Format="t"/>
                 </StackLayout>
-
-                <StackLayout Grid.Column="2" Spacing="5">
-                    <Label Text="Residência" TextColor="{StaticResource White}" FontAttributes="Bold"/>
-                    <Picker x:Name="pickerResidencia" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" SelectedIndex="0">
-                        <Picker.Items>
-                            <x:String>Brasil</x:String>
-                            <x:String>Argentina</x:String>
-                            <x:String>Chile</x:String>
-                        </Picker.Items>
-                    </Picker>
-                </StackLayout>
             </Grid>
 
             <Button Text="Pesquisar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnPesquisarClicked" FontAttributes="Bold" CornerRadius="7"/>
