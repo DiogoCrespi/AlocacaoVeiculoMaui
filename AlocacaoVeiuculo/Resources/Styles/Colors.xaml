@@ -14,7 +14,7 @@
 
     <!-- Novas cores baseadas no layout -->
     <Color x:Key="BackgroundOverlay">#80000000</Color>
-    <Color x:Key="EntryBackground">#FF252521</Color>
+    <Color x:Key="EntryBackground">#90252521</Color>
     <Color x:Key="ButtonBackground">#FF804D00</Color>
     <Color x:Key="ButtonText">White</Color>
     <Color x:Key="LabelText">White</Color>

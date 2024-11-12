@@ -22,5 +22,11 @@ namespace AlocacaoVeiuculo.Data
         public Task<int> AtualizarCarroAsync(Carro carro) => database.UpdateAsync(carro);
 
         public Task<int> RemoverCarroAsync(Carro carro) => database.DeleteAsync(carro);
+
+        // Novo método para obter um carro específico pelo ID
+        public Task<Carro> ObterCarroPorIdAsync(int id)
+        {
+            return database.Table<Carro>().FirstOrDefaultAsync(c => c.Id == id);
+        }
     }
 }

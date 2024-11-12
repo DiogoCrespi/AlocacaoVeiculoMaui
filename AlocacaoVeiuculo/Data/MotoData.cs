@@ -22,5 +22,11 @@ namespace AlocacaoVeiuculo.Data
         public Task<int> AtualizarMotoAsync(Moto moto) => database.UpdateAsync(moto);
 
         public Task<int> RemoverMotoAsync(Moto moto) => database.DeleteAsync(moto);
+
+        // Novo método para obter uma moto específica pelo ID
+        public Task<Moto> ObterMotoPorIdAsync(int id)
+        {
+            return database.Table<Moto>().FirstOrDefaultAsync(m => m.Id == id);
+        }
     }
 }
