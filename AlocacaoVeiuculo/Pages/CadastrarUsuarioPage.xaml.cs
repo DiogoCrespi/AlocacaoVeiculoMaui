@@ -86,13 +86,9 @@ namespace AlocacaoVeiuculo
             await usuarioData.AdicionarUsuarioAsync(novoUsuario);
             await DisplayAlert("Cadastro Realizado", $"Nome: {nome}\nCPF: {cpf}\nData de Nascimento: {dataNascimento.ToShortDateString()}\nTelefone: {telefone}", "OK");
 
-            entryNome.Text = string.Empty;
-            entrySenha.Text = string.Empty;
-            entryCpf.Text = string.Empty;
-            entryDataNascimento.Date = DateTime.Today;
-            entryTelefone.Text = string.Empty;
+            mainPage.MostrarBotaoUsuarioLogado(novoUsuario); // Loga o usuário automaticamente
 
-            CadastroLayout.IsVisible = false;
+            await Navigation.PopAsync(); // Retorna à MainPage após o cadastro
         }
     }
 }
