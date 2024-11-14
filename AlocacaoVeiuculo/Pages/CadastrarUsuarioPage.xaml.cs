@@ -20,14 +20,8 @@ namespace AlocacaoVeiuculo
 
         private async void OnAcessarButtonClicked(object sender, EventArgs e)
         {
-            if (entryNome == null || entrySenha == null)
-            {
-                await DisplayAlert("Erro", "Campos de nome e senha não podem ser nulos.", "OK");
-                return;
-            }
-
-            string nome = entryNome.Text?.Trim();
-            string senha = entrySenha.Text?.Trim();
+            string nome = entryNome?.Text?.Trim();
+            string senha = entrySenha?.Text?.Trim();
 
             if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(senha))
             {
@@ -53,14 +47,8 @@ namespace AlocacaoVeiuculo
 
         private async void OnCadastrarButtonClicked(object sender, EventArgs e)
         {
-            if (entryNome == null || entrySenha == null)
-            {
-                await DisplayAlert("Erro", "Campos de nome e senha não podem ser nulos.", "OK");
-                return;
-            }
-
-            string nome = entryNome.Text?.Trim();
-            string senha = entrySenha.Text?.Trim();
+            string nome = entryNome?.Text?.Trim();
+            string senha = entrySenha?.Text?.Trim();
 
             if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(senha))
             {

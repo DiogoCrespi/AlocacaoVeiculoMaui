@@ -1,5 +1,6 @@
 ﻿using AlocacaoVeiuculo.Data;
 using AlocacaoVeiuculo.Modelo;
+using AlocacaoVeiuculo.Pages;
 using Microsoft.Maui.Controls;
 using System;
 using System.Linq;
@@ -117,29 +118,33 @@ namespace AlocacaoVeiuculo
             }
         }
 
-        private async void OnUsuarioLogadoClicked(object sender, EventArgs e)
+
+private async void OnUsuarioLogadoClicked(object sender, EventArgs e)
+    {
+        if (usuarioLogado != null)
         {
-            if (usuarioLogado != null)
+            string mensagem = $"Nome: {usuarioLogado.Nome}\nCPF: {usuarioLogado.Cpf}\nData de Nascimento: {usuarioLogado.DataNascimento.ToShortDateString()}\nTelefone: {usuarioLogado.Telefone}";
+
+            var acao = await DisplayActionSheet(mensagem, "Cancelar", null, "Minhas Reservas", "Sair");
+
+            if (acao == "Minhas Reservas")
             {
-                string mensagem = $"Nome: {usuarioLogado.Nome}\nCPF: {usuarioLogado.Cpf}\nData de Nascimento: {usuarioLogado.DataNascimento.ToShortDateString()}\nTelefone: {usuarioLogado.Telefone}";
-
-                var acao = await DisplayActionSheet(mensagem, "Cancelar", null, "Minhas Reservas", "Sair");
-
-                if (acao == "Minhas Reservas")
-                {
-                    
-                    await DisplayAlert("Ação", "Minhas Reservas selecionado.", "OK");
-                }
-                else if (acao == "Sair")
-                {
-                    usuarioLogado = null;
-                    btnUsuarioLogado.IsVisible = false;
-                    await DisplayAlert("Logout", "Você saiu da conta.", "OK");
-                }
+                // Navega para a página de Minhas Reservas passando o usuário logado como parâmetro
+                await Navigation.PushAsync(new UsuarioReservas(usuarioLogado));
+            }
+            else if (acao == "Sair")
+            {
+                // Executa logout
+                usuarioLogado = null;
+                btnUsuarioLogado.IsVisible = false;
+                await DisplayAlert("Logout", "Você saiu da conta.", "OK");
             }
         }
+    }
 
-        private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
+
+
+    private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
         {
             try
             {
