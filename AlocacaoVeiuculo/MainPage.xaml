@@ -85,6 +85,8 @@
         VerticalOptions="Start"/>
 
 
+ 
+
             <Button 
         x:Name="btnUsuarioLogado"
         Text="Usuário" 

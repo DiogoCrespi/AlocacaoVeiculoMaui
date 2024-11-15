@@ -17,11 +17,11 @@ namespace AlocacaoVeiuculo.Services
                 string dbPath = Path.Combine(FileSystem.AppDataDirectory, "AlocacaoVeiculo.db3");
 
 
-                // Verifica se o banco de dados existe e o exclui se necessário
-                if (File.Exists(dbPath))
-                {
-                    File.Delete(dbPath);
-                }
+                //// Verifica se o banco de dados existe e o exclui se necessário
+                //if (File.Exists(dbPath))
+                //{
+                //    File.Delete(dbPath);
+                //}
 
 
                 database = new SQLiteAsyncConnection(dbPath);

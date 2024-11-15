@@ -121,10 +121,11 @@ namespace AlocacaoVeiuculo
                 }
                 else
                 {
-                    await Navigation.PushAsync(new UsuarioReservas(usuarioLogado));
+                    await Navigation.PushAsync(new UsuarioReservas(usuarioLogado, localRetirada, dataRetirada, horaRetirada, dataDevolucao, horaDevolucao, veiculosDisponiveis));
                 }
             }
         }
+
 
         public void MostrarBotaoUsuarioLogado(Usuario usuario)
         {
@@ -167,6 +168,11 @@ namespace AlocacaoVeiuculo
                 }
             }
         }
+
+
+
+
+
 
         private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
         {

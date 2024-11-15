@@ -76,6 +76,14 @@
                 </StackLayout>
             </Frame>
 
+
+            <Frame x:Name="ReservasPanel" IsVisible="False" BackgroundColor="#2d2d3e" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
+                <ScrollView>
+                    <StackLayout x:Name="ReservasPanelContent" />
+                </ScrollView>
+            </Frame>
+
+
             <!-- Painel para Alugar Veículo -->
             <Frame x:Name="AlugarVeiculoPanel" IsVisible="False" BackgroundColor="#2d2d3e" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
                 <StackLayout>
@@ -86,7 +94,8 @@
                     <TimePicker x:Name="timePickerRetirada" BackgroundColor="#3e3e55" TextColor="White" />
                     <DatePicker x:Name="datePickerDevolucao" BackgroundColor="#3e3e55" TextColor="White" />
                     <TimePicker x:Name="timePickerDevolucao" BackgroundColor="#3e3e55" TextColor="White" />
-                    <Picker x:Name="VeiculosPicker" BackgroundColor="#3e3e55" TextColor="White" Title="Selecione um veículo" />
+                    <Picker x:Name="VeiculosPicker"  BackgroundColor="#3e3e55"  TextColor="White" Title="Selecione um veículo" />
+
                     <Button Text="Finalizar Alocação" BackgroundColor="#3e3e55" TextColor="White" Clicked="OnFinalizarAlocacaoClicked" />
                 </StackLayout>
             </Frame>
