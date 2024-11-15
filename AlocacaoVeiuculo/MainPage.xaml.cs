@@ -5,10 +5,12 @@ using Microsoft.Maui.Controls;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace AlocacaoVeiuculo
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage : ContentPage, INotifyPropertyChanged
     {
         private string localRetirada;
         private DateTime dataRetirada;
@@ -16,16 +18,30 @@ namespace AlocacaoVeiuculo
         private DateTime dataDevolucao;
         private TimeSpan horaDevolucao;
         private Usuario usuarioLogado;
+        private bool isAdmin;
+
+        public bool IsAdmin
+        {
+            get => isAdmin;
+            set
+            {
+                isAdmin = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = this;
 
             localRetirada = string.Empty;
             dataRetirada = DateTime.Now;
             horaRetirada = DateTime.Now.TimeOfDay;
             dataDevolucao = DateTime.Now;
             horaDevolucao = DateTime.Now.TimeOfDay;
+
+            IsAdmin = false;
         }
 
         private async void OnPesquisarClicked(object sender, EventArgs e)
@@ -94,15 +110,27 @@ namespace AlocacaoVeiuculo
                 resultado += "Nenhum veículo disponível para o período selecionado.";
             }
 
-            await DisplayAlert("Opções Selecionadas", resultado, "OK");
+            bool continuar = await DisplayAlert("Opções Selecionadas", resultado, "Continuar com Aluguel?", "Cancelar");
+
+            if (continuar)
+            {
+                if (usuarioLogado == null)
+                {
+                    await DisplayAlert("Login Necessário", "Por favor, faça login para continuar.", "OK");
+                    await Navigation.PushAsync(new CadastrarUsuarioPage(this));
+                }
+                else
+                {
+                    await Navigation.PushAsync(new UsuarioReservas(usuarioLogado));
+                }
+            }
         }
-    
 
-
-    public void MostrarBotaoUsuarioLogado(Usuario usuario)
+        public void MostrarBotaoUsuarioLogado(Usuario usuario)
         {
             usuarioLogado = usuario;
             btnUsuarioLogado.IsVisible = true;
+            IsAdmin = usuario.Nome == "admin"; // Verifica se o usuário logado é o administrador
         }
 
         private async void OnEntrarClicked(object sender, EventArgs e)
@@ -118,33 +146,29 @@ namespace AlocacaoVeiuculo
             }
         }
 
-
-private async void OnUsuarioLogadoClicked(object sender, EventArgs e)
-    {
-        if (usuarioLogado != null)
+        private async void OnUsuarioLogadoClicked(object sender, EventArgs e)
         {
-            string mensagem = $"Nome: {usuarioLogado.Nome}\nCPF: {usuarioLogado.Cpf}\nData de Nascimento: {usuarioLogado.DataNascimento.ToShortDateString()}\nTelefone: {usuarioLogado.Telefone}";
-
-            var acao = await DisplayActionSheet(mensagem, "Cancelar", null, "Minhas Reservas", "Sair");
-
-            if (acao == "Minhas Reservas")
+            if (usuarioLogado != null)
             {
-                // Navega para a página de Minhas Reservas passando o usuário logado como parâmetro
-                await Navigation.PushAsync(new UsuarioReservas(usuarioLogado));
-            }
-            else if (acao == "Sair")
-            {
-                // Executa logout
-                usuarioLogado = null;
-                btnUsuarioLogado.IsVisible = false;
-                await DisplayAlert("Logout", "Você saiu da conta.", "OK");
+                string mensagem = $"Nome: {usuarioLogado.Nome}\nCPF: {usuarioLogado.Cpf}\nData de Nascimento: {usuarioLogado.DataNascimento.ToShortDateString()}\nTelefone: {usuarioLogado.Telefone}";
+
+                var acao = await DisplayActionSheet(mensagem, "Cancelar", null, "Minhas Reservas", "Sair");
+
+                if (acao == "Minhas Reservas")
+                {
+                    await Navigation.PushAsync(new UsuarioReservas(usuarioLogado));
+                }
+                else if (acao == "Sair")
+                {
+                    usuarioLogado = null;
+                    btnUsuarioLogado.IsVisible = false;
+                    IsAdmin = false; // Remove permissões de administrador
+                    await DisplayAlert("Logout", "Você saiu da conta.", "OK");
+                }
             }
         }
-    }
 
-
-
-    private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
+        private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
         {
             try
             {
@@ -155,6 +179,13 @@ private async void OnUsuarioLogadoClicked(object sender, EventArgs e)
             {
                 await DisplayAlert("Erro", ex.Message, "OK");
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

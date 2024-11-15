@@ -24,7 +24,14 @@ namespace AlocacaoVeiuculo.Data
 
         public Task<int> AtualizarUsuarioAsync(Usuario usuario) => database.UpdateAsync(usuario);
 
-        public Task<int> RemoverUsuarioAsync(Usuario usuario) => database.DeleteAsync(usuario);
+        public async Task<int> RemoverUsuarioAsync(Usuario usuario)
+        {
+            if (usuario.Nome == "admin")
+            {
+                throw new InvalidOperationException("O usuário administrador não pode ser removido.");
+            }
+            return await database.DeleteAsync(usuario);
+        }
 
         public async Task<bool> UsuarioExistenteAsync(string nome)
         {

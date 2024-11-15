@@ -51,9 +51,7 @@
 
 
 
-
         <AbsoluteLayout>
-            <!-- Botão "Cadastrar Veículo" posicionado no canto superior esquerdo -->
             <Button 
         Text="Cadastrar Veículo" 
         BackgroundColor="{StaticResource ButtonBackground}" 
@@ -66,11 +64,13 @@
         AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize" 
         AbsoluteLayout.LayoutFlags="PositionProportional" 
         HorizontalOptions="Start" 
-        VerticalOptions="Start"/>
+        VerticalOptions="Start"
+        IsVisible="{Binding IsAdmin}" />
+    
 
-            <!-- Botão "Entrar" posicionado no canto superior direito -->
-            <Button 
-                
+
+        <!-- Botão "Entrar" posicionado no canto superior direito -->
+            <Button    
         Text="Entrar" 
         BackgroundColor="{StaticResource ButtonBackground}" 
         TextColor="{StaticResource ButtonText}" 

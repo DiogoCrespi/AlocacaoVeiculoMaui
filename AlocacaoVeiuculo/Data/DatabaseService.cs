@@ -16,11 +16,13 @@ namespace AlocacaoVeiuculo.Services
             {
                 string dbPath = Path.Combine(FileSystem.AppDataDirectory, "AlocacaoVeiculo.db3");
 
+
                 // Verifica se o banco de dados existe e o exclui se necessário
                 if (File.Exists(dbPath))
                 {
                     File.Delete(dbPath);
                 }
+
 
                 database = new SQLiteAsyncConnection(dbPath);
                 await database.CreateTableAsync<Carro>();
@@ -29,6 +31,21 @@ namespace AlocacaoVeiuculo.Services
                 await database.CreateTableAsync<Usuario>();
                 await database.CreateTableAsync<Reserva>();
                 await database.CreateTableAsync<Disponibilidade>();
+
+                // Verificar e adicionar o administrador
+                var admin = await database.Table<Usuario>().FirstOrDefaultAsync(u => u.Nome == "admin");
+                if (admin == null)
+                {
+                    var usuarioAdmin = new Usuario
+                    {
+                        Nome = "admin",
+                        Senha = "admin123",
+                        Cpf = "000.000.000-00",
+                        DataNascimento = new DateTime(2000, 1, 1),
+                        Telefone = "00000000000"
+                    };
+                    await database.InsertAsync(usuarioAdmin);
+                }
             }
             return database;
         }

@@ -21,39 +21,40 @@
                HorizontalOptions="FillAndExpand" 
                VerticalOptions="FillAndExpand" />
 
-        <!-- Conteúdo da página sobreposto -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="5*"/>
-            </Grid.ColumnDefinitions>
+        <!-- Conteúdo rolável -->
+        <ScrollView Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- Formulário de Login na coluna direita dentro de um Frame para bordas arredondadas e fundo semi-transparente -->
-            <Frame Grid.Column="0" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="{StaticResource BackgroundOverlay}" CornerRadius="15" WidthRequest="300">
-                <StackLayout Spacing="20">
-                    <Label Text="LOGIN" TextColor="{StaticResource White}" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center"/>
-                    <Entry x:Name="entryNome" Placeholder="Usuário" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
-                    <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
+                <!-- Formulário de Login -->
+                <Frame Grid.Column="0" Padding="20" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="{StaticResource BackgroundOverlay}" CornerRadius="15" WidthRequest="300">
+                    <StackLayout Spacing="20">
+                        <Label Text="LOGIN" TextColor="{StaticResource White}" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center"/>
+                        <Entry x:Name="entryNome" Placeholder="Usuário" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
+                        <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
 
-                    <Button Text="Login" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" CornerRadius="10" Clicked="OnAcessarButtonClicked" />
+                        <Button Text="Login" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" CornerRadius="10" Clicked="OnAcessarButtonClicked" />
 
-                    <Button Text="Cadastrar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" CornerRadius="10" Clicked="OnCadastrarButtonClicked" />
+                        <Button Text="Cadastrar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" CornerRadius="10" Clicked="OnCadastrarButtonClicked" />
 
-                    <!-- Layout de Cadastro dentro de um Frame para bordas arredondadas e fundo semi-transparente -->
-                    <Frame x:Name="CadastroLayout" IsVisible="False" BackgroundColor="{StaticResource EntryBackground}" Padding="20" CornerRadius="15" HasShadow="False" Margin="0,0,0,0">
-                        <StackLayout Spacing="20">
-                            <Label Text="CADASTRO" TextColor="{StaticResource White}" FontAttributes="Bold" HorizontalOptions="Center"/>
-                            <Entry x:Name="entryCpf" Placeholder="CPF" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
-                            <Label Text="Data de Nascimento" TextColor="{StaticResource White}"/>
-                            <DatePicker x:Name="entryDataNascimento" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
-                            <Entry x:Name="entryTelefone" Placeholder="Telefone" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
+                        <!-- Layout de Cadastro -->
+                        <Frame x:Name="CadastroLayout" IsVisible="False" BackgroundColor="{StaticResource EntryBackground}" Padding="20" CornerRadius="15" HasShadow="False" Margin="0,0,0,0">
+                            <StackLayout Spacing="20">
+                                <Label Text="CADASTRO" TextColor="{StaticResource White}" FontAttributes="Bold" HorizontalOptions="Center"/>
+                                <Entry x:Name="entryCpf" Placeholder="CPF" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
+                                <Label Text="Data de Nascimento" TextColor="{StaticResource White}"/>
+                                <DatePicker x:Name="entryDataNascimento" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
+                                <Entry x:Name="entryTelefone" Placeholder="Telefone" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
 
-                            <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" CornerRadius="10" Clicked="OnSalvarButtonClicked"/>
-
-                        </StackLayout>
-                    </Frame>
-                </StackLayout>
-            </Frame>
-        </Grid>
+                                <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" CornerRadius="10" Clicked="OnSalvarButtonClicked"/>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+        </ScrollView>
     </Grid>
 </ContentPage>
