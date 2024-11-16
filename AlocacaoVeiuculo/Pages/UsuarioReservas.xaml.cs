@@ -21,6 +21,9 @@ namespace AlocacaoVeiuculo.Pages
         private DateTime dataDevolucao;
         private TimeSpan horaDevolucao;
 
+        private List<Disponibilidade> veiculosDisponiveis;
+        private string tipoVeiculoSelecionado;
+
         public UsuarioReservas(Usuario usuario)
         {
             InitializeComponent();
@@ -40,16 +43,13 @@ namespace AlocacaoVeiuculo.Pages
             this.horaRetirada = horaRetirada;
             this.dataDevolucao = dataDevolucao;
             this.horaDevolucao = horaDevolucao;
+            this.veiculosDisponiveis = veiculosDisponiveis;
 
             entryLocalRetirada.Text = localRetirada;
             datePickerRetirada.Date = dataRetirada;
             timePickerRetirada.Time = horaRetirada;
             datePickerDevolucao.Date = dataDevolucao;
             timePickerDevolucao.Time = horaDevolucao;
-
-            VeiculosPicker.ItemsSource = veiculosDisponiveis.Select(v =>
-                v.TipoVeiculo == "Carro" ? $"Carro {v.VeiculoId}" : $"Moto {v.VeiculoId}"
-            ).ToList();
 
             AlugarVeiculoPanel.IsVisible = true;
         }
@@ -144,31 +144,106 @@ namespace AlocacaoVeiuculo.Pages
 
             if (AlugarVeiculoPanel.IsVisible)
             {
-                var veiculosDisponiveis = await disponibilidadeData.ObterVeiculosDisponiveisAsync(DateTime.Now, TimeSpan.Zero, DateTime.Now.AddDays(1), TimeSpan.Zero);
-                if (veiculosDisponiveis.Any())
+                veiculosDisponiveis = await disponibilidadeData.ObterVeiculosDisponiveisAsync(DateTime.Now, TimeSpan.Zero, DateTime.Now.AddDays(1), TimeSpan.Zero);
+                GerarCaixasVeiculos();
+            }
+        }
+
+        private void OnSelecionarCarrosClicked(object sender, EventArgs e)
+        {
+            tipoVeiculoSelecionado = "Carro";
+            GerarCaixasVeiculos();
+        }
+
+        private void OnSelecionarMotosClicked(object sender, EventArgs e)
+        {
+            tipoVeiculoSelecionado = "Moto";
+            GerarCaixasVeiculos();
+        }
+
+        private void GerarCaixasVeiculos()
+        {
+            if (veiculosDisponiveis == null) return;
+
+            var veiculosFiltrados = veiculosDisponiveis
+                .Where(v => v.TipoVeiculo.Equals(tipoVeiculoSelecionado, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            GridCaixasVeiculos.Children.Clear();
+
+            if (veiculosFiltrados.Any())
+            {
+                FrameCaixasVeiculos.IsVisible = true;
+
+                int colunas = 4; // Define o número de colunas
+                GridCaixasVeiculos.ColumnDefinitions.Clear();
+                for (int i = 0; i < colunas; i++)
                 {
-                    VeiculosPicker.ItemsSource = veiculosDisponiveis.Select(v =>
-                        v.TipoVeiculo == "Carro" ? $"Carro {v.VeiculoId}" : $"Moto {v.VeiculoId}"
-                    ).ToList();
+                    GridCaixasVeiculos.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
                 }
-                else
+
+                GridCaixasVeiculos.RowDefinitions.Clear();
+                for (int i = 0; i < (veiculosFiltrados.Count + colunas - 1) / colunas; i++)
                 {
-                    VeiculosPicker.ItemsSource = new List<string> { "Nenhum veículo cadastrado" };
+                    GridCaixasVeiculos.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 }
+
+                int linha = 0, coluna = 0;
+
+                foreach (var veiculo in veiculosFiltrados)
+                {
+                    var stackLayout = new StackLayout
+                    {
+                        Children =
+                {
+                    new Image
+                    {
+                        Source = string.IsNullOrEmpty(veiculo.ImagemPath) ? "placeholder.png" : ImageSource.FromFile(veiculo.ImagemPath),
+                        HeightRequest = 100,
+                        WidthRequest = 100,
+                        Aspect = Aspect.AspectFill
+                    },
+                    new Label { Text = $"ID: {veiculo.VeiculoId}", TextColor = Colors.White, FontAttributes = FontAttributes.Bold },
+                    new Label { Text = $"Tipo: {veiculo.TipoVeiculo}", TextColor = Colors.White },
+                    new Label { Text = "Disponível", TextColor = Colors.LightGreen }
+                }
+                    };
+
+                    var frame = new Frame
+                    {
+                        BackgroundColor = Colors.DarkGray,
+                        CornerRadius = 10,
+                        Padding = 10,
+                        Margin = new Thickness(5),
+                        Content = stackLayout
+                    };
+
+                    Grid.SetRow(frame, linha);
+                    Grid.SetColumn(frame, coluna);
+                    GridCaixasVeiculos.Children.Add(frame);
+
+                    coluna++;
+                    if (coluna >= colunas)
+                    {
+                        coluna = 0;
+                        linha++;
+                    }
+                }
+            }
+            else
+            {
+                FrameCaixasVeiculos.IsVisible = false;
+                DisplayAlert("Aviso", "Nenhum veículo disponível.", "OK");
             }
         }
 
         private async void OnFinalizarAlocacaoClicked(object sender, EventArgs e)
         {
-            if (VeiculosPicker.SelectedItem == null || VeiculosPicker.SelectedItem.ToString() == "Nenhum veículo cadastrado")
+            if (string.IsNullOrEmpty(tipoVeiculoSelecionado))
             {
-                await DisplayAlert("Erro", "Nenhum veículo selecionado para alugar.", "OK");
+                await DisplayAlert("Erro", "Selecione um tipo de veículo antes de finalizar.", "OK");
                 return;
             }
-
-            var veiculoSelecionado = VeiculosPicker.SelectedItem.ToString();
-            var veiculoId = int.Parse(veiculoSelecionado.Split(' ')[1]);
-            var veiculoTipo = veiculoSelecionado.Split(' ')[0];
 
             var reserva = new Reserva
             {
@@ -178,8 +253,8 @@ namespace AlocacaoVeiuculo.Pages
                 DataDevolucao = datePickerDevolucao.Date,
                 HoraDevolucao = timePickerDevolucao.Time,
                 UsuarioId = usuario.Id,
-                VeiculoId = veiculoId,
-                VeiculoTipo = veiculoTipo
+                VeiculoId = 0, // Lógica para buscar o veículo selecionado
+                VeiculoTipo = tipoVeiculoSelecionado
             };
 
             await reservaData.AdicionarReservaAsync(reserva);

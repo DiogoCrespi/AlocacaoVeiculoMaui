@@ -14,6 +14,8 @@ namespace AlocacaoVeiuculo
         private MotoData motoData;
         private ModeloVeiculoData modeloVeiculoData;
         private DisponibilidadeData disponibilidadeData;
+        private string imagemCarroPath;
+        private string imagemMotoPath;
 
         public CadastrarVeiculoPage()
         {
@@ -80,18 +82,70 @@ namespace AlocacaoVeiuculo
             }
         }
 
+        private async void OnSelecionarImagemCarroClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Selecione uma imagem para o carro",
+                    FileTypes = FilePickerFileType.Images
+                });
+
+                if (result != null)
+                {
+                    imagemCarroPath = result.FullPath;
+                    imageCarroPreview.Source = ImageSource.FromFile(imagemCarroPath);
+                    imageCarroPreview.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Erro ao selecionar imagem: {ex.Message}", "OK");
+            }
+        }
+
+        private async void OnSelecionarImagemMotoClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Selecione uma imagem para a moto",
+                    FileTypes = FilePickerFileType.Images
+                });
+
+                if (result != null)
+                {
+                    imagemMotoPath = result.FullPath;
+                    imageMotoPreview.Source = ImageSource.FromFile(imagemMotoPath);
+                    imageMotoPreview.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Erro ao selecionar imagem: {ex.Message}", "OK");
+            }
+        }
 
         private async void OnSalvarClicked(object sender, EventArgs e)
         {
-
             if (pickerTipoVeiculo.SelectedItem == null)
             {
                 await DisplayAlert("Erro", "Selecione o tipo de veículo.", "OK");
                 return;
             }
 
-            if (pickerTipoVeiculo.SelectedItem.ToString() == "Carro")
+            string tipoVeiculo = pickerTipoVeiculo.SelectedItem.ToString();
+
+            if (tipoVeiculo == "Carro")
             {
+                if (string.IsNullOrWhiteSpace(entryPlacaCarro.Text) || string.IsNullOrEmpty(imagemCarroPath))
+                {
+                    await DisplayAlert("Erro", "Preencha todos os campos e adicione uma imagem.", "OK");
+                    return;
+                }
+
                 var carro = new Carro
                 {
                     Placa = entryPlacaCarro.Text,
@@ -99,32 +153,38 @@ namespace AlocacaoVeiuculo
                     Ano = (int)pickerAnoCarro.SelectedItem,
                     Quilometragem = double.Parse(entryQuilometragemCarro.Text),
                     TipoCombustivel = pickerTipoCombustivelCarro.SelectedItem.ToString(),
-                    NumeroPortas = int.Parse(pickerNumeroPortasCarro.SelectedItem.ToString())
+                    NumeroPortas = int.Parse(pickerNumeroPortasCarro.SelectedItem.ToString()),
+                    ImagemPath = imagemCarroPath
                 };
 
                 await carroData.AdicionarCarroAsync(carro);
-                await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {carro.Modelo} - {carro.Placa}", "OK");
+                await DisplayAlert("Cadastro Realizado", $"Carro cadastrado: {carro.Modelo} - {carro.Placa}", "OK");
                 carroSection.IsVisible = false;
             }
-            else if (pickerTipoVeiculo.SelectedItem.ToString() == "Moto")
+            else if (tipoVeiculo == "Moto")
             {
+                if (string.IsNullOrWhiteSpace(entryPlacaMoto.Text) || string.IsNullOrEmpty(imagemMotoPath))
+                {
+                    await DisplayAlert("Erro", "Preencha todos os campos e adicione uma imagem.", "OK");
+                    return;
+                }
+
                 var moto = new Moto
                 {
                     Placa = entryPlacaMoto.Text,
                     Modelo = pickerModeloMoto.SelectedItem.ToString(),
                     Ano = (int)pickerAnoMoto.SelectedItem,
                     Quilometragem = double.Parse(entryQuilometragemMoto.Text),
-                    TipoCombustivel = pickerTipoCombustivelMoto.SelectedItem.ToString()
+                    TipoCombustivel = pickerTipoCombustivelMoto.SelectedItem.ToString(),
+                    ImagemPath = imagemMotoPath
                 };
 
                 await motoData.AdicionarMotoAsync(moto);
-                await DisplayAlert("Cadastro Realizado", $"Veículo cadastrado: {moto.Modelo} - {moto.Placa}", "OK");
+                await DisplayAlert("Cadastro Realizado", $"Moto cadastrada: {moto.Modelo} - {moto.Placa}", "OK");
                 motoSection.IsVisible = false;
             }
 
-            
-            carroSection.IsVisible = false;
-            motoSection.IsVisible = false;
+            ResetFields();
         }
 
         private async void OnSalvarDisponibilidadeClicked(object sender, EventArgs e)
@@ -191,23 +251,20 @@ namespace AlocacaoVeiuculo
             await DisplayAlert("Cadastro Realizado",
                 $"Disponibilidade cadastrada com sucesso para o seguinte veículo:\n\n{veiculoDetalhes}", "OK");
 
-           
-            ResetDisponibilidadeFields();
+
+            ResetFields();
             disponibilidadeCarroSection.IsVisible = false;
             disponibilidadeMotoSection.IsVisible = false;
         }
 
-        private void ResetDisponibilidadeFields()
+        private void ResetFields()
         {
-            dateInicioDisponibilidadeCarro.Date = DateTime.Today;
-            timeInicioDisponibilidadeCarro.Time = DateTime.Now.TimeOfDay;
-            dateFimDisponibilidadeCarro.Date = DateTime.Today;
-            timeFimDisponibilidadeCarro.Time = DateTime.Now.TimeOfDay;
-            dateInicioDisponibilidadeMoto.Date = DateTime.Today;
-            timeInicioDisponibilidadeMoto.Time = DateTime.Now.TimeOfDay;
-            dateFimDisponibilidadeMoto.Date = DateTime.Today;
-            timeFimDisponibilidadeMoto.Time = DateTime.Now.TimeOfDay;
+            entryPlacaCarro.Text = "";
+            entryPlacaMoto.Text = "";
+            imageCarroPreview.IsVisible = false;
+            imageMotoPreview.IsVisible = false;
+            imagemCarroPath = null;
+            imagemMotoPath = null;
         }
     }
-
 }

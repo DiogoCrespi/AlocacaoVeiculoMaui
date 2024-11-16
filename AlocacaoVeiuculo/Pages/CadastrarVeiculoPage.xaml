@@ -66,6 +66,9 @@
                                         <x:String>4</x:String>
                                     </Picker.Items>
                                 </Picker>
+                                <Label Text="Imagem do Carro" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                                <Button Text="Selecionar Imagem" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnSelecionarImagemCarroClicked" />
+                                <Image x:Name="imageCarroPreview" HeightRequest="150" WidthRequest="150" Aspect="AspectFit" IsVisible="False" Margin="0,10" />
                                 <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
                             </StackLayout>
                         </Frame>
@@ -85,11 +88,14 @@
                                         <x:String>Elétrico</x:String>
                                     </Picker.Items>
                                 </Picker>
+                                <Label Text="Imagem da Moto" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                                <Button Text="Selecionar Imagem" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnSelecionarImagemMotoClicked" />
+                                <Image x:Name="imageMotoPreview" HeightRequest="150" WidthRequest="150" Aspect="AspectFit" IsVisible="False" Margin="0,10" />
                                 <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
                             </StackLayout>
                         </Frame>
 
-                        <!-- Picker para selecionar entre carro e moto para disponibilidade -->
+                        <!-- Picker para disponibilidade de veículo -->
                         <Picker x:Name="pickerDisponibilidadeTipoVeiculo" Title="Disponibilidade do Veículo" TitleColor="{StaticResource White}" SelectedIndexChanged="OnTipoDisponibilidadeVeiculoChanged">
                             <Picker.Items>
                                 <x:String>Carro</x:String>

@@ -2,6 +2,7 @@
 using AlocacaoVeiuculo.Services;
 using SQLite;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace AlocacaoVeiuculo.Data
@@ -21,12 +22,26 @@ namespace AlocacaoVeiuculo.Data
 
         public Task<int> AtualizarMotoAsync(Moto moto) => database.UpdateAsync(moto);
 
-        public Task<int> RemoverMotoAsync(Moto moto) => database.DeleteAsync(moto);
-
-        // Novo método para obter uma moto específica pelo ID
-        public Task<Moto> ObterMotoPorIdAsync(int id)
+        public Task<int> RemoverMotoAsync(Moto moto)
         {
-            return database.Table<Moto>().FirstOrDefaultAsync(m => m.Id == id);
+            if (!string.IsNullOrEmpty(moto.ImagemPath) && File.Exists(moto.ImagemPath))
+            {
+                File.Delete(moto.ImagemPath);
+            }
+            return database.DeleteAsync(moto);
+        }
+
+        public Task<Moto> ObterMotoPorIdAsync(int id) => database.Table<Moto>().FirstOrDefaultAsync(m => m.Id == id);
+
+        public async Task<int> SalvarImagemMotoAsync(int motoId, string caminhoImagem)
+        {
+            var moto = await ObterMotoPorIdAsync(motoId);
+            if (moto != null)
+            {
+                moto.ImagemPath = caminhoImagem;
+                return await AtualizarMotoAsync(moto);
+            }
+            return 0;
         }
     }
 }
