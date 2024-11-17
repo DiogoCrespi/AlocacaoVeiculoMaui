@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using System;
 
 namespace AlocacaoVeiuculo.Modelo
 {
@@ -13,6 +12,9 @@ namespace AlocacaoVeiuculo.Modelo
         public TimeSpan HoraInicio { get; set; }
         public DateTime DataFim { get; set; }
         public TimeSpan HoraFim { get; set; }
-        public string ImagemPath { get; set; } // Propriedade adicionada para armazenar o caminho da imagem
-    }
+        public string ImagemPath { get; set; } // Caminho da imagem
+        public string Modelo { get; set; }
+        public string TipoCombustivel { get; set; }
+    
+     }
 }

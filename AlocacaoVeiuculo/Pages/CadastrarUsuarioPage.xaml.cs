@@ -44,6 +44,10 @@ namespace AlocacaoVeiuculo
                 CadastroLayout.IsVisible = true;
             }
         }
+        private void OnSenhaCompleted(object sender, EventArgs e)
+        {
+            OnAcessarButtonClicked(sender, e);
+        }
 
         private async void OnCadastrarButtonClicked(object sender, EventArgs e)
         {
@@ -65,6 +69,7 @@ namespace AlocacaoVeiuculo
 
             CadastroLayout.IsVisible = true;
         }
+
 
         private async void OnSalvarButtonClicked(object sender, EventArgs e)
         {

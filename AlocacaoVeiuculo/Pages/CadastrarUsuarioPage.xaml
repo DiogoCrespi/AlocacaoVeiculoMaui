@@ -34,7 +34,7 @@
                     <StackLayout Spacing="20">
                         <Label Text="LOGIN" TextColor="{StaticResource White}" FontAttributes="Bold" FontSize="24" HorizontalOptions="Center"/>
                         <Entry x:Name="entryNome" Placeholder="Usuário" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
-                        <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" />
+                        <Entry x:Name="entrySenha" Placeholder="Senha" IsPassword="True"  TextColor="{StaticResource White}"  BackgroundColor="{StaticResource EntryBackground}"  Completed="OnSenhaCompleted" />
 
                         <Button Text="Login" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" CornerRadius="10" Clicked="OnAcessarButtonClicked" />
 

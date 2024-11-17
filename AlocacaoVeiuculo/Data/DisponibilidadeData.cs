@@ -21,6 +21,7 @@ namespace AlocacaoVeiuculo.Data
 
         public Task<List<Disponibilidade>> ObterDisponibilidadesAsync() => database.Table<Disponibilidade>().ToListAsync();
 
+
         public async Task<List<Disponibilidade>> ObterVeiculosDisponiveisAsync(DateTime dataInicio, TimeSpan horaInicio, DateTime dataFim, TimeSpan horaFim)
         {
             DateTime inicioCompleto = dataInicio.Date.Add(horaInicio);
@@ -30,22 +31,33 @@ namespace AlocacaoVeiuculo.Data
                 .Where(d => d.DataInicio <= fimCompleto && d.DataFim >= inicioCompleto)
                 .ToListAsync();
 
-            // Atualiza as imagens dos veículos associados
+            // Atualiza as informações dos veículos associados
             foreach (var item in disponibilidades)
             {
                 if (item.TipoVeiculo == "Carro")
                 {
                     var carro = await new CarroData().ObterCarroPorIdAsync(item.VeiculoId);
-                    item.ImagemPath = carro?.ImagemPath;
+                    if (carro != null)
+                    {
+                        item.ImagemPath = carro.ImagemPath;
+                        item.Modelo = carro.Modelo;
+                        item.TipoCombustivel = carro.TipoCombustivel;
+                    }
                 }
                 else if (item.TipoVeiculo == "Moto")
                 {
                     var moto = await new MotoData().ObterMotoPorIdAsync(item.VeiculoId);
-                    item.ImagemPath = moto?.ImagemPath;
+                    if (moto != null)
+                    {
+                        item.ImagemPath = moto.ImagemPath;
+                        item.Modelo = moto.Modelo;
+                        item.TipoCombustivel = moto.TipoCombustivel;
+                    }
                 }
             }
 
             return disponibilidades;
         }
+
     }
 }

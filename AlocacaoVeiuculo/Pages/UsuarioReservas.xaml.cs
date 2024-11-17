@@ -14,12 +14,14 @@ namespace AlocacaoVeiuculo.Pages
         private Usuario usuario;
         private ReservaData reservaData;
         private DisponibilidadeData disponibilidadeData;
+        private Reserva reservaSelecionada;
         public ObservableCollection<Reserva> Reservas { get; set; }
         private string localRetirada;
         private DateTime dataRetirada;
         private TimeSpan horaRetirada;
         private DateTime dataDevolucao;
         private TimeSpan horaDevolucao;
+
 
         private List<Disponibilidade> veiculosDisponiveis;
         private string tipoVeiculoSelecionado;
@@ -76,6 +78,7 @@ namespace AlocacaoVeiuculo.Pages
             UsuarioDadosPanel.IsVisible = !UsuarioDadosPanel.IsVisible;
             AlugarVeiculoPanel.IsVisible = false;
             ReservasPanel.IsVisible = false;
+            FrameCaixasVeiculos.IsVisible = false;
 
             if (UsuarioDadosPanel.IsVisible)
             {
@@ -92,6 +95,7 @@ namespace AlocacaoVeiuculo.Pages
             ReservasPanel.IsVisible = !ReservasPanel.IsVisible;
             UsuarioDadosPanel.IsVisible = false;
             AlugarVeiculoPanel.IsVisible = false;
+            FrameCaixasVeiculos.IsVisible = false;
 
             if (ReservasPanel.IsVisible)
             {
@@ -105,15 +109,51 @@ namespace AlocacaoVeiuculo.Pages
                     {
                         foreach (var reserva in reservas)
                         {
-                            ReservasPanelContent.Children.Add(new Label
+                            string modelo = string.Empty;
+
+                            // Busca o modelo com base no tipo de veículo
+                            if (reserva.VeiculoTipo == "Carro")
                             {
-                                Text = $"Veículo: {reserva.VeiculoTipo} ID {reserva.VeiculoId}\n" +
-                                       $"Local Retirada: {reserva.LocalRetirada}\n" +
-                                       $"Data Retirada: {reserva.DataRetirada:dd/MM/yyyy} às {reserva.HoraRetirada}\n" +
-                                       $"Data Devolução: {reserva.DataDevolucao:dd/MM/yyyy} às {reserva.HoraDevolucao}",
+                                var carro = await new CarroData().ObterCarroPorIdAsync(reserva.VeiculoId);
+                                modelo = carro?.Modelo ?? "Modelo não encontrado";
+                            }
+                            else if (reserva.VeiculoTipo == "Moto")
+                            {
+                                var moto = await new MotoData().ObterMotoPorIdAsync(reserva.VeiculoId);
+                                modelo = moto?.Modelo ?? "Modelo não encontrado";
+                            }
+
+                            ReservasPanelContent.Children.Add(new StackLayout
+                            {
+                                Margin = new Thickness(0, 10),
+                                Children =
+                        {
+                            new Label
+                            {
+                                Text = $"{reserva.VeiculoTipo}: {modelo}",
                                 TextColor = Colors.White,
                                 FontSize = 14,
-                                Margin = new Thickness(0, 5)
+                                FontAttributes = FontAttributes.Bold
+                            },
+                            new Label
+                            {
+                                Text = $"Local Retirada: {reserva.LocalRetirada}",
+                                TextColor = Colors.LightGray,
+                                FontSize = 14
+                            },
+                            new Label
+                            {
+                                Text = $"Data Retirada: {reserva.DataRetirada:dd/MM/yyyy} às {reserva.HoraRetirada}",
+                                TextColor = Colors.LightGray,
+                                FontSize = 14
+                            },
+                            new Label
+                            {
+                                Text = $"Data Devolução: {reserva.DataDevolucao:dd/MM/yyyy} às {reserva.HoraDevolucao}",
+                                TextColor = Colors.LightGray,
+                                FontSize = 14
+                            }
+                        }
                             });
                         }
                     }
@@ -136,18 +176,28 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
+
+
         private async void OnSolicitarAluguelClicked(object sender, EventArgs e)
         {
+            // Alterna a visibilidade do painel "Alugar Veículo"
             AlugarVeiculoPanel.IsVisible = !AlugarVeiculoPanel.IsVisible;
             UsuarioDadosPanel.IsVisible = false;
             ReservasPanel.IsVisible = false;
+            FrameCaixasVeiculos.IsVisible = false;
 
+            // Só tenta carregar os veículos disponíveis se o painel estiver visível e ainda não houver veículos carregados
             if (AlugarVeiculoPanel.IsVisible)
             {
-                veiculosDisponiveis = await disponibilidadeData.ObterVeiculosDisponiveisAsync(DateTime.Now, TimeSpan.Zero, DateTime.Now.AddDays(1), TimeSpan.Zero);
+                if (veiculosDisponiveis == null || !veiculosDisponiveis.Any())
+                {
+                    veiculosDisponiveis = await disponibilidadeData.ObterVeiculosDisponiveisAsync(DateTime.Now, TimeSpan.Zero, DateTime.Now.AddDays(1), TimeSpan.Zero);
+                }
+
                 GerarCaixasVeiculos();
             }
         }
+
 
         private void OnSelecionarCarrosClicked(object sender, EventArgs e)
         {
@@ -161,9 +211,15 @@ namespace AlocacaoVeiuculo.Pages
             GerarCaixasVeiculos();
         }
 
-        private void GerarCaixasVeiculos()
+        private Disponibilidade veiculoSelecionado;
+
+        private void GerarCaixasVeiculos(bool exibirAviso = true)
         {
-            if (veiculosDisponiveis == null) return;
+            if (veiculosDisponiveis == null)
+            {
+                FrameCaixasVeiculos.IsVisible = false;
+                return;
+            }
 
             var veiculosFiltrados = veiculosDisponiveis
                 .Where(v => v.TipoVeiculo.Equals(tipoVeiculoSelecionado, StringComparison.OrdinalIgnoreCase))
@@ -203,8 +259,8 @@ namespace AlocacaoVeiuculo.Pages
                         WidthRequest = 100,
                         Aspect = Aspect.AspectFill
                     },
-                    new Label { Text = $"ID: {veiculo.VeiculoId}", TextColor = Colors.White, FontAttributes = FontAttributes.Bold },
-                    new Label { Text = $"Tipo: {veiculo.TipoVeiculo}", TextColor = Colors.White },
+                    new Label { Text = $"Modelo: {veiculo.Modelo}", TextColor = Colors.White, FontAttributes = FontAttributes.Bold },
+                    new Label { Text = $"Combustível: {veiculo.TipoCombustivel}", TextColor = Colors.White },
                     new Label { Text = "Disponível", TextColor = Colors.LightGreen }
                 }
                     };
@@ -217,6 +273,11 @@ namespace AlocacaoVeiuculo.Pages
                         Margin = new Thickness(5),
                         Content = stackLayout
                     };
+
+                    frame.GestureRecognizers.Add(new TapGestureRecognizer
+                    {
+                        Command = new Command(() => SelecionarVeiculo(veiculo))
+                    });
 
                     Grid.SetRow(frame, linha);
                     Grid.SetColumn(frame, coluna);
@@ -233,15 +294,22 @@ namespace AlocacaoVeiuculo.Pages
             else
             {
                 FrameCaixasVeiculos.IsVisible = false;
-                DisplayAlert("Aviso", "Nenhum veículo disponível.", "OK");
+               
             }
+        }
+
+
+        private void SelecionarVeiculo(Disponibilidade veiculo)
+        {
+            veiculoSelecionado = veiculo;
+            GerarCaixasVeiculos(); // Atualiza as cores das caixas para refletir a seleção
         }
 
         private async void OnFinalizarAlocacaoClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(tipoVeiculoSelecionado))
+            if (veiculoSelecionado == null)
             {
-                await DisplayAlert("Erro", "Selecione um tipo de veículo antes de finalizar.", "OK");
+                await DisplayAlert("Erro", "Selecione um veículo antes de finalizar.", "OK");
                 return;
             }
 
@@ -253,8 +321,8 @@ namespace AlocacaoVeiuculo.Pages
                 DataDevolucao = datePickerDevolucao.Date,
                 HoraDevolucao = timePickerDevolucao.Time,
                 UsuarioId = usuario.Id,
-                VeiculoId = 0, // Lógica para buscar o veículo selecionado
-                VeiculoTipo = tipoVeiculoSelecionado
+                VeiculoId = veiculoSelecionado.VeiculoId,
+                VeiculoTipo = veiculoSelecionado.TipoVeiculo
             };
 
             await reservaData.AdicionarReservaAsync(reserva);
@@ -262,5 +330,60 @@ namespace AlocacaoVeiuculo.Pages
             CarregarReservas();
             AlugarVeiculoPanel.IsVisible = false;
         }
+
+
+
+
+        private async void OnCancelarReservaClicked(object sender, EventArgs e)
+        {
+            var reservas = Reservas.ToList();
+
+            if (!reservas.Any())
+            {
+                await DisplayAlert("Erro", "Não há reservas para cancelar.", "OK");
+                return;
+            }
+
+            string[] opcoes = reservas.Select(r => $"{r.VeiculoTipo}: {r.VeiculoId} - Retirada: {r.DataRetirada:dd/MM/yyyy}")
+                                      .ToArray();
+
+            string escolha = await DisplayActionSheet("Selecione uma reserva para cancelar:", "Cancelar", null, opcoes);
+
+            if (escolha == "Cancelar" || string.IsNullOrEmpty(escolha))
+                return;
+
+            reservaSelecionada = reservas.FirstOrDefault(r => $"{r.VeiculoTipo}: {r.VeiculoId} - Retirada: {r.DataRetirada:dd/MM/yyyy}" == escolha);
+
+            if (reservaSelecionada != null)
+            {
+                PopupCancelarReserva.IsVisible = true;
+            }
+        }
+
+
+        private void OnPopupCancelarClicked(object sender, EventArgs e)
+        {
+            // Fecha o popup sem realizar nenhuma ação
+            PopupCancelarReserva.IsVisible = false;
+        }
+
+        private async void OnPopupConfirmarClicked(object sender, EventArgs e)
+        {
+            if (reservaSelecionada != null)
+            {
+               // await reservaData.RemoverReservaAsync(reservaSelecionada);
+                Reservas.Remove(reservaSelecionada);
+
+                await DisplayAlert("Cancelado", "A reserva foi cancelada com sucesso.", "OK");
+            }
+
+            PopupCancelarReserva.IsVisible = false;
+            reservaSelecionada = null; // Limpa a seleção
+        }
+
+
+
+
+
     }
 }
