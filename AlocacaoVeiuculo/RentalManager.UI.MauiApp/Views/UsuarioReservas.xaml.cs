@@ -189,6 +189,7 @@ namespace AlocacaoVeiuculo.Pages
             ReservasPanel.IsVisible = false;
             FrameCaixasVeiculos.IsVisible = false;
 
+
             // Só tenta carregar os veículos disponíveis se o painel estiver visível e ainda não houver veículos carregados
             if (AlugarVeiculoPanel.IsVisible)
             {
@@ -198,6 +199,7 @@ namespace AlocacaoVeiuculo.Pages
                 }
 
                 GerarCaixasVeiculos();
+                FrameCaixasVeiculos.IsVisible = false;
             }
         }
 
@@ -310,6 +312,7 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnFinalizarAlocacaoClicked(object sender, EventArgs e)
         {
+            FrameCaixasVeiculos.IsVisible = false;
             if (veiculoSelecionado == null)
             {
                 await DisplayAlert("Erro", "Selecione um veículo antes de finalizar.", "OK");
