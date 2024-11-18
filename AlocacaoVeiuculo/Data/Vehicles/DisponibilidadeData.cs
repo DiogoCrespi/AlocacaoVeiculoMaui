@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AlocacaoVeiuculo.Modelo;
 using SQLite;
 using AlocacaoVeiuculo.Services;
+using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
 
-namespace AlocacaoVeiuculo.Data
+namespace AlocacaoVeiuculo.Data.Vehicles
 {
     public class DisponibilidadeData
     {

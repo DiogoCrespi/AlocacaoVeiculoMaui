@@ -1,11 +1,14 @@
-using AlocacaoVeiuculo.Data;
-using AlocacaoVeiuculo.Modelo;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using AlocacaoVeiuculo.RentalManager.Model.Users;
+using AlocacaoVeiuculo.RentalManager.Model.Reservations;
+using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
+using AlocacaoVeiuculo.Data.Vehicles;
+using AlocacaoVeiuculo.Data.Reservations;
 
 namespace AlocacaoVeiuculo.Pages
 {

@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace AlocacaoVeiuculo.Modelo
+namespace AlocacaoVeiuculo.RentalManager.Model.Vehicles
 {
     public class Disponibilidade
     {
@@ -15,6 +15,6 @@ namespace AlocacaoVeiuculo.Modelo
         public string ImagemPath { get; set; } // Caminho da imagem
         public string Modelo { get; set; }
         public string TipoCombustivel { get; set; }
-    
-     }
+
+    }
 }

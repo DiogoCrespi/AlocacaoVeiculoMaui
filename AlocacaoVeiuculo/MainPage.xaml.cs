@@ -1,5 +1,14 @@
 ﻿using AlocacaoVeiuculo.Data;
-using AlocacaoVeiuculo.Modelo;
+using AlocacaoVeiuculo.RentalManager.Model;
+using AlocacaoVeiuculo.RentalManager.Model.Reservations;
+
+
+using AlocacaoVeiuculo.Data.Reservations;
+
+using AlocacaoVeiuculo.Data.User;
+using AlocacaoVeiuculo.Data.Vehicles;
+
+
 using AlocacaoVeiuculo.Pages;
 using Microsoft.Maui.Controls;
 using System;
@@ -7,6 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using AlocacaoVeiuculo.RentalManager.Model.Users;
 
 namespace AlocacaoVeiuculo
 {

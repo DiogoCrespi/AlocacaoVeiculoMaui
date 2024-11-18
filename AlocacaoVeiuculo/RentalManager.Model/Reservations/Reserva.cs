@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System;
 
-namespace AlocacaoVeiuculo.Modelo
+namespace AlocacaoVeiuculo.RentalManager.Model.Reservations
 {
     public class Reserva
     {

@@ -83,9 +83,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\UsuarioReservas.xaml">
+	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\CadastrarUsuarioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\CadastrarVeiculoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\UsuarioReservas.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="RentalManager.UI.MauiApp\ViewModels\" />
 	</ItemGroup>
 
 </Project>

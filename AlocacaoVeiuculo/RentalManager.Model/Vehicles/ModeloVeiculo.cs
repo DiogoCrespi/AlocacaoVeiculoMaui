@@ -1,6 +1,6 @@
 using SQLite;
 
-namespace AlocacaoVeiuculo.Modelo
+namespace AlocacaoVeiuculo.RentalManager.Model.Vehicles
 {
     public class ModeloVeiculo
     {

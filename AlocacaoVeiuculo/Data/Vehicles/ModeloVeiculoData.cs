@@ -1,10 +1,10 @@
-﻿using AlocacaoVeiuculo.Modelo;
+﻿using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
 using AlocacaoVeiuculo.Services;
 using SQLite;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AlocacaoVeiuculo.Data
+namespace AlocacaoVeiuculo.Data.Vehicles
 {
     public class ModeloVeiculoData
     {

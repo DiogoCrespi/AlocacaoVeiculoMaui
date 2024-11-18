@@ -1,10 +1,10 @@
-﻿using AlocacaoVeiuculo.Modelo;
-using SQLite;
+﻿using SQLite;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AlocacaoVeiuculo.Services;
+using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 
-namespace AlocacaoVeiuculo.Data
+namespace AlocacaoVeiuculo.Data.Reservations
 {
     public class ReservaData
     {

@@ -1,10 +1,11 @@
-using AlocacaoVeiuculo.Modelo;
-using AlocacaoVeiuculo.Data;
+using AlocacaoVeiuculo.RentalManager.Model;
 using Microsoft.Maui.Controls;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
+using AlocacaoVeiuculo.Data.Vehicles;
 
 namespace AlocacaoVeiuculo
 {

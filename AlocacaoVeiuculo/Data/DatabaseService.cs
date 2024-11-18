@@ -2,7 +2,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Maui.Storage;
-using AlocacaoVeiuculo.Modelo;
+using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
+using AlocacaoVeiuculo.RentalManager.Model.Users;
+using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 
 namespace AlocacaoVeiuculo.Services
 {

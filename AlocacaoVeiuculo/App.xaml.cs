@@ -1,4 +1,4 @@
-﻿using AlocacaoVeiuculo.Data;
+﻿using AlocacaoVeiuculo.Data.Vehicles;
 using AlocacaoVeiuculo.Services;
 
 namespace AlocacaoVeiuculo;
