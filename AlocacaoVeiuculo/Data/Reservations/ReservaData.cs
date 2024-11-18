@@ -19,13 +19,30 @@ namespace AlocacaoVeiuculo.Data.Reservations
 
         public Task<List<Reserva>> ObterReservasAsync() => database.Table<Reserva>().ToListAsync();
 
+
+
+
         // Método para obter reservas por usuário
         public Task<List<Reserva>> ObterReservasPorUsuarioAsync(int usuarioId)
         {
             return database.Table<Reserva>()
-                           .Where(r => r.UsuarioId == usuarioId) // Filtra pelo ID do usuário
+                           .Where(r => r.UsuarioId == usuarioId) 
                            .ToListAsync();
         }
+        // Método para remover reservas 
+        public async Task<int> RemoverReservaAsync(int reservaId)
+        {
+            var reserva = await database.Table<Reserva>().FirstOrDefaultAsync(r => r.Id == reservaId);
+            if (reserva != null)
+            {
+                return await database.DeleteAsync(reserva);
+            }
+            return 0; // Retorna 0 se a reserva não foi encontrada
+        }
+
+
+
+
     }
 }
 

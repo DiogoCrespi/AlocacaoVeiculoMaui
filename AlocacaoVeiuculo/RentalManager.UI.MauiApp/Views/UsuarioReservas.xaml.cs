@@ -63,18 +63,22 @@ namespace AlocacaoVeiuculo.Pages
         {
             try
             {
-                Reservas.Clear();
                 var reservas = await reservaData.ObterReservasPorUsuarioAsync(usuario.Id);
+
+                Reservas.Clear();
                 foreach (var reserva in reservas)
                 {
                     Reservas.Add(reserva);
                 }
+
+                AtualizarGridReservas();
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Erro", $"Falha ao carregar reservas: {ex.Message}", "OK");
             }
         }
+
 
         private void OnMostrarDadosUsuarioClicked(object sender, EventArgs e)
         {
@@ -264,7 +268,7 @@ namespace AlocacaoVeiuculo.Pages
                     {
                         Source = string.IsNullOrEmpty(veiculo.ImagemPath) ? "placeholder.png" : ImageSource.FromFile(veiculo.ImagemPath),
                         HeightRequest = 120,
-                        WidthRequest = 120,
+                        WidthRequest = 200, // Ajuste aqui para aumentar a largura da imagem
                         Aspect = Aspect.AspectFill
                     },
                     new Label
@@ -362,53 +366,143 @@ namespace AlocacaoVeiuculo.Pages
 
 
 
-        private async void OnCancelarReservaClicked(object sender, EventArgs e)
+
+
+
+        //--------------------------------------------CancelarReserva------------------------------------
+
+        private void OnCancelarReservaClicked(object sender, EventArgs e)
         {
-            AlugarVeiculoPanel.IsVisible = false;
+
+            UsuarioDadosPanel.IsVisible = false;
+            ReservasPanel.IsVisible = false;
             FrameCaixasVeiculos.IsVisible = false;
-            var reservas = Reservas.ToList();
+            AlugarVeiculoPanel.IsVisible = false;
 
-            if (!reservas.Any())
+            // Verifica se há reservas
+            if (Reservas == null || !Reservas.Any())
             {
-                await DisplayAlert("Erro", "Não há reservas para cancelar.", "OK");
+                DisplayAlert("Atenção", "Nenhuma reserva encontrada para cancelar.", "OK");
                 return;
             }
 
-            string[] opcoes = reservas.Select(r => $"{r.VeiculoTipo}: {r.VeiculoId} - Retirada: {r.DataRetirada:dd/MM/yyyy}")
-                                      .ToArray();
+            // Atualiza a listagem de reservas
+            AtualizarGridReservas();
 
-            string escolha = await DisplayActionSheet("Selecione uma reserva para cancelar:", "Cancelar", null, opcoes);
+            // Exibe o frame de cancelar reservas e oculta o de confirmação
+            FrameCancelarReservas.IsVisible = true;
+            FrameReservas.IsVisible = true;
+            FrameConfirmacao.IsVisible = false;
 
-            if (escolha == "Cancelar" || string.IsNullOrEmpty(escolha))
-                return;
+          
+        }
 
-            reservaSelecionada = reservas.FirstOrDefault(r => $"{r.VeiculoTipo}: {r.VeiculoId} - Retirada: {r.DataRetirada:dd/MM/yyyy}" == escolha);
 
-            if (reservaSelecionada != null)
+
+
+
+        private void AtualizarGridReservas()
+        {
+            GridReservas.Children.Clear();
+
+            if (Reservas == null || !Reservas.Any())
             {
-                PopupCancelarReserva.IsVisible = true;
+                FrameReservas.IsVisible = false;
+                return;
+            }
+
+            FrameReservas.IsVisible = true;
+            int coluna = 0, linha = 0;
+
+            foreach (var reserva in Reservas)
+            {
+                var stackLayout = new StackLayout
+                {
+                    Children =
+            {
+                new Label
+                {
+                    Text = $"{reserva.VeiculoTipo}: {reserva.VeiculoId}",
+                    TextColor = Colors.White,
+                    FontAttributes = FontAttributes.Bold
+                },
+                new Label
+                {
+                    Text = $"Retirada: {reserva.DataRetirada:dd/MM/yyyy} às {reserva.HoraRetirada}",
+                    TextColor = Colors.LightGray
+                },
+                new Label
+                {
+                    Text = $"Devolução: {reserva.DataDevolucao:dd/MM/yyyy} às {reserva.HoraDevolucao}",
+                    TextColor = Colors.LightGray
+                }
+            }
+                };
+
+                var frame = new Frame
+                {
+                    Content = stackLayout,
+                    BackgroundColor = Colors.DarkGray,
+                    BorderColor = Colors.Transparent,
+                    CornerRadius = 10,
+                    Padding = 5,
+                    Margin = new Thickness(5)
+                };
+
+                frame.GestureRecognizers.Add(new TapGestureRecognizer
+                {
+                    Command = new Command(() => SelecionarReserva(reserva, frame))
+                });
+
+                Grid.SetRow(frame, linha);
+                Grid.SetColumn(frame, coluna);
+                GridReservas.Children.Add(frame);
+
+                coluna++;
+                if (coluna >= 6) // Define o número de colunas por linha
+                {
+                    coluna = 0;
+                    linha++;
+                }
             }
         }
 
 
-        private void OnPopupCancelarClicked(object sender, EventArgs e)
+
+        private void SelecionarReserva(Reserva reserva, Frame frame)
         {
-            // Fecha o popup sem realizar nenhuma ação
-            PopupCancelarReserva.IsVisible = false;
+            reservaSelecionada = reserva;
+
+            foreach (var child in GridReservas.Children.OfType<Frame>())
+            {
+                child.BorderColor = Colors.Transparent;
+            }
+            frame.BorderColor = Colors.Red;
+
+            FrameReservas.IsVisible = false;
+            FrameConfirmacao.IsVisible = true;
         }
 
-        private async void OnPopupConfirmarClicked(object sender, EventArgs e)
+
+        private void OnCancelConfirmacaoClicked(object sender, EventArgs e)
+        {
+            FrameReservas.IsVisible = true;
+            FrameConfirmacao.IsVisible = false;
+            reservaSelecionada = null;
+        }
+
+        private async void OnConfirmarCancelamentoClicked(object sender, EventArgs e)
         {
             if (reservaSelecionada != null)
             {
-               // await reservaData.RemoverReservaAsync(reservaSelecionada);
+                await reservaData.RemoverReservaAsync(reservaSelecionada.Id);
                 Reservas.Remove(reservaSelecionada);
+                reservaSelecionada = null;
 
-                await DisplayAlert("Cancelado", "A reserva foi cancelada com sucesso.", "OK");
+                CarregarReservas();
+                FrameReservas.IsVisible = true;
+                FrameConfirmacao.IsVisible = false;
             }
-
-            PopupCancelarReserva.IsVisible = false;
-            reservaSelecionada = null; // Limpa a seleção
         }
 
 
