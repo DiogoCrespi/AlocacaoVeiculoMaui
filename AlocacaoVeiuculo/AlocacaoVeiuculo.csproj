@@ -72,6 +72,7 @@
 	  <None Remove="Resources\Images\car_cadastro.png" />
 	  <None Remove="Resources\Images\cat_login.png" />
 	  <None Remove="Resources\Images\Logo.png" />
+	  <None Remove="Resources\Images\nao_cancela.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
