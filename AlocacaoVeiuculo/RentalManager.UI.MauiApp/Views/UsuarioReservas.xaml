@@ -147,11 +147,19 @@
                 </Frame>
 
                 <!-- Painel de veículos -->
-                <Frame x:Name="FrameCaixasVeiculos" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
+                <Frame x:Name="FrameCaixasVeiculos" 
+                       IsVisible="False" 
+                       BackgroundColor="{StaticResource Gray600}" 
+                       Padding="15" 
+                       CornerRadius="10" 
+                       Margin="0,20,0,20" 
+                       HasShadow="True">
                     <Grid x:Name="GridCaixasVeiculos" ColumnSpacing="10" RowSpacing="10">
                         <!-- Caixas dinâmicas de veículos -->
                     </Grid>
                 </Frame>
+                
+
 
                 <!-- Popup para confirmar cancelamento -->
                 <Frame x:Name="PopupCancelarReserva" 

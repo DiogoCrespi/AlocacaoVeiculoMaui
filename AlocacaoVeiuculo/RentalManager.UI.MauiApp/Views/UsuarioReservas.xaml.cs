@@ -218,7 +218,7 @@ namespace AlocacaoVeiuculo.Pages
 
         private Disponibilidade veiculoSelecionado;
 
-        private void GerarCaixasVeiculos(bool exibirAviso = true)
+        private void GerarCaixasVeiculos()
         {
             if (veiculosDisponiveis == null)
             {
@@ -230,6 +230,7 @@ namespace AlocacaoVeiuculo.Pages
                 .Where(v => v.TipoVeiculo.Equals(tipoVeiculoSelecionado, StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
+            // Certifique-se de limpar o conteúdo do Grid antes de adicionar novos elementos
             GridCaixasVeiculos.Children.Clear();
 
             if (veiculosFiltrados.Any())
@@ -255,28 +256,49 @@ namespace AlocacaoVeiuculo.Pages
                 {
                     var stackLayout = new StackLayout
                     {
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center,
                         Children =
                 {
                     new Image
                     {
                         Source = string.IsNullOrEmpty(veiculo.ImagemPath) ? "placeholder.png" : ImageSource.FromFile(veiculo.ImagemPath),
-                        HeightRequest = 100,
-                        WidthRequest = 100,
+                        HeightRequest = 120,
+                        WidthRequest = 120,
                         Aspect = Aspect.AspectFill
                     },
-                    new Label { Text = $"Modelo: {veiculo.Modelo}", TextColor = Colors.White, FontAttributes = FontAttributes.Bold },
-                    new Label { Text = $"Combustível: {veiculo.TipoCombustivel}", TextColor = Colors.White },
-                    new Label { Text = "Disponível", TextColor = Colors.LightGreen }
+                    new Label
+                    {
+                        Text = $"Modelo: {veiculo.Modelo}",
+                        TextColor = Colors.White,
+                        FontAttributes = FontAttributes.Bold,
+                        HorizontalOptions = LayoutOptions.Center
+                    },
+                    new Label
+                    {
+                        Text = $"Combustível: {veiculo.TipoCombustivel}",
+                        TextColor = Colors.White,
+                        HorizontalOptions = LayoutOptions.Center
+                    },
+                    new Label
+                    {
+                        Text = "Disponível",
+                        TextColor = Colors.Gray,
+                        HorizontalOptions = LayoutOptions.Center
+                    }
                 }
                     };
 
+                    // Adiciona uma borda simulada para destacar o veículo selecionado
                     var frame = new Frame
                     {
-                        BackgroundColor = Colors.DarkGray,
+                        Content = stackLayout,
+                        BackgroundColor = veiculoSelecionado == veiculo ? Colors.Gray : Colors.Transparent,
+                        BorderColor = veiculoSelecionado == veiculo ? Colors.Red : Colors.Gray,
                         CornerRadius = 10,
-                        Padding = 10,
+                        Padding = 5,
                         Margin = new Thickness(5),
-                        Content = stackLayout
+                        HasShadow = true
                     };
 
                     frame.GestureRecognizers.Add(new TapGestureRecognizer
@@ -299,16 +321,16 @@ namespace AlocacaoVeiuculo.Pages
             else
             {
                 FrameCaixasVeiculos.IsVisible = false;
-               
             }
         }
-
 
         private void SelecionarVeiculo(Disponibilidade veiculo)
         {
             veiculoSelecionado = veiculo;
-            GerarCaixasVeiculos();
+            GerarCaixasVeiculos(); // Atualiza a interface para refletir a seleção
         }
+
+
 
         private async void OnFinalizarAlocacaoClicked(object sender, EventArgs e)
         {
