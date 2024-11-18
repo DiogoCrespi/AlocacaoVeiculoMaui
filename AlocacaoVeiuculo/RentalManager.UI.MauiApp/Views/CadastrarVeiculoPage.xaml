@@ -67,9 +67,23 @@
                                     </Picker.Items>
                                 </Picker>
                                 <Label Text="Imagem do Carro" TextColor="{StaticResource White}" FontAttributes="Bold" />
-                                <Button Text="Selecionar Imagem" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnSelecionarImagemCarroClicked" />
+                                <Button Text="Selecionar Imagem" 
+                                        BackgroundColor="{StaticResource ButtonBackground}" 
+                                        TextColor="{StaticResource ButtonText}" 
+                                        BorderColor="{StaticResource ButtonBorder}" 
+                                        BorderWidth="1" 
+                                        Clicked="OnSelecionarImagemCarroClicked" />
                                 <Image x:Name="imageCarroPreview" HeightRequest="150" WidthRequest="150" Aspect="AspectFit" IsVisible="False" Margin="0,10" />
-                                <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
+                                <Button Text="Salvar" 
+                                        BackgroundColor="{StaticResource ButtonBackground}" 
+                                        TextColor="{StaticResource ButtonText}" 
+                                        BorderColor="{StaticResource ButtonBorder}" 
+                                        BorderWidth="1" 
+                                        FontAttributes="Bold" 
+                                        Clicked="OnSalvarClicked" 
+                                        CornerRadius="7" 
+                                        Margin="0,10,0,0" 
+                                        HorizontalOptions="Center" />
                             </StackLayout>
                         </Frame>
 
@@ -84,14 +98,27 @@
                                     <Picker.Items>
                                         <x:String>Gasolina</x:String>
                                         <x:String>Álcool</x:String>
-                                        <x:String>Diesel</x:String>
                                         <x:String>Elétrico</x:String>
                                     </Picker.Items>
                                 </Picker>
                                 <Label Text="Imagem da Moto" TextColor="{StaticResource White}" FontAttributes="Bold" />
-                                <Button Text="Selecionar Imagem" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnSelecionarImagemMotoClicked" />
+                                <Button Text="Selecionar Imagem" 
+                                        BackgroundColor="{StaticResource ButtonBackground}" 
+                                        TextColor="{StaticResource ButtonText}" 
+                                        BorderColor="{StaticResource ButtonBorder}" 
+                                        BorderWidth="1" 
+                                        Clicked="OnSelecionarImagemMotoClicked" />
                                 <Image x:Name="imageMotoPreview" HeightRequest="150" WidthRequest="150" Aspect="AspectFit" IsVisible="False" Margin="0,10" />
-                                <Button Text="Salvar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
+                                <Button Text="Salvar" 
+                                        BackgroundColor="{StaticResource ButtonBackground}" 
+                                        TextColor="{StaticResource ButtonText}" 
+                                        BorderColor="{StaticResource ButtonBorder}" 
+                                        BorderWidth="1" 
+                                        FontAttributes="Bold" 
+                                        Clicked="OnSalvarClicked" 
+                                        CornerRadius="7" 
+                                        Margin="0,10,0,0" 
+                                        HorizontalOptions="Center" />
                             </StackLayout>
                         </Frame>
 
@@ -115,7 +142,16 @@
                                 <DatePicker x:Name="dateFimDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
                                 <Label Text="Hora de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
                                 <TimePicker x:Name="timeFimDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
-                                <Button Text="Salvar Disponibilidade do Carro" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarDisponibilidadeClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
+                                <Button Text="Salvar Disponibilidade do Carro" 
+                                        BackgroundColor="{StaticResource ButtonBackground}" 
+                                        TextColor="{StaticResource ButtonText}" 
+                                        BorderColor="{StaticResource ButtonBorder}" 
+                                        BorderWidth="1" 
+                                        FontAttributes="Bold" 
+                                        Clicked="OnSalvarDisponibilidadeClicked" 
+                                        CornerRadius="7" 
+                                        Margin="0,10,0,0" 
+                                        HorizontalOptions="Center" />
                             </StackLayout>
                         </Frame>
 
@@ -131,7 +167,16 @@
                                 <DatePicker x:Name="dateFimDisponibilidadeMoto" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
                                 <Label Text="Hora de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
                                 <TimePicker x:Name="timeFimDisponibilidadeMoto" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
-                                <Button Text="Salvar Disponibilidade da Moto" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" FontAttributes="Bold" Clicked="OnSalvarDisponibilidadeClicked" CornerRadius="7" Margin="0,10,0,0" HorizontalOptions="Center" />
+                                <Button Text="Salvar Disponibilidade da Moto" 
+                                        BackgroundColor="{StaticResource ButtonBackground}" 
+                                        TextColor="{StaticResource ButtonText}" 
+                                        BorderColor="{StaticResource ButtonBorder}" 
+                                        BorderWidth="1" 
+                                        FontAttributes="Bold" 
+                                        Clicked="OnSalvarDisponibilidadeClicked" 
+                                        CornerRadius="7" 
+                                        Margin="0,10,0,0" 
+                                        HorizontalOptions="Center" />
                             </StackLayout>
                         </Frame>
 

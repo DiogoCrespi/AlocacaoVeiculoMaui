@@ -6,54 +6,45 @@
 
     <!-- Cores principais do design -->
     <Color x:Key="Primary">#80000000</Color>
-    <Color x:Key="PrimaryDark">#80000000</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">White</Color>
-    <Color x:Key="SecondaryDarkText">#80000000</Color>
-    <Color x:Key="Tertiary">#FF252521</Color>
+    <Color x:Key="Secondary">#FFFFFF</Color>
+    <Color x:Key="Tertiary">#252521</Color>
 
-    <!-- Novas cores baseadas no layout -->
+    <!-- Cores adicionais -->
     <Color x:Key="BackgroundOverlay">#80000000</Color>
-    <Color x:Key="EntryBackground">#90252521</Color>
+    <Color x:Key="EntryBackground">#252521</Color>
     <Color x:Key="ButtonBackground">#FF804D00</Color>
-    <Color x:Key="ButtonText">White</Color>
-    <Color x:Key="LabelText">White</Color>
+    <Color x:Key="ButtonText">#FFFFFF</Color>
+    <Color x:Key="LabelText">#FFFFFF</Color>
+    <Color x:Key="ButtonBorder">#252521</Color>
+    <!-- Cor para a borda dos botões -->
 
-    <!-- Definições para cores básicas -->
+    <!-- Cores básicas -->
     <Color x:Key="White">#FFFFFF</Color>
     <Color x:Key="Black">#000000</Color>
 
-    <!-- Cores adicionais pré-existentes -->
-    <Color x:Key="Magenta">#80000000</Color>
-    <Color x:Key="MidnightBlue">#80000000</Color>
-    <Color x:Key="OffBlack">#1f1f1f</Color>
-
-    <!-- Escalas de cinza -->
+    <!-- Escalas de cinza (essenciais) -->
     <Color x:Key="Gray100">#E1E1E1</Color>
-    <Color x:Key="Gray200">#C8C8C8</Color>
-    <Color x:Key="Gray300">#ACACAC</Color>
     <Color x:Key="Gray400">#919191</Color>
     <Color x:Key="Gray500">#6E6E6E</Color>
-    <Color x:Key="Gray600">#404040</Color>
+    <Color x:Key="Gray600">#212121</Color>
     <Color x:Key="Gray900">#212121</Color>
-    <Color x:Key="Gray950">#141414</Color>
 
-    <!-- Brushes para uso -->
-    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
-    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
-    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
-    <SolidColorBrush x:Key="BackgroundOverlayBrush" Color="{StaticResource BackgroundOverlay}"/>
-    <SolidColorBrush x:Key="EntryBackgroundBrush" Color="{StaticResource EntryBackground}"/>
-    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackground}"/>
-    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonText}"/>
-    <SolidColorBrush x:Key="LabelTextBrush" Color="{StaticResource LabelText}"/>
+    <!-- Brushes para uso direto -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />
+    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}" />
+    <SolidColorBrush x:Key="BackgroundOverlayBrush" Color="{StaticResource BackgroundOverlay}" />
+    <SolidColorBrush x:Key="EntryBackgroundBrush" Color="{StaticResource EntryBackground}" />
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource ButtonBackground}" />
+    <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonText}" />
+    <SolidColorBrush x:Key="LabelTextBrush" Color="{StaticResource LabelText}" />
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource ButtonBorder}" />
+    <!-- Brush para a borda dos botões -->
 
-    <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}"/>
-    <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}"/>
-    <SolidColorBrush x:Key="Gray300Brush" Color="{StaticResource Gray300}"/>
-    <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400}"/>
-    <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500}"/>
-    <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
-    <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
-    <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+    <!-- Escalas de cinza em brushes -->
+    <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}" />
+    <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400}" />
+    <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500}" />
+    <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}" />
+    <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
 </ResourceDictionary>

@@ -3,27 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AlocacaoVeiuculo.Pages.UsuarioReservas"
              Title="Minhas Reservas"
-             BackgroundColor="#1e1e2f">
+             BackgroundColor="{StaticResource BackgroundOverlay}">
     <Grid ColumnDefinitions="Auto, *">
         <!-- Sidebar fixo à esquerda -->
-        <StackLayout BackgroundColor="#2b2b3b" Padding="15" WidthRequest="220" Grid.Column="0">
+        <StackLayout BackgroundColor="{StaticResource Gray600}" Padding="15" WidthRequest="220" Grid.Column="0">
             <Label Text="Controle de Atendimento" 
-                   TextColor="White" 
+                   TextColor="{StaticResource White}" 
                    FontSize="Medium" 
                    FontAttributes="Bold"
                    HorizontalOptions="Center" />
 
-            <BoxView HeightRequest="1" BackgroundColor="#ffffff" Margin="0,10,0,20"/>
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray400}" Margin="0,10,0,20"/>
 
             <Label Text="MENU" 
-                   TextColor="LightGray" 
+                   TextColor="{StaticResource Gray300}" 
                    FontSize="Small" 
                    FontAttributes="Bold"
                    Margin="0,0,0,20" />
 
             <Button Text="👤 Meus Dados" 
-                    BackgroundColor="#3e3e55" 
-                    TextColor="White" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
                     CornerRadius="10"
                     Margin="0,5,0,5"
                     Padding="10,5"
@@ -31,8 +33,10 @@
                     Clicked="OnMostrarDadosUsuarioClicked" />
 
             <Button Text="🚗 Meus Aluguéis" 
-                    BackgroundColor="#3e3e55" 
-                    TextColor="White" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
                     CornerRadius="10"
                     Margin="0,5,0,5"
                     Padding="10,5"
@@ -40,17 +44,21 @@
                     Clicked="OnMostrarAlugueisClicked" />
 
             <Button Text="📋 Alugar Veículo" 
-                    BackgroundColor="#3e3e55" 
-                    TextColor="White" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
                     CornerRadius="10"
                     Margin="0,5,0,5"
                     Padding="10,5"
                     FontAttributes="Bold"
                     Clicked="OnSolicitarAluguelClicked" />
-            
+
             <Button Text="😿 Cancelar Reserva" 
-                    BackgroundColor="#3e3e55" 
-                    TextColor="White" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
                     CornerRadius="10"
                     Margin="0,5,0,5"
                     Padding="10,5"
@@ -59,7 +67,7 @@
 
             <StackLayout VerticalOptions="EndAndExpand">
                 <Label Text="© 2024 Empresa" 
-                       TextColor="LightGray" 
+                       TextColor="{StaticResource Gray300}" 
                        FontSize="Small" 
                        HorizontalOptions="Center" 
                        Margin="0,20,0,0"/>
@@ -72,82 +80,81 @@
                 <Label Text="Minhas Reservas" 
                        FontSize="Large" 
                        FontAttributes="Bold"
-                       TextColor="White"
+                       TextColor="{StaticResource LabelText}"
                        HorizontalOptions="Center" />
 
                 <!-- Painel de dados do usuário -->
-                <Frame x:Name="UsuarioDadosPanel" IsVisible="False" BackgroundColor="#2d2d3e" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
+                <Frame x:Name="UsuarioDadosPanel" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
                     <StackLayout>
-                        <Label Text="Dados do Usuário" FontSize="Medium" FontAttributes="Bold" TextColor="White" />
-                        <BoxView HeightRequest="1" BackgroundColor="#4a4a5a" Margin="0,5,0,10"/>
-                        <Label x:Name="UsuarioNome" FontSize="Small" TextColor="LightGray" />
-                        <Label x:Name="UsuarioSenha" FontSize="Small" TextColor="LightGray" />
-                        <Label x:Name="UsuarioCpf" FontSize="Small" TextColor="LightGray" />
-                        <Label x:Name="UsuarioDataNascimento" FontSize="Small" TextColor="LightGray" />
-                        <Label x:Name="UsuarioTelefone" FontSize="Small" TextColor="LightGray" />
+                        <Label Text="Dados do Usuário" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource LabelText}" />
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray400}" Margin="0,5,0,10"/>
+                        <Label x:Name="UsuarioNome" FontSize="Small" TextColor="{StaticResource Gray300}" />
+                        <Label x:Name="UsuarioSenha" FontSize="Small" TextColor="{StaticResource Gray300}" />
+                        <Label x:Name="UsuarioCpf" FontSize="Small" TextColor="{StaticResource Gray300}" />
+                        <Label x:Name="UsuarioDataNascimento" FontSize="Small" TextColor="{StaticResource Gray300}" />
+                        <Label x:Name="UsuarioTelefone" FontSize="Small" TextColor="{StaticResource Gray300}" />
                     </StackLayout>
                 </Frame>
 
                 <!-- Painel de reservas -->
-                <Frame x:Name="ReservasPanel" IsVisible="False" BackgroundColor="#2d2d3e" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
+                <Frame x:Name="ReservasPanel" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
                     <ScrollView>
                         <StackLayout x:Name="ReservasPanelContent" />
                     </ScrollView>
                 </Frame>
 
                 <!-- Painel para Alugar Veículo -->
-                <Frame x:Name="AlugarVeiculoPanel" IsVisible="False" BackgroundColor="#2d2d3e" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
+                <Frame x:Name="AlugarVeiculoPanel" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
                     <StackLayout>
-                        <Label Text="Alugar Veículo" FontSize="Medium" FontAttributes="Bold" TextColor="White" />
-                        <BoxView HeightRequest="1" BackgroundColor="#4a4a5a" Margin="0,5,0,10"/>
-                        <Entry x:Name="entryLocalRetirada" Placeholder="Local de Retirada" BackgroundColor="#3e3e55" TextColor="White" />
-                        <DatePicker x:Name="datePickerRetirada" BackgroundColor="#3e3e55" TextColor="White" />
-                        <TimePicker x:Name="timePickerRetirada" BackgroundColor="#3e3e55" TextColor="White" />
-                        <DatePicker x:Name="datePickerDevolucao" BackgroundColor="#3e3e55" TextColor="White" />
-                        <TimePicker x:Name="timePickerDevolucao" BackgroundColor="#3e3e55" TextColor="White" />
+                        <Label Text="Alugar Veículo" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource LabelText}" />
+                        <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray400}" Margin="0,5,0,10"/>
+                        <Entry x:Name="entryLocalRetirada" Placeholder="Local de Retirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
+                        <DatePicker x:Name="datePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
+                        <TimePicker x:Name="timePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
+                        <DatePicker x:Name="datePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
+                        <TimePicker x:Name="timePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
                         <Grid ColumnDefinitions="*,*">
                             <Button Grid.Column="0" 
                                 Text="Selecionar Carros" 
-                                BackgroundColor="#3e3e55" 
-                                TextColor="White" 
-                                Clicked="OnSelecionarCarrosClicked" 
+                                BackgroundColor="{StaticResource ButtonBackground}" 
+                                TextColor="{StaticResource ButtonText}" 
+                                BorderColor="{StaticResource ButtonBorder}" 
+                                BorderWidth="1" 
                                 FontAttributes="Bold" 
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="FillAndExpand" />
 
-                              <Button Grid.Column="1" 
+                            <Button Grid.Column="1" 
                                 Text="Selecionar Motos" 
-                                BackgroundColor="#3e3e55" 
-                                TextColor="White" 
-                                Clicked="OnSelecionarMotosClicked" 
+                                BackgroundColor="{StaticResource ButtonBackground}" 
+                                TextColor="{StaticResource ButtonText}" 
+                                BorderColor="{StaticResource ButtonBorder}" 
+                                BorderWidth="1" 
                                 FontAttributes="Bold" 
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="FillAndExpand" />
                         </Grid>
 
-
-                        <Button Text="Finalizar Alocação" BackgroundColor="#3e3e55" TextColor="White" Clicked="OnFinalizarAlocacaoClicked" />
-
+                        <Button Text="Finalizar Alocação" 
+                                BackgroundColor="{StaticResource ButtonBackground}" 
+                                TextColor="{StaticResource ButtonText}" 
+                                BorderColor="{StaticResource ButtonBorder}" 
+                                BorderWidth="1" 
+                                Clicked="OnFinalizarAlocacaoClicked" />
                     </StackLayout>
                 </Frame>
 
-                
                 <!-- Painel de veículos -->
-                <Frame x:Name="FrameCaixasVeiculos" IsVisible="False" BackgroundColor="#2d2d3e" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
+                <Frame x:Name="FrameCaixasVeiculos" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
                     <Grid x:Name="GridCaixasVeiculos" ColumnSpacing="10" RowSpacing="10">
-                        <!--bt alocacafinalizar  de veículos -->
-                        
+                        <!-- Caixas dinâmicas de veículos -->
                     </Grid>
                 </Frame>
-
-
-
-
 
                 <!-- Popup para confirmar cancelamento -->
                 <Frame x:Name="PopupCancelarReserva" 
                        IsVisible="False" 
-                       BackgroundColor="#2d2d3e" 
+                       BackgroundColor="{StaticResource Gray600}" 
                        Padding="20" 
                        CornerRadius="10" 
                        VerticalOptions="Center" 
@@ -156,7 +163,7 @@
                        AbsoluteLayout.LayoutFlags="PositionProportional">
                     <StackLayout Spacing="20">
                         <Label Text="Deseja mesmo cancelar a reserva?" 
-                               TextColor="White" 
+                               TextColor="{StaticResource LabelText}" 
                                FontSize="Medium" 
                                HorizontalOptions="Center" />
                         <Image Source="cancela_nao_plz.jpg" 
@@ -165,33 +172,36 @@
                                HorizontalOptions="Center" />
                         <Grid ColumnDefinitions="*,*">
                             <Button Text="Cancelar" 
-                                BackgroundColor="#3e3e55" 
-                                TextColor="White" 
+                                BackgroundColor="{StaticResource ButtonBackground}" 
+                                TextColor="{StaticResource ButtonText}" 
+                                BorderColor="{StaticResource ButtonBorder}" 
+                                BorderWidth="1" 
                                 FontAttributes="Bold" 
                                 CornerRadius="10" 
                                 Grid.Column="0" 
                                 Clicked="OnPopupCancelarClicked" />
                             <Button Text="Confirmar" 
-                                BackgroundColor="#3e3e55" 
-                                TextColor="White" 
+                                BackgroundColor="{StaticResource ButtonBackground}" 
+                                TextColor="{StaticResource ButtonText}" 
+                                BorderColor="{StaticResource ButtonBorder}" 
+                                BorderWidth="1" 
                                 FontAttributes="Bold" 
                                 CornerRadius="10" 
                                 Grid.Column="1" 
                                 Clicked="OnPopupConfirmarClicked" />
                         </Grid>
-                    </StackLayout>  
+                    </StackLayout>
                 </Frame>
-
 
                 <!-- Lista de Reservas -->
                 <CollectionView x:Name="ReservasCollectionView" VerticalOptions="FillAndExpand">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BackgroundColor="#2d2d3e" CornerRadius="10" Padding="15" Margin="0,5" HasShadow="True">
+                            <Frame BackgroundColor="{StaticResource Gray600}" CornerRadius="10" Padding="15" Margin="0,5" HasShadow="True">
                                 <StackLayout>
-                                    <Label Text="{Binding VeiculoTipo}" FontAttributes="Bold" FontSize="Medium" TextColor="White" />
-                                    <Label Text="{Binding DataRetirada, StringFormat='Data de Retirada: {0:dd/MM/yyyy}'}" FontSize="Small" TextColor="LightGray" />
-                                    <Label Text="{Binding LocalRetirada, StringFormat='Local de Retirada: {0}'}" FontSize="Small" TextColor="LightGray" />
+                                    <Label Text="{Binding VeiculoTipo}" FontAttributes="Bold" FontSize="Medium" TextColor="{StaticResource LabelText}" />
+                                    <Label Text="{Binding DataRetirada, StringFormat='Data de Retirada: {0:dd/MM/yyyy}'}" FontSize="Small" TextColor="{StaticResource Gray300}" />
+                                    <Label Text="{Binding LocalRetirada, StringFormat='Local de Retirada: {0}'}" FontSize="Small" TextColor="{StaticResource Gray300}" />
                                 </StackLayout>
                             </Frame>
                         </DataTemplate>

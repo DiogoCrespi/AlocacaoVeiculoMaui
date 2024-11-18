@@ -16,16 +16,13 @@
                    FontSize="Large" 
                    TextColor="{StaticResource White}"
                    HorizontalOptions="Center"
-                   FontAttributes="Bold" 
-                   FontAutoScalingEnabled="True"
-                   />
+                   FontAttributes="Bold" />
             <Label Text="Aluguel de carros com os melhores preços"
                    FontSize="Medium" 
                    TextColor="{StaticResource White}"
                    HorizontalOptions="Center" />
         </StackLayout>
 
-        <!-- Formulário de pesquisa com fundo transparente -->
         <!-- Formulário de pesquisa com fundo transparente -->
         <StackLayout BackgroundColor="{StaticResource BackgroundOverlay}" Padding="15" Margin="25" Grid.Row="1" Spacing="10" VerticalOptions="End">
             <Label Text="Retirar o carro em" TextColor="{StaticResource White}" FontAttributes="Bold"/>
@@ -45,65 +42,71 @@
                 </StackLayout>
             </Grid>
 
-            <Button Text="Pesquisar" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnPesquisarClicked" FontAttributes="Bold" CornerRadius="7"/>
+            <Button Text="Pesquisar" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
+                    FontAttributes="Bold" 
+                    CornerRadius="7" 
+                    Clicked="OnPesquisarClicked" />
         </StackLayout>
 
-
-
-
         <AbsoluteLayout>
+            <!-- Botão "Cadastrar Veículo" posicionado -->
             <Button 
-        Text="Cadastrar Veículo" 
-        BackgroundColor="{StaticResource ButtonBackground}" 
-        TextColor="{StaticResource ButtonText}" 
-        Clicked="OnCadastrarVeiculoClicked"  
-        FontAttributes="Bold" 
-        CornerRadius="7"  
-        WidthRequest="150"
-        HeightRequest="30"
-        AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize" 
-        AbsoluteLayout.LayoutFlags="PositionProportional" 
-        HorizontalOptions="Start" 
-        VerticalOptions="Start"
-        IsVisible="{Binding IsAdmin}" />
-    
+                Text="Cadastrar Veículo" 
+                BackgroundColor="{StaticResource ButtonBackground}" 
+                TextColor="{StaticResource ButtonText}" 
+                BorderColor="{StaticResource ButtonBorder}" 
+                BorderWidth="1" 
+                Clicked="OnCadastrarVeiculoClicked"  
+                FontAttributes="Bold" 
+                CornerRadius="7"  
+                WidthRequest="150"
+                HeightRequest="30"
+                AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize" 
+                AbsoluteLayout.LayoutFlags="PositionProportional" 
+                HorizontalOptions="Start" 
+                VerticalOptions="Start"
+                IsVisible="{Binding IsAdmin}" />
 
-
-        <!-- Botão "Entrar" posicionado no canto superior direito -->
+            <!-- Botão "Entrar" posicionado no canto superior direito -->
             <Button    
-        Text="Entrar" 
-        BackgroundColor="{StaticResource ButtonBackground}" 
-        TextColor="{StaticResource ButtonText}" 
-        Clicked="OnEntrarClicked"  
-        FontAttributes="Bold" 
-        CornerRadius="7"  
-        WidthRequest="100"
-        HeightRequest="30"
-        AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize" 
-        AbsoluteLayout.LayoutFlags="PositionProportional" 
-        HorizontalOptions="End" 
-        VerticalOptions="Start"/>
+                Text="Entrar" 
+                BackgroundColor="{StaticResource ButtonBackground}" 
+                TextColor="{StaticResource ButtonText}" 
+                BorderColor="{StaticResource ButtonBorder}" 
+                BorderWidth="1" 
+                Clicked="OnEntrarClicked"  
+                FontAttributes="Bold" 
+                CornerRadius="7"  
+                WidthRequest="100"
+                HeightRequest="30"
+                AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize" 
+                AbsoluteLayout.LayoutFlags="PositionProportional" 
+                HorizontalOptions="End" 
+                VerticalOptions="Start"/>
 
-
- 
-
+            <!-- Botão "Usuário Logado" -->
             <Button 
-        x:Name="btnUsuarioLogado"
-        Text="Usuário" 
-        BackgroundColor="{StaticResource ButtonBackground}" 
-        TextColor="{StaticResource ButtonText}" 
-        Clicked="OnUsuarioLogadoClicked"  
-        FontAttributes="Bold" 
-        CornerRadius="7"  
-        WidthRequest="100"
-        HeightRequest="30"
-        AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize" 
-        AbsoluteLayout.LayoutFlags="PositionProportional" 
-        HorizontalOptions="End" 
-        VerticalOptions="Start"
-        IsVisible="False" />
+                x:Name="btnUsuarioLogado"
+                Text="Usuário" 
+                BackgroundColor="{StaticResource ButtonBackground}" 
+                TextColor="{StaticResource ButtonText}" 
+                BorderColor="{StaticResource ButtonBorder}" 
+                BorderWidth="1" 
+                Clicked="OnUsuarioLogadoClicked"  
+                FontAttributes="Bold" 
+                CornerRadius="7"  
+                WidthRequest="100"
+                HeightRequest="30"
+                AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize" 
+                AbsoluteLayout.LayoutFlags="PositionProportional" 
+                HorizontalOptions="End" 
+                VerticalOptions="Start"
+                IsVisible="False" />
         </AbsoluteLayout>
-
 
     </Grid>
 </ContentPage>
