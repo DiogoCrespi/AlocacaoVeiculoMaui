@@ -121,6 +121,7 @@
                                 BorderColor="{StaticResource ButtonBorder}" 
                                 BorderWidth="1" 
                                 FontAttributes="Bold" 
+                                    Clicked="OnSelecionarCarrosClicked" 
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="FillAndExpand" />
 
@@ -131,6 +132,7 @@
                                 BorderColor="{StaticResource ButtonBorder}" 
                                 BorderWidth="1" 
                                 FontAttributes="Bold" 
+                                     Clicked="OnSelecionarMotosClicked"
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="FillAndExpand" />
                         </Grid>

@@ -307,7 +307,7 @@ namespace AlocacaoVeiuculo.Pages
         private void SelecionarVeiculo(Disponibilidade veiculo)
         {
             veiculoSelecionado = veiculo;
-            GerarCaixasVeiculos(); // Atualiza as cores das caixas para refletir a seleção
+            GerarCaixasVeiculos();
         }
 
         private async void OnFinalizarAlocacaoClicked(object sender, EventArgs e)
