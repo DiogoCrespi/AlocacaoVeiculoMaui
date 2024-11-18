@@ -339,6 +339,8 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnCancelarReservaClicked(object sender, EventArgs e)
         {
+            AlugarVeiculoPanel.IsVisible = false;
+            FrameCaixasVeiculos.IsVisible = false;
             var reservas = Reservas.ToList();
 
             if (!reservas.Any())
