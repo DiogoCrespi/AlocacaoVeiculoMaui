@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlocacaoVeiuculo.Pages.FuncionarioDashboard"
+             BackgroundColor="{StaticResource Gray900}"
+             Title="Painel do Funcionário">
+
+    <Grid ColumnDefinitions="Auto, *">
+        <!-- Sidebar fixo à esquerda -->
+        <StackLayout BackgroundColor="{StaticResource Gray600}" Padding="15" WidthRequest="220" Grid.Column="0">
+            <Label Text="Painel Administrativo" 
+                   TextColor="{StaticResource White}" 
+                   FontSize="Medium" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray400}" Margin="0,10,0,20"/>
+
+            <Label Text="MENU" 
+                   TextColor="{StaticResource Gray300}" 
+                   FontSize="Small" 
+                   FontAttributes="Bold"
+                   Margin="0,0,0,20" />
+
+            <!-- Botões para funcionalidades -->
+            <Button Text="📄 Gerar Relatórios" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
+                    CornerRadius="10"
+                    Margin="0,5,0,5"
+                    Padding="10,5"
+                    FontAttributes="Bold"
+                    Clicked="OnGerarRelatoriosClicked" />
+
+            <Button Text="🚗 Gerenciar Veículos" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
+                    CornerRadius="10"
+                    Margin="0,5,0,5"
+                    Padding="10,5"
+                    FontAttributes="Bold"
+                    Clicked="OnGerenciarVeiculosClicked" />
+
+            <Button Text="📋 Gerenciar Reservas" 
+                    BackgroundColor="{StaticResource ButtonBackground}" 
+                    TextColor="{StaticResource ButtonText}" 
+                    BorderColor="{StaticResource ButtonBorder}" 
+                    BorderWidth="1" 
+                    CornerRadius="10"
+                    Margin="0,5,0,5"
+                    Padding="10,5"
+                    FontAttributes="Bold"
+                    Clicked="OnGerenciarReservasClicked" />
+
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Label Text="© 2024 Empresa" 
+                       TextColor="{StaticResource Gray300}" 
+                       FontSize="Small" 
+                       HorizontalOptions="Center" 
+                       Margin="0,20,0,0"/>
+            </StackLayout>
+        </StackLayout>
+
+        <!-- Conteúdo principal -->
+        <ScrollView Grid.Column="1">
+            <StackLayout Padding="20" VerticalOptions="CenterAndExpand" Spacing="20">
+                <Label Text="Bem-vindo ao Painel Administrativo" 
+                       FontSize="Large" 
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource LabelText}"
+                       HorizontalOptions="Center" />
+                <Label Text="Selecione uma das opções no menu para começar." 
+                       FontSize="Medium" 
+                       TextColor="{StaticResource LabelText}"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

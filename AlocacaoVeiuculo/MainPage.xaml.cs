@@ -183,7 +183,7 @@ namespace AlocacaoVeiuculo
 
 
 
-
+        //----------------cadastro
         private async void OnCadastrarVeiculoClicked(object sender, EventArgs e)
         {
             try
@@ -203,5 +203,23 @@ namespace AlocacaoVeiuculo
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        //---------------Funcionario
+        private async void OnAbrirPaginaFuncionarioClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var funcionarioDashboardPage = new FuncionarioDashboard();
+                await Navigation.PushAsync(funcionarioDashboardPage);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
+        }
+
+
+
+
     }
 }

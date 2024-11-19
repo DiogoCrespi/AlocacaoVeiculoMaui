@@ -89,6 +89,9 @@
 	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\CadastrarVeiculoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\FuncionarioDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\UsuarioReservas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
