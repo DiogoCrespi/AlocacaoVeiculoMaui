@@ -77,7 +77,69 @@
                        FontSize="Medium" 
                        TextColor="{StaticResource LabelText}"
                        HorizontalOptions="Center" />
+
             </StackLayout>
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            <!-- Frame para Gerenciamento de Reservas -->
+            <Frame x:Name="FrameGerenciarReservas"
+               IsVisible="False"
+               BackgroundColor="{StaticResource Gray600}"
+               Padding="20"
+               CornerRadius="10"
+               Margin="0,20,0,20"
+               HasShadow="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Título -->
+                    <Label Grid.Row="0"
+                   Text="Gerenciar Reservas"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="{StaticResource LabelText}"
+                   Margin="0,0,0,10"/>
+
+                    <!-- Listagem de Reservas -->
+                    <ScrollView Grid.Row="1">
+                        <StackLayout x:Name="StackLayoutReservas">
+                            <!-- Cada reserva será adicionada dinamicamente aqui -->
+                        </StackLayout>
+                    </ScrollView>
+                </Grid>
+            </Frame>
+
+
+
+
+
+
+
+
+
         </ScrollView>
+        
+        
+        
+        
+        
+        
+        
     </Grid>
 </ContentPage>
