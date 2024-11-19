@@ -66,18 +66,37 @@ namespace AlocacaoVeiuculo.Pages
                 var reservas = await reservaData.ObterReservasPorUsuarioAsync(usuario.Id);
 
                 Reservas.Clear();
-                foreach (var reserva in reservas)
+                foreach (var reserva in reservas.Where(r => r.IsDisponivel)) // Filtra apenas as reservas disponíveis
                 {
+                    if (reserva.VeiculoTipo == "Carro")
+                    {
+                        var carro = await new CarroData().ObterCarroPorIdAsync(reserva.VeiculoId);
+                        reserva.ModeloVeiculo = carro?.Modelo ?? "Modelo não encontrado";
+                    }
+                    else if (reserva.VeiculoTipo == "Moto")
+                    {
+                        var moto = await new MotoData().ObterMotoPorIdAsync(reserva.VeiculoId);
+                        reserva.ModeloVeiculo = moto?.Modelo ?? "Modelo não encontrado";
+                    }
+
                     Reservas.Add(reserva);
                 }
 
-                AtualizarGridReservas();
+                foreach (var reserva in reservas.Where(r => !r.IsDisponivel)) // Adiciona reservas indisponíveis para destacar
+                {
+                    reserva.ModeloVeiculo = "Reserva Indisponível";
+                    reserva.LocalRetirada = reserva.MotivoExclusao ?? "Motivo não informado";
+                    Reservas.Add(reserva);
+                }
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Erro", $"Falha ao carregar reservas: {ex.Message}", "OK");
             }
         }
+
+
+
 
 
         private void OnMostrarDadosUsuarioClicked(object sender, EventArgs e)
@@ -118,7 +137,6 @@ namespace AlocacaoVeiuculo.Pages
                         {
                             string modelo = string.Empty;
 
-                            // Busca o modelo com base no tipo de veículo
                             if (reserva.VeiculoTipo == "Carro")
                             {
                                 var carro = await new CarroData().ObterCarroPorIdAsync(reserva.VeiculoId);
@@ -130,7 +148,7 @@ namespace AlocacaoVeiuculo.Pages
                                 modelo = moto?.Modelo ?? "Modelo não encontrado";
                             }
 
-                            ReservasPanelContent.Children.Add(new StackLayout
+                            var stackLayout = new StackLayout
                             {
                                 Margin = new Thickness(0, 10),
                                 Children =
@@ -161,7 +179,20 @@ namespace AlocacaoVeiuculo.Pages
                                 FontSize = 14
                             }
                         }
-                            });
+                            };
+
+                            if (!reserva.IsDisponivel)
+                            {
+                                stackLayout.Children.Add(new Label
+                                {
+                                    Text = $"Sua Reserva foi excluida pelo administrador pois: {reserva.MotivoExclusao}",
+                                    TextColor = Colors.Red,
+                                    FontSize = 14,
+                                    FontAttributes = FontAttributes.Bold
+                                });
+                            }
+
+                            ReservasPanelContent.Children.Add(stackLayout);
                         }
                     }
                     else
@@ -182,6 +213,8 @@ namespace AlocacaoVeiuculo.Pages
                 }
             }
         }
+
+
 
 
 
@@ -507,6 +540,22 @@ namespace AlocacaoVeiuculo.Pages
 
 
 
+        private async Task NotificarUsuarioReservaExcluida(int reservaId, string motivo)
+        {
+            try
+            {
+                var reserva = await reservaData.ObterReservaPorIdAsync(reservaId);
+                if (reserva != null)
+                {
+                    reserva.MotivoExclusao = motivo;
+                    await reservaData.AtualizarReservaAsync(reserva);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao notificar o cliente: {ex.Message}", "OK");
+            }
+        }
 
 
     }

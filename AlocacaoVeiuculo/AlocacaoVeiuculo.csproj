@@ -57,6 +57,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="UI.MauiApp\NovaPasta1\**" />
+	  <AndroidResource Remove="UI.MauiApp\ViewModels\**" />
+	  <Compile Remove="UI.MauiApp\NovaPasta1\**" />
+	  <Compile Remove="UI.MauiApp\ViewModels\**" />
+	  <EmbeddedResource Remove="UI.MauiApp\NovaPasta1\**" />
+	  <EmbeddedResource Remove="UI.MauiApp\ViewModels\**" />
+	  <MauiCss Remove="UI.MauiApp\NovaPasta1\**" />
+	  <MauiCss Remove="UI.MauiApp\ViewModels\**" />
+	  <MauiXaml Remove="UI.MauiApp\NovaPasta1\**" />
+	  <MauiXaml Remove="UI.MauiApp\ViewModels\**" />
+	  <None Remove="UI.MauiApp\NovaPasta1\**" />
+	  <None Remove="UI.MauiApp\ViewModels\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\cadastroveiculoimagem.png" />
 	  <MauiImage Remove="Resources\Images\car_cad.png" />
 	  <MauiImage Remove="Resources\Images\car_cadastro.png" />
@@ -83,22 +98,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\CadastrarUsuarioPage.xaml">
+	  <MauiXaml Update="UI.MauiApp\Views\CadastrarUsuarioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\CadastrarVeiculoPage.xaml">
+	  <MauiXaml Update="UI.MauiApp\Views\CadastrarVeiculoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\FuncionarioDashboard.xaml">
+	  <MauiXaml Update="UI.MauiApp\Views\FuncionarioDashboard.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="RentalManager.UI.MauiApp\Views\UsuarioReservas.xaml">
+	  <MauiXaml Update="UI.MauiApp\Views\UsuarioReservas.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="RentalManager.UI.MauiApp\ViewModels\" />
 	</ItemGroup>
 
 </Project>

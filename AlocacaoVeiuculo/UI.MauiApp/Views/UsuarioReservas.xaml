@@ -105,6 +105,7 @@
                         <StackLayout x:Name="ReservasPanelContent" />
                     </ScrollView>
                 </Frame>
+                
 
                 <!-- Painel para Alugar Veículo -->
                 <Frame x:Name="AlugarVeiculoPanel" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
@@ -255,14 +256,29 @@
                         <DataTemplate>
                             <Frame BackgroundColor="{StaticResource Gray600}" CornerRadius="10" Padding="15" Margin="0,5" HasShadow="True">
                                 <StackLayout>
-                                    <Label Text="{Binding VeiculoTipo}" FontAttributes="Bold" FontSize="Medium" TextColor="{StaticResource LabelText}" />
-                                    <Label Text="{Binding DataRetirada, StringFormat='Data de Retirada: {0:dd/MM/yyyy}'}" FontSize="Small" TextColor="{StaticResource Gray300}" />
-                                    <Label Text="{Binding LocalRetirada, StringFormat='Local de Retirada: {0}'}" FontSize="Small" TextColor="{StaticResource Gray300}" />
+                                    <!-- Tipo e Modelo do Veículo -->
+                                    <Label Text="{Binding VeiculoTipo}" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource LabelText}" />
+                                    <Label Text="{Binding ModeloVeiculo, StringFormat='Modelo: {0}'}" FontSize="12" TextColor="{StaticResource Gray300}" />
+
+                                    <!-- Local de Retirada -->
+                                    <Label Text="{Binding LocalRetirada, StringFormat='Local de Retirada: {0}'}" FontSize="12" TextColor="{StaticResource Gray300}" />
+
+                                    <!-- Datas de Retirada e Devolução -->
+                                    <Label Text="{Binding DataRetirada, StringFormat='Data de Retirada: {0:dd/MM/yyyy}'}" FontSize="12" TextColor="{StaticResource Gray300}" />
+                                    <Label Text="{Binding DataDevolucao, StringFormat='Data de Devolução: {0:dd/MM/yyyy}'}" FontSize="12" TextColor="{StaticResource Gray300}" />
+
+                                    <!-- Motivo da Modificação -->
+                                    <Label Text="{Binding MotivoModificacao, StringFormat='Seu Veiculo foi Modificado o Motivo: {0}'}" 
+                           FontSize="12" TextColor="{StaticResource Yellow}" FontAttributes="Bold"
+                           IsVisible="{Binding MotivoModificacao, Converter={StaticResource StringNotEmptyConverter}}" />
                                 </StackLayout>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+              
+
+
             </StackLayout>
         </ScrollView>
     </Grid>
