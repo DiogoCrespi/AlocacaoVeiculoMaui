@@ -58,17 +58,11 @@
 
 	<ItemGroup>
 	  <AndroidResource Remove="UI.MauiApp\NovaPasta1\**" />
-	  <AndroidResource Remove="UI.MauiApp\ViewModels\**" />
 	  <Compile Remove="UI.MauiApp\NovaPasta1\**" />
-	  <Compile Remove="UI.MauiApp\ViewModels\**" />
 	  <EmbeddedResource Remove="UI.MauiApp\NovaPasta1\**" />
-	  <EmbeddedResource Remove="UI.MauiApp\ViewModels\**" />
 	  <MauiCss Remove="UI.MauiApp\NovaPasta1\**" />
-	  <MauiCss Remove="UI.MauiApp\ViewModels\**" />
 	  <MauiXaml Remove="UI.MauiApp\NovaPasta1\**" />
-	  <MauiXaml Remove="UI.MauiApp\ViewModels\**" />
 	  <None Remove="UI.MauiApp\NovaPasta1\**" />
-	  <None Remove="UI.MauiApp\ViewModels\**" />
 	</ItemGroup>
 
 	<ItemGroup>

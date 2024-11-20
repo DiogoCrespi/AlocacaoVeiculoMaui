@@ -438,7 +438,9 @@ namespace AlocacaoVeiuculo.Pages
         {
             GridReservas.Children.Clear();
 
-            if (Reservas == null || !Reservas.Any())
+            var reservasDisponiveis = Reservas.Where(r => r.IsDisponivel).ToList();
+
+            if (!reservasDisponiveis.Any())
             {
                 FrameReservas.IsVisible = false;
                 return;
@@ -447,7 +449,7 @@ namespace AlocacaoVeiuculo.Pages
             FrameReservas.IsVisible = true;
             int coluna = 0, linha = 0;
 
-            foreach (var reserva in Reservas)
+            foreach (var reserva in reservasDisponiveis)
             {
                 var stackLayout = new StackLayout
                 {
@@ -502,6 +504,7 @@ namespace AlocacaoVeiuculo.Pages
 
 
 
+
         private void SelecionarReserva(Reserva reserva, Frame frame)
         {
             reservaSelecionada = reserva;
@@ -528,15 +531,47 @@ namespace AlocacaoVeiuculo.Pages
         {
             if (reservaSelecionada != null)
             {
-                await reservaData.RemoverReservaAsync(reservaSelecionada.Id);
-                Reservas.Remove(reservaSelecionada);
-                reservaSelecionada = null;
+                // Solicita o motivo da desativação
+                string motivo = await DisplayPromptAsync(
+                    "Motivo da Desativação",
+                    "Informe o motivo para desativar a reserva:",
+                    "Confirmar",
+                    "Cancelar",
+                    placeholder: "Digite o motivo aqui"
+                );
 
-                CarregarReservas();
-                FrameReservas.IsVisible = true;
-                FrameConfirmacao.IsVisible = false;
+                if (string.IsNullOrWhiteSpace(motivo))
+                {
+                    await DisplayAlert("Erro", "É necessário informar um motivo para desativar a reserva.", "OK");
+                    return;
+                }
+
+                try
+                {
+                    // Atualiza a reserva como indisponível e adiciona o motivo da exclusão
+                    reservaSelecionada.IsDisponivel = false;
+                    reservaSelecionada.MotivoExclusao = motivo;
+
+                    await reservaData.AtualizarReservaAsync(reservaSelecionada);
+
+                    // Notifica o cliente
+                    await NotificarUsuarioReservaExcluida(reservaSelecionada.Id, motivo);
+
+                    await DisplayAlert("Sucesso", "Reserva desativada com sucesso.", "OK");
+
+                    // Atualiza a interface
+                    CarregarReservas();
+                    FrameReservas.IsVisible = true;
+                    FrameConfirmacao.IsVisible = false;
+                    reservaSelecionada = null;
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Erro", $"Falha ao desativar a reserva: {ex.Message}", "OK");
+                }
             }
         }
+
 
 
 
@@ -556,6 +591,7 @@ namespace AlocacaoVeiuculo.Pages
                 await DisplayAlert("Erro", $"Falha ao notificar o cliente: {ex.Message}", "OK");
             }
         }
+
 
 
     }
