@@ -125,28 +125,31 @@ namespace AlocacaoVeiuculo.Pages
                         });
                     }
 
-                    stackLayout.Children.Add(new StackLayout
+                    if (reserva.IsDisponivel)
                     {
-                        Orientation = StackOrientation.Horizontal,
-                        Spacing = 10,
-                        Children =
-                {
-                    new Button
+                        stackLayout.Children.Add(new StackLayout
+                        {
+                            Orientation = StackOrientation.Horizontal,
+                            Spacing = 10,
+                            Children =
                     {
-                        Text = "Cancelar Reserva",
-                        BackgroundColor = Colors.Red,
-                        TextColor = Colors.White,
-                        Command = new Command(async () => await CancelarReserva(reserva.Id))
-                    },
-                    new Button
-                    {
-                        Text = "Modificar Reserva",
-                        BackgroundColor = Colors.Blue,
-                        TextColor = Colors.White,
-                        Command = new Command(async () => await ModificarReserva(reserva))
+                        new Button
+                        {
+                            Text = "Cancelar Reserva",
+                            BackgroundColor = Colors.Red,
+                            TextColor = Colors.White,
+                            Command = new Command(async () => await CancelarReserva(reserva.Id))
+                        },
+                        new Button
+                        {
+                            Text = "Modificar Reserva",
+                            BackgroundColor = Colors.Blue,
+                            TextColor = Colors.White,
+                            Command = new Command(async () => await ModificarReserva(reserva))
+                        }
                     }
-                }
-                    });
+                        });
+                    }
 
                     StackLayoutReservas.Children.Add(stackLayout);
                 }
@@ -158,6 +161,7 @@ namespace AlocacaoVeiuculo.Pages
                 await DisplayAlert("Erro", $"Ocorreu um erro ao carregar as reservas: {ex.Message}", "OK");
             }
         }
+
 
 
 
