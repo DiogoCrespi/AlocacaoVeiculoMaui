@@ -13,6 +13,7 @@ namespace AlocacaoVeiuculo.Pages
         {
             private ReservaData reservaData;
             private Reserva reservaSelecionada;
+            private bool exibirCanceladas = true;
 
         public FuncionarioDashboard()
             {
@@ -32,8 +33,19 @@ namespace AlocacaoVeiuculo.Pages
         {
             await DisplayAlert("Veículos", "Opção de gerenciamento de veículos ainda será implementada.", "OK");
         }
+
+
+        private void OnToggleReservasCanceladasClicked(object sender, EventArgs e)
+        {
+            exibirCanceladas = !exibirCanceladas;
+            ToggleCanceladasButton.Text = exibirCanceladas ? "Ocultar Reservas Canceladas" : "Exibir Reservas Canceladas";
+            OnGerenciarReservasClicked(null, null);
+        }
+
         private async void OnGerenciarReservasClicked(object sender, EventArgs e)
         {
+            HeaderGrid.IsVisible = true;
+
             try
             {
                 var todasReservas = await reservaData.ObterReservasComClientesAsync();
@@ -47,7 +59,7 @@ namespace AlocacaoVeiuculo.Pages
 
                 StackLayoutReservas.Children.Clear();
 
-                foreach (var reserva in todasReservas.Where(r => r.IsDisponivel))
+                foreach (var reserva in todasReservas.Where(r => r.IsDisponivel || exibirCanceladas))
                 {
                     string modelo = reserva.VeiculoTipo == "Carro"
                         ? (await new CarroData().ObterCarroPorIdAsync(reserva.VeiculoId))?.Modelo ?? "Modelo não encontrado"
@@ -88,86 +100,53 @@ namespace AlocacaoVeiuculo.Pages
                         Text = $"Devolução: {reserva.DataDevolucao:dd/MM/yyyy} às {reserva.HoraDevolucao}",
                         TextColor = Colors.LightGray,
                         FontSize = 14
-                    },
-                    new StackLayout
+                    }
+                }
+                    };
+
+                    if (!reserva.IsDisponivel)
+                    {
+                        stackLayout.Children.Add(new Label
+                        {
+                            Text = $"Motivo da Exclusão: {reserva.MotivoExclusao}",
+                            TextColor = Colors.Red,
+                            FontAttributes = FontAttributes.Bold,
+                            FontSize = 14
+                        });
+                    }
+                    else if (!string.IsNullOrWhiteSpace(reserva.MotivoModificacao))
+                    {
+                        stackLayout.Children.Add(new Label
+                        {
+                            Text = $"Algumas informações foram mudadas pois: {reserva.MotivoModificacao}",
+                            TextColor = Colors.Yellow,
+                            FontAttributes = FontAttributes.Bold,
+                            FontSize = 14
+                        });
+                    }
+
+                    stackLayout.Children.Add(new StackLayout
                     {
                         Orientation = StackOrientation.Horizontal,
                         Spacing = 10,
                         Children =
-                        {
-                            new Button
-                            {
-                                Text = "Cancelar Reserva",
-                                BackgroundColor = Colors.Red,
-                                TextColor = Colors.White,
-                                Command = new Command(async () => await CancelarReserva(reserva.Id))
-                            },
-                            new Button
-                            {
-                                Text = "Modificar Reserva",
-                                BackgroundColor = Colors.Blue,
-                                TextColor = Colors.White,
-                                Command = new Command(async () => await ModificarReserva(reserva))
-                            }
-                        }
-                    }
-                }
-                    };
-
-                    StackLayoutReservas.Children.Add(stackLayout);
-                }
-
-                foreach (var reserva in todasReservas.Where(r => !r.IsDisponivel))
                 {
-                    string modelo = reserva.VeiculoTipo == "Carro"
-                        ? (await new CarroData().ObterCarroPorIdAsync(reserva.VeiculoId))?.Modelo ?? "Modelo não encontrado"
-                        : (await new MotoData().ObterMotoPorIdAsync(reserva.VeiculoId))?.Modelo ?? "Modelo não encontrado";
-
-                    var stackLayout = new StackLayout
+                    new Button
                     {
-                        Margin = new Thickness(0, 10),
-                        Children =
-                {
-                    new Label
-                    {
-                        Text = $"{reserva.VeiculoTipo}: {modelo}",
+                        Text = "Cancelar Reserva",
+                        BackgroundColor = Colors.Red,
                         TextColor = Colors.White,
-                        FontAttributes = FontAttributes.Bold,
-                        FontSize = 16
+                        Command = new Command(async () => await CancelarReserva(reserva.Id))
                     },
-                    new Label
+                    new Button
                     {
-                        Text = $"Cliente: {reserva.NomeCliente}",
-                        TextColor = Colors.LightGray,
-                        FontSize = 14
-                    },
-                    new Label
-                    {
-                        Text = $"Local Retirada: {reserva.LocalRetirada}",
-                        TextColor = Colors.LightGray,
-                        FontSize = 14
-                    },
-                    new Label
-                    {
-                        Text = $"Retirada: {reserva.DataRetirada:dd/MM/yyyy} às {reserva.HoraRetirada}",
-                        TextColor = Colors.LightGray,
-                        FontSize = 14
-                    },
-                    new Label
-                    {
-                        Text = $"Devolução: {reserva.DataDevolucao:dd/MM/yyyy} às {reserva.HoraDevolucao}",
-                        TextColor = Colors.LightGray,
-                        FontSize = 14
-                    },
-                    new Label
-                    {
-                        Text = $"Motivo da Exclusão: {reserva.MotivoExclusao}",
-                        TextColor = Colors.Red,
-                        FontAttributes = FontAttributes.Bold,
-                        FontSize = 14
+                        Text = "Modificar Reserva",
+                        BackgroundColor = Colors.Blue,
+                        TextColor = Colors.White,
+                        Command = new Command(async () => await ModificarReserva(reserva))
                     }
                 }
-                    };
+                    });
 
                     StackLayoutReservas.Children.Add(stackLayout);
                 }
@@ -179,7 +158,6 @@ namespace AlocacaoVeiuculo.Pages
                 await DisplayAlert("Erro", $"Ocorreu um erro ao carregar as reservas: {ex.Message}", "OK");
             }
         }
-
 
 
 
@@ -253,10 +231,27 @@ namespace AlocacaoVeiuculo.Pages
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private async Task ModificarReserva(Reserva reserva)
         {
             try
             {
+             
+                HeaderGrid.IsVisible = false;
                 // Oculta a lista de reservas
                 StackLayoutReservas.IsVisible = false;
 

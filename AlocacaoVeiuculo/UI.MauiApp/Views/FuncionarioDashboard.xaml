@@ -80,28 +80,46 @@
 
 
 
+
                 <!-- Frame para Gerenciamento de Reservas -->
                 <Frame x:Name="FrameGerenciarReservas"
-               IsVisible="False"
-               BackgroundColor="{StaticResource Gray600}"
-               Padding="20"
-               CornerRadius="10"
-               Margin="0,20,0,20"
-               HasShadow="True">
+                       IsVisible="False"
+                       BackgroundColor="{StaticResource Gray600}"
+                       Padding="20"
+                       CornerRadius="10"
+                       Margin="0,20,0,20"
+                       HasShadow="True">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <!-- Para o título e botão -->
                             <RowDefinition Height="*"/>
+                            <!-- Para a lista de reservas -->
                         </Grid.RowDefinitions>
+                        <!-- Título e Botão -->
+                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" x:Name="HeaderGrid" IsVisible="True">
+                            <Label Grid.Column="0"
+           Text="Gerenciar Reservas"
+           FontSize="Large"
+           FontAttributes="Bold"
+           HorizontalOptions="Start"
+           VerticalOptions="Center"
+           TextColor="{StaticResource LabelText}"
+           Margin="0,0,10,0" />
+                            <Button Grid.Column="1"
+            x:Name="ToggleCanceladasButton"
+            Text="Ocultar Reservas Canceladas"
+            BackgroundColor="{StaticResource ButtonBackground}"
+            TextColor="{StaticResource ButtonText}"
+            BorderColor="{StaticResource ButtonBorder}"
+            BorderWidth="1"
+            CornerRadius="10"
+            Padding="10,5"
+            HorizontalOptions="End"
+            VerticalOptions="Center"
+            Clicked="OnToggleReservasCanceladasClicked" />
+                        </Grid>
 
-                        <!-- Título -->
-                        <Label Grid.Row="0"
-                   Text="Gerenciar Reservas"
-                   FontSize="Large"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   TextColor="{StaticResource LabelText}"
-                   Margin="0,0,0,10"/>
 
                         <!-- Listagem de Reservas -->
                         <ScrollView Grid.Row="1">
@@ -111,6 +129,7 @@
                         </ScrollView>
                     </Grid>
                 </Frame>
+
 
 
                 <Frame x:Name="FrameModificarReserva"
