@@ -1,19 +1,7 @@
-﻿using AlocacaoVeiuculo.Data;
-using AlocacaoVeiuculo.RentalManager.Model;
-using AlocacaoVeiuculo.RentalManager.Model.Reservations;
-
-
+﻿using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 using AlocacaoVeiuculo.Data.Reservations;
-
-using AlocacaoVeiuculo.Data.User;
 using AlocacaoVeiuculo.Data.Vehicles;
-
-
 using AlocacaoVeiuculo.Pages;
-using Microsoft.Maui.Controls;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AlocacaoVeiuculo.RentalManager.Model.Users;
@@ -62,18 +50,6 @@ namespace AlocacaoVeiuculo
             dataDevolucao = datePickerDevolucao.Date;
             horaDevolucao = timePickerDevolucao.Time;
 
-            var reserva = new Reserva
-            {
-                LocalRetirada = localRetirada,
-                DataRetirada = dataRetirada,
-                HoraRetirada = horaRetirada,
-                DataDevolucao = dataDevolucao,
-                HoraDevolucao = horaDevolucao
-            };
-
-            var reservaData = new ReservaData();
-            await reservaData.AdicionarReservaAsync(reserva);
-
             var disponibilidadeData = new DisponibilidadeData();
             var veiculosDisponiveis = await disponibilidadeData.ObterVeiculosDisponiveisAsync(dataRetirada, horaRetirada, dataDevolucao, horaDevolucao);
 
@@ -84,7 +60,7 @@ namespace AlocacaoVeiuculo
 
             if (veiculosDisponiveis.Any())
             {
-                foreach (var disponibilidade in veiculosDisponiveis)
+                foreach (var disponibilidade in veiculosDisponiveis.Where(d => d.IsDisponivel))
                 {
                     if (disponibilidade.TipoVeiculo == "Carro")
                     {
@@ -97,7 +73,8 @@ namespace AlocacaoVeiuculo
                                          $"Ano: {carro.Ano}\n" +
                                          $"Quilometragem: {carro.Quilometragem}\n" +
                                          $"Combustível: {carro.TipoCombustivel}\n" +
-                                         $"Portas: {carro.NumeroPortas}\n\n";
+                                         $"Portas: {carro.NumeroPortas}\n" +
+                                         $"Disponível: {(carro.IsDisponivel ? "Sim" : "Não")}\n\n";
                         }
                     }
                     else if (disponibilidade.TipoVeiculo == "Moto")
@@ -110,7 +87,8 @@ namespace AlocacaoVeiuculo
                                          $"Placa: {moto.Placa}\n" +
                                          $"Ano: {moto.Ano}\n" +
                                          $"Quilometragem: {moto.Quilometragem}\n" +
-                                         $"Combustível: {moto.TipoCombustivel}\n\n";
+                                         $"Combustível: {moto.TipoCombustivel}\n" +
+                                         $"Disponível: {(moto.IsDisponivel ? "Sim" : "Não")}\n\n";
                         }
                     }
                 }
@@ -135,6 +113,7 @@ namespace AlocacaoVeiuculo
                 }
             }
         }
+
 
 
         public void MostrarBotaoUsuarioLogado(Usuario usuario)

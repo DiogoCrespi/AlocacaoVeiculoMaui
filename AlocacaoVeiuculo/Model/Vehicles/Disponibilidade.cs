@@ -15,6 +15,8 @@ namespace AlocacaoVeiuculo.RentalManager.Model.Vehicles
         public string ImagemPath { get; set; } // Caminho da imagem
         public string Modelo { get; set; }
         public string TipoCombustivel { get; set; }
+        public bool IsDisponivel { get; set; } = true;
+
 
     }
 }

@@ -6,12 +6,15 @@ using System;
 using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 using AlocacaoVeiuculo.Data.Reservations;
 using AlocacaoVeiuculo.Data.Vehicles;
+using Microsoft.Maui;
+
 
 namespace AlocacaoVeiuculo.Pages
     {
         public partial class FuncionarioDashboard : ContentPage
         {
-            private ReservaData reservaData;
+        private DisponibilidadeData disponibilidadeData = new DisponibilidadeData();
+        private ReservaData reservaData;
             private Reserva reservaSelecionada;
             private bool exibirCanceladas = true;
 
@@ -29,9 +32,21 @@ namespace AlocacaoVeiuculo.Pages
 
         }
 
+        private async void OnCadasVeiculosClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var gerenciarVeiculosPage = new CadastrarVeiculoPage(); // Instancie a página desejada
+                await Navigation.PushAsync(gerenciarVeiculosPage); // Navega para a página de gerenciamento de veículos
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", ex.Message, "OK");
+            }
+        }
+
         private async void OnGerenciarVeiculosClicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Veículos", "Opção de gerenciamento de veículos ainda será implementada.", "OK");
         }
 
 
@@ -44,6 +59,7 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerenciarReservasClicked(object sender, EventArgs e)
         {
+
             HeaderGrid.IsVisible = true;
 
             try
@@ -162,14 +178,6 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
-
-
-
-
-
-
-
-
         private async Task CancelarReserva(int reservaId)
         {
             try
@@ -209,7 +217,6 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
-
         private async Task NotificarUsuarioReservaExcluida(int reservaId, string motivo)
         {
             try
@@ -232,23 +239,6 @@ namespace AlocacaoVeiuculo.Pages
                 await DisplayAlert("Erro", $"Falha ao notificar o cliente: {ex.Message}", "OK");
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private async Task ModificarReserva(Reserva reserva)
         {

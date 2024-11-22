@@ -69,7 +69,7 @@ namespace AlocacaoVeiuculo.Pages
                 var reservas = await reservaData.ObterReservasPorUsuarioAsync(usuario.Id);
 
                 Reservas.Clear();
-                foreach (var reserva in reservas.Where(r => r.IsDisponivel)) // Filtra apenas as reservas disponíveis
+                foreach (var reserva in reservas.Where(r => r.IsDisponivel)) 
                 {
                     if (reserva.VeiculoTipo == "Carro")
                     {
@@ -85,7 +85,7 @@ namespace AlocacaoVeiuculo.Pages
                     Reservas.Add(reserva);
                 }
 
-                foreach (var reserva in reservas.Where(r => !r.IsDisponivel)) // Adiciona reservas indisponíveis para destacar
+                foreach (var reserva in reservas.Where(r => !r.IsDisponivel)) 
                 {
                     reserva.ModeloVeiculo = "Reserva Indisponível";
                     reserva.LocalRetirada = reserva.MotivoExclusao ?? "Motivo não informado";
@@ -335,10 +335,6 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
-
-
-
-
         private async void OnSolicitarAluguelClicked(object sender, EventArgs e)
         {
             // Alterna a visibilidade do painel "Alugar Veículo"
@@ -361,7 +357,6 @@ namespace AlocacaoVeiuculo.Pages
                 FrameCaixasVeiculos.IsVisible = false;
             }
         }
-
 
         private void OnSelecionarCarrosClicked(object sender, EventArgs e)
         {
@@ -489,8 +484,6 @@ namespace AlocacaoVeiuculo.Pages
             GerarCaixasVeiculos(); // Atualiza a interface para refletir a seleção
         }
 
-
-
         private async void OnFinalizarAlocacaoClicked(object sender, EventArgs e)
         {
             FrameCaixasVeiculos.IsVisible = false;
@@ -519,11 +512,6 @@ namespace AlocacaoVeiuculo.Pages
         }
 
 
-
-
-
-
-
         //--------------------------------------------CancelarReserva------------------------------------
 
         private void OnCancelarReservaClicked(object sender, EventArgs e)
@@ -545,11 +533,6 @@ namespace AlocacaoVeiuculo.Pages
             FrameReservas.IsVisible = true;
             FrameConfirmacao.IsVisible = false;
         }
-
-
-
-
-
 
         private void AtualizarGridReservas()
         {
@@ -619,10 +602,6 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
-
-
-
-
         private void SelecionarReserva(Reserva reserva, Frame frame)
         {
             reservaSelecionada = reserva;
@@ -636,7 +615,6 @@ namespace AlocacaoVeiuculo.Pages
             FrameReservas.IsVisible = false;
             FrameConfirmacao.IsVisible = true;
         }
-
 
         private void OnCancelConfirmacaoClicked(object sender, EventArgs e)
         {
@@ -689,9 +667,6 @@ namespace AlocacaoVeiuculo.Pages
                 }
             }
         }
-
-
-
 
         private async Task NotificarUsuarioReservaExcluida(int reservaId, string motivo)
         {

@@ -1,7 +1,4 @@
 ﻿using SQLite;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.Maui.Storage;
 using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
 using AlocacaoVeiuculo.RentalManager.Model.Users;
 using AlocacaoVeiuculo.RentalManager.Model.Reservations;
@@ -22,10 +19,10 @@ namespace AlocacaoVeiuculo.Services
                 //// Verifica se o banco de dados existe e o exclui se necessário
                 //if (File.Exists(dbPath))
                 //{
-                //    File.Delete(dbPath);
+                //   File.Delete(dbPath);
                 //}
 
-
+                // Criação direta das tabelas 
                 database = new SQLiteAsyncConnection(dbPath);
                 await database.CreateTableAsync<Carro>();
                 await database.CreateTableAsync<Moto>();
@@ -33,6 +30,7 @@ namespace AlocacaoVeiuculo.Services
                 await database.CreateTableAsync<Usuario>();
                 await database.CreateTableAsync<Reserva>();
                 await database.CreateTableAsync<Disponibilidade>();
+
 
                 // Verificar e adicionar o administrador
                 var admin = await database.Table<Usuario>().FirstOrDefaultAsync(u => u.Nome == "admin");
