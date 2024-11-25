@@ -28,8 +28,41 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerarRelatoriosClicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Relatórios", "Opção de relatórios ainda será implementada.", "OK");
+            // Mostrar mensagem de processamento
+            await DisplayAlert("Relatórios", "Gerando relatório...", "OK");
 
+            // Obter dados do banco de dados
+            var carros = await new CarroData().ObterCarrosAsync();
+            var motos = await new MotoData().ObterMotosAsync();
+            var disponibilidades = await new DisponibilidadeData().ObterDisponibilidadesAsync();
+
+            // Construir o relatório
+            string relatorio = "Relatório de Veículos e Reservas\n\n";
+
+            relatorio += "Carros:\n";
+            foreach (var carro in carros)
+            {
+                relatorio += $"- Modelo: {carro.Modelo}, Placa: {carro.Placa}, Ano: {carro.Ano}, Disponível: {carro.IsDisponivel}\n";
+            }
+
+            relatorio += "\nMotos:\n";
+            foreach (var moto in motos)
+            {
+                relatorio += $"- Modelo: {moto.Modelo}, Placa: {moto.Placa}, Ano: {moto.Ano}, Disponível: {moto.IsDisponivel}\n";
+            }
+
+            relatorio += "\nDisponibilidades:\n";
+            foreach (var disponibilidade in disponibilidades)
+            {
+                relatorio += $"- Veículo: {disponibilidade.Modelo}, Tipo: {disponibilidade.TipoVeiculo}, " +
+                             $"Início: {disponibilidade.DataInicio.ToShortDateString()} {disponibilidade.HoraInicio}, " +
+                             $"Fim: {disponibilidade.DataFim.ToShortDateString()} {disponibilidade.HoraFim}, " +
+                             $"Disponível: {disponibilidade.IsDisponivel}\n";
+            }
+
+            // Exibir o relatório no Frame
+            LabelRelatorio.Text = relatorio;
+            FrameRelatorio.IsVisible = true;
         }
 
         private async void OnCadasVeiculosClicked(object sender, EventArgs e)

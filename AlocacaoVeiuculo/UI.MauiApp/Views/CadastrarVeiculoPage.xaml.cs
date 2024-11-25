@@ -68,7 +68,6 @@ namespace AlocacaoVeiuculo
             if (pickerDisponibilidadeTipoVeiculo.SelectedItem?.ToString() == "Carro")
             {
                 var carros = await carroData.ObterCarrosAsync();
-                carros = carros.Where(c => c.IsDisponivel).ToList();
                 pickerDisponibilidadeCarro.ItemsSource = carros.Any() ? carros : new List<Carro> { new Carro { Modelo = "Nenhum veículo cadastrado" } };
                 pickerDisponibilidadeCarro.ItemDisplayBinding = new Binding("Modelo");
                 disponibilidadeCarroSection.IsVisible = true;
@@ -77,7 +76,6 @@ namespace AlocacaoVeiuculo
             else if (pickerDisponibilidadeTipoVeiculo.SelectedItem?.ToString() == "Moto")
             {
                 var motos = await motoData.ObterMotosAsync();
-                motos = motos.Where(m => m.IsDisponivel).ToList();
                 pickerDisponibilidadeMoto.ItemsSource = motos.Any() ? motos : new List<Moto> { new Moto { Modelo = "Nenhum veículo cadastrado" } };
                 pickerDisponibilidadeMoto.ItemDisplayBinding = new Binding("Modelo");
                 disponibilidadeMotoSection.IsVisible = true;
@@ -157,8 +155,7 @@ namespace AlocacaoVeiuculo
                     Quilometragem = double.Parse(entryQuilometragemCarro.Text),
                     TipoCombustivel = pickerTipoCombustivelCarro.SelectedItem.ToString(),
                     NumeroPortas = int.Parse(pickerNumeroPortasCarro.SelectedItem.ToString()),
-                    ImagemPath = imagemCarroPath,
-                    IsDisponivel = true
+                    ImagemPath = imagemCarroPath
                 };
 
                 await carroData.AdicionarCarroAsync(carro);
@@ -180,8 +177,7 @@ namespace AlocacaoVeiuculo
                     Ano = (int)pickerAnoMoto.SelectedItem,
                     Quilometragem = double.Parse(entryQuilometragemMoto.Text),
                     TipoCombustivel = pickerTipoCombustivelMoto.SelectedItem.ToString(),
-                    ImagemPath = imagemMotoPath,
-                    IsDisponivel = true
+                    ImagemPath = imagemMotoPath
                 };
 
                 await motoData.AdicionarMotoAsync(moto);
@@ -212,6 +208,13 @@ namespace AlocacaoVeiuculo
                     await DisplayAlert("Erro", "Selecione um veículo válido.", "OK");
                     return;
                 }
+
+                if (!carroSelecionado.IsDisponivel)
+                {
+                    await DisplayAlert("Erro", "Este veículo já está indisponível.", "OK");
+                    return;
+                }
+
                 veiculoId = carroSelecionado.Id;
                 veiculoDetalhes = $"Carro: {carroSelecionado.Modelo}\n" +
                                   $"Placa: {carroSelecionado.Placa}\n" +
@@ -220,26 +223,35 @@ namespace AlocacaoVeiuculo
                                   $"Combustível: {carroSelecionado.TipoCombustivel}\n" +
                                   $"Portas: {carroSelecionado.NumeroPortas}";
 
+                // Atualizar disponibilidade
                 carroSelecionado.IsDisponivel = false;
-                await carroData.AtualizarCarroAsync(carroSelecionado);
+                await carroData.AtualizarCarroAsync(carroSelecionado); // Método para atualizar o carro no banco de dados
             }
             else if (tipoVeiculo == "Moto")
             {
-                var motoSelecionado = pickerDisponibilidadeMoto.SelectedItem as Moto;
-                if (motoSelecionado == null || motoSelecionado.Modelo == "Nenhum veículo cadastrado")
+                var motoSelecionada = pickerDisponibilidadeMoto.SelectedItem as Moto;
+                if (motoSelecionada == null || motoSelecionada.Modelo == "Nenhum veículo cadastrado")
                 {
                     await DisplayAlert("Erro", "Selecione um veículo válido.", "OK");
                     return;
                 }
-                veiculoId = motoSelecionado.Id;
-                veiculoDetalhes = $"Moto: {motoSelecionado.Modelo}\n" +
-                                  $"Placa: {motoSelecionado.Placa}\n" +
-                                  $"Ano: {motoSelecionado.Ano}\n" +
-                                  $"Quilometragem: {motoSelecionado.Quilometragem}\n" +
-                                  $"Combustível: {motoSelecionado.TipoCombustivel}";
 
-                motoSelecionado.IsDisponivel = false;
-                await motoData.AtualizarMotoAsync(motoSelecionado);
+                if (!motoSelecionada.IsDisponivel)
+                {
+                    await DisplayAlert("Erro", "Este veículo já está indisponível.", "OK");
+                    return;
+                }
+
+                veiculoId = motoSelecionada.Id;
+                veiculoDetalhes = $"Moto: {motoSelecionada.Modelo}\n" +
+                                  $"Placa: {motoSelecionada.Placa}\n" +
+                                  $"Ano: {motoSelecionada.Ano}\n" +
+                                  $"Quilometragem: {motoSelecionada.Quilometragem}\n" +
+                                  $"Combustível: {motoSelecionada.TipoCombustivel}";
+
+                // Atualizar disponibilidade
+                motoSelecionada.IsDisponivel = false;
+                await motoData.AtualizarMotoAsync(motoSelecionada); // Método para atualizar a moto no banco de dados
             }
             else
             {
@@ -254,8 +266,7 @@ namespace AlocacaoVeiuculo
                 DataInicio = tipoVeiculo == "Carro" ? dateInicioDisponibilidadeCarro.Date : dateInicioDisponibilidadeMoto.Date,
                 HoraInicio = tipoVeiculo == "Carro" ? timeInicioDisponibilidadeCarro.Time : timeInicioDisponibilidadeMoto.Time,
                 DataFim = tipoVeiculo == "Carro" ? dateFimDisponibilidadeCarro.Date : dateFimDisponibilidadeMoto.Date,
-                HoraFim = tipoVeiculo == "Carro" ? timeFimDisponibilidadeCarro.Time : timeFimDisponibilidadeMoto.Time,
-                IsDisponivel = false
+                HoraFim = tipoVeiculo == "Carro" ? timeFimDisponibilidadeCarro.Time : timeFimDisponibilidadeMoto.Time
             };
 
             await disponibilidadeData.AdicionarDisponibilidadeAsync(disponibilidade);
@@ -267,6 +278,8 @@ namespace AlocacaoVeiuculo
             disponibilidadeCarroSection.IsVisible = false;
             disponibilidadeMotoSection.IsVisible = false;
         }
+
+
         private void ResetFields()
         {
             entryPlacaCarro.Text = "";
