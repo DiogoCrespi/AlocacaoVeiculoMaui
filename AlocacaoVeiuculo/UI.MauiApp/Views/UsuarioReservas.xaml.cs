@@ -69,26 +69,35 @@ namespace AlocacaoVeiuculo.Pages
                 var reservas = await reservaData.ObterReservasPorUsuarioAsync(usuario.Id);
 
                 Reservas.Clear();
-                foreach (var reserva in reservas.Where(r => r.IsDisponivel)) 
+                foreach (var reserva in reservas)
                 {
                     if (reserva.VeiculoTipo == "Carro")
                     {
                         var carro = await new CarroData().ObterCarroPorIdAsync(reserva.VeiculoId);
-                        reserva.ModeloVeiculo = carro?.Modelo ?? "Modelo não encontrado";
+                        if (carro != null)
+                        {
+                            reserva.ModeloVeiculo = carro.Modelo;
+                            reserva.IsDisponivel = carro.IsDisponivel;
+                        }
+                        else
+                        {
+                            reserva.ModeloVeiculo = "Modelo não encontrado";
+                        }
                     }
                     else if (reserva.VeiculoTipo == "Moto")
                     {
                         var moto = await new MotoData().ObterMotoPorIdAsync(reserva.VeiculoId);
-                        reserva.ModeloVeiculo = moto?.Modelo ?? "Modelo não encontrado";
+                        if (moto != null)
+                        {
+                            reserva.ModeloVeiculo = moto.Modelo;
+                            reserva.IsDisponivel = moto.IsDisponivel;
+                        }
+                        else
+                        {
+                            reserva.ModeloVeiculo = "Modelo não encontrado";
+                        }
                     }
 
-                    Reservas.Add(reserva);
-                }
-
-                foreach (var reserva in reservas.Where(r => !r.IsDisponivel)) 
-                {
-                    reserva.ModeloVeiculo = "Reserva Indisponível";
-                    reserva.LocalRetirada = reserva.MotivoExclusao ?? "Motivo não informado";
                     Reservas.Add(reserva);
                 }
             }
@@ -381,17 +390,16 @@ namespace AlocacaoVeiuculo.Pages
             }
 
             var veiculosFiltrados = veiculosDisponiveis
-                .Where(v => v.TipoVeiculo.Equals(tipoVeiculoSelecionado, StringComparison.OrdinalIgnoreCase))
+                .Where(v => v.TipoVeiculo.Equals(tipoVeiculoSelecionado, StringComparison.OrdinalIgnoreCase) && v.IsDisponivel)
                 .ToList();
 
-            // Certifique-se de limpar o conteúdo do Grid antes de adicionar novos elementos
             GridCaixasVeiculos.Children.Clear();
 
             if (veiculosFiltrados.Any())
             {
                 FrameCaixasVeiculos.IsVisible = true;
 
-                int colunas = 4; // Define o número de colunas
+                int colunas = 4;
                 GridCaixasVeiculos.ColumnDefinitions.Clear();
                 for (int i = 0; i < colunas; i++)
                 {
@@ -418,7 +426,7 @@ namespace AlocacaoVeiuculo.Pages
                     {
                         Source = string.IsNullOrEmpty(veiculo.ImagemPath) ? "placeholder.png" : ImageSource.FromFile(veiculo.ImagemPath),
                         HeightRequest = 120,
-                        WidthRequest = 200, // Ajuste aqui para aumentar a largura da imagem
+                        WidthRequest = 200,
                         Aspect = Aspect.AspectFill
                     },
                     new Label
@@ -436,14 +444,13 @@ namespace AlocacaoVeiuculo.Pages
                     },
                     new Label
                     {
-                        Text = "Disponível",
-                        TextColor = Colors.Gray,
+                        Text = $"Disponível: {(veiculo.IsDisponivel ? "Sim" : "Não")}",
+                        TextColor = veiculo.IsDisponivel ? Colors.Green : Colors.Red,
                         HorizontalOptions = LayoutOptions.Center
                     }
                 }
                     };
 
-                    // Adiciona uma borda simulada para destacar o veículo selecionado
                     var frame = new Frame
                     {
                         Content = stackLayout,
@@ -533,6 +540,7 @@ namespace AlocacaoVeiuculo.Pages
             FrameReservas.IsVisible = true;
             FrameConfirmacao.IsVisible = false;
         }
+
 
         private void AtualizarGridReservas()
         {
