@@ -76,6 +76,11 @@ namespace AlocacaoVeiuculo.Data.Reservations
             var connection = await DatabaseService.GetDatabaseAsync();
             await connection.ExecuteAsync("ALTER TABLE Reserva ADD COLUMN IsDisponivel INTEGER DEFAULT 1");
         }
+        public async Task<List<Reserva>> ObterTodasReservasAsync()
+        {
+            return await database.Table<Reserva>().ToListAsync();
+        }
+
 
     }
 }

@@ -123,25 +123,25 @@
                         <!-- Título e Botão -->
                         <Grid Grid.Row="0" ColumnDefinitions="*,Auto" x:Name="HeaderGrid" IsVisible="True">
                             <Label Grid.Column="0"
-           Text="Gerenciar Reservas"
-           FontSize="Large"
-           FontAttributes="Bold"
-           HorizontalOptions="Start"
-           VerticalOptions="Center"
-           TextColor="{StaticResource LabelText}"
-           Margin="0,0,10,0" />
+                                   Text="Gerenciar Reservas"
+                                   FontSize="Large"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource LabelText}"
+                                   Margin="0,0,10,0" />
                             <Button Grid.Column="1"
-            x:Name="ToggleCanceladasButton"
-            Text="Ocultar Reservas Canceladas"
-            BackgroundColor="{StaticResource ButtonBackground}"
-            TextColor="{StaticResource ButtonText}"
-            BorderColor="{StaticResource ButtonBorder}"
-            BorderWidth="1"
-            CornerRadius="10"
-            Padding="10,5"
-            HorizontalOptions="End"
-            VerticalOptions="Center"
-            Clicked="OnToggleReservasCanceladasClicked" />
+                                x:Name="ToggleCanceladasButton"
+                                Text="Ocultar Reservas Canceladas"
+                                BackgroundColor="{StaticResource ButtonBackground}"
+                                TextColor="{StaticResource ButtonText}"
+                                BorderColor="{StaticResource ButtonBorder}"
+                                BorderWidth="1"
+                                CornerRadius="10"
+                                Padding="10,5"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center"
+                                Clicked="OnToggleReservasCanceladasClicked" />
                         </Grid>
 
 
@@ -243,87 +243,44 @@
                 </Frame>
 
                 <Frame x:Name="FrameRelatorio"
-IsVisible="False"
-BackgroundColor="{StaticResource Gray600}"
-Padding="20"
-Margin="0,20,0,20"
-HasShadow="True">
+                        IsVisible="False"
+                        BackgroundColor="{StaticResource Gray600}"
+                        Padding="20"
+                        Margin="0,20,0,20"
+                        HasShadow="True">
                     <ScrollView>
                         <StackLayout Spacing="20">
                             <!-- Título do Relatório -->
                             <Label x:Name="LabelTituloRelatorio"
-            Text="Relatório de Veículos e Reservas"
-            FontSize="24"
-            FontAttributes="Bold"
-            TextColor="{StaticResource LabelText}"
-            HorizontalOptions="Center" />
+                                Text="Relatório de Veículos e Reservas"
+                                FontSize="24"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource LabelText}"
+                                HorizontalOptions="Center" />
 
                             <!-- Linha decorativa -->
                             <BoxView HeightRequest="2"
-              BackgroundColor="{StaticResource AccentColor}"
-              HorizontalOptions="FillAndExpand" />
+                                  BackgroundColor="{StaticResource AccentColor}"
+                                  HorizontalOptions="FillAndExpand" />
 
                             <!-- Seção de informações -->
                             <StackLayout Spacing="15">
-                                <!-- Informações gerais (exemplo de dados do relatório) -->
-                                <StackLayout Padding="10" BackgroundColor="{StaticResource CardBackground}">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Veículo -->
-                                        <Label Text="Veículo:"
-                        FontSize="Small"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource SecondaryTextColor}"
-                        Grid.Row="0" Grid.Column="0" />
-                                        <Label Text="Carro XYZ"
-                        FontSize="Small"
-                        TextColor="{StaticResource LabelText}"
-                        Grid.Row="0" Grid.Column="1" />
-
-                                        <!-- Reserva -->
-                                        <Label Text="Reserva:"
-                        FontSize="Small"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource SecondaryTextColor}"
-                        Grid.Row="1" Grid.Column="0" />
-                                        <Label Text="22/11/2024 a 25/11/2024"
-                        FontSize="Small"
-                        TextColor="{StaticResource LabelText}"
-                        Grid.Row="1" Grid.Column="1" />
-
-                                        <!-- Status da Reserva -->
-                                        <Label Text="Status:"
-                        FontSize="Small"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource SecondaryTextColor}"
-                        Grid.Row="2" Grid.Column="0" />
-                                        <Label Text="Confirmada"
-                        FontSize="Small"
-                        TextColor="{StaticResource LabelText}"
-                        Grid.Row="2" Grid.Column="1" />
-                                    </Grid>
-                                </StackLayout>
-
+                           
                                 <!-- Detalhes adicionais -->
                                 <Label x:Name="LabelRelatorio"
-                Text="Detalhes adicionais sobre a reserva ou veículo podem ser exibidos aqui."
-                FontSize="Small"
-                TextColor="{StaticResource LabelText}"
-                LineBreakMode="WordWrap" />
+                                        Text="Detalhes adicionais sobre a reserva ou veículo podem ser exibidos aqui."
+                                        FontSize="Small"
+                                        TextColor="{StaticResource LabelText}"
+                                        LineBreakMode="WordWrap" />
                             </StackLayout>
                         </StackLayout>
                     </ScrollView>
                 </Frame>
 
+                
+                
+                
+                
             </StackLayout>
         </ScrollView>
 

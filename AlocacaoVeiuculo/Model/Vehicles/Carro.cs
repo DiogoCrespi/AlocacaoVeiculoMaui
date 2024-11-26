@@ -13,7 +13,8 @@ namespace AlocacaoVeiuculo.RentalManager.Model.Vehicles
         public int NumeroPortas { get; set; }
         public string TipoCombustivel { get; set; }
         public string ImagemPath { get; set; }
+        public bool IsAlugado { get; set; } = true;
         public bool IsDisponivel { get; set; } = true;
-
+        
     }
 }

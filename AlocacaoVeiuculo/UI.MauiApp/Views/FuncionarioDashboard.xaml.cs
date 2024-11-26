@@ -7,6 +7,15 @@ using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 using AlocacaoVeiuculo.Data.Reservations;
 using AlocacaoVeiuculo.Data.Vehicles;
 using Microsoft.Maui;
+using AlocacaoVeiuculo.Data.User;
+using Microsoft.Maui.Controls;
+using AlocacaoVeiuculo.Data.Vehicles;
+using AlocacaoVeiuculo.Data.Reservations;
+using AlocacaoVeiuculo.RentalManager.Model.Users;
+using AlocacaoVeiuculo.RentalManager.Model.Reservations;
+using System.Linq;
+using System.Threading.Tasks;
+using SQLite;
 
 
 namespace AlocacaoVeiuculo.Pages
@@ -15,55 +24,136 @@ namespace AlocacaoVeiuculo.Pages
         {
         private DisponibilidadeData disponibilidadeData = new DisponibilidadeData();
         private ReservaData reservaData;
-            private Reserva reservaSelecionada;
-            private bool exibirCanceladas = true;
+        private Reserva reservaSelecionada;
+        private readonly CarroData carroData;
+        private readonly MotoData motoData;
+        //private readonly DisponibilidadeData disponibilidadeData;
+       // private readonly ReservaData reservaData;
+        private readonly SQLiteAsyncConnection database;
+
+        private bool exibirCanceladas = true;
 
         public FuncionarioDashboard()
             {
                 InitializeComponent();
+                carroData = new CarroData();
+                motoData = new MotoData();
+                disponibilidadeData = new DisponibilidadeData();
                 reservaData = new ReservaData();
-            }
-
+        }
 
 
         private async void OnGerarRelatoriosClicked(object sender, EventArgs e)
         {
-            // Mostrar mensagem de processamento
             await DisplayAlert("Relatórios", "Gerando relatório...", "OK");
 
-            // Obter dados do banco de dados
-            var carros = await new CarroData().ObterCarrosAsync();
-            var motos = await new MotoData().ObterMotosAsync();
-            var disponibilidades = await new DisponibilidadeData().ObterDisponibilidadesAsync();
+            // Obter dados de cada tabela do banco
+            var carros = await carroData.ObterCarrosAsync();
+            var motos = await motoData.ObterMotosAsync();
+            var disponibilidades = await disponibilidadeData.ObterDisponibilidadesAsync();
+            var reservas = await reservaData.ObterTodasReservasAsync();
+            var usuarios = await new UsuarioData().ObterUsuariosAsync();
 
-            // Construir o relatório
-            string relatorio = "Relatório de Veículos e Reservas\n\n";
+            // Limpar o conteúdo do Frame de Relatório
+            var stackLayout = new StackLayout { Spacing = 15 };
 
-            relatorio += "Carros:\n";
+            // Adicionar título "Usuários"
+            stackLayout.Children.Add(new Label
+            {
+                Text = "Usuários:",
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 16,
+                TextColor = Colors.White
+            });
+            foreach (var usuario in usuarios)
+            {
+                stackLayout.Children.Add(new Label
+                {
+                    Text = $"- Nome: {usuario.Nome}, CPF: {usuario.Cpf}, Telefone: {usuario.Telefone}, Disponível: {usuario.IsDisponivel}",
+                    FontSize = 14,
+                    TextColor = Colors.LightGray
+                });
+            }
+
+            // Adicionar título "Carros"
+            stackLayout.Children.Add(new Label
+            {
+                Text = "Carros:",
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 16,
+                TextColor = Colors.White
+            });
             foreach (var carro in carros)
             {
-                relatorio += $"- Modelo: {carro.Modelo}, Placa: {carro.Placa}, Ano: {carro.Ano}, Disponível: {carro.IsDisponivel}\n";
+                stackLayout.Children.Add(new Label
+                {
+                    Text = $"- Modelo: {carro.Modelo}, Placa: {carro.Placa}, Ano: {carro.Ano}, Quilometragem: {carro.Quilometragem}, Combustível: {carro.TipoCombustivel}, Disponível: {carro.IsDisponivel}, Alugado: {carro.IsAlugado}",
+                    FontSize = 14,
+                    TextColor = Colors.LightGray
+                });
             }
 
-            relatorio += "\nMotos:\n";
+            // Adicionar título "Motos"
+            stackLayout.Children.Add(new Label
+            {
+                Text = "Motos:",
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 16,
+                TextColor = Colors.White
+            });
             foreach (var moto in motos)
             {
-                relatorio += $"- Modelo: {moto.Modelo}, Placa: {moto.Placa}, Ano: {moto.Ano}, Disponível: {moto.IsDisponivel}\n";
+                stackLayout.Children.Add(new Label
+                {
+                    Text = $"- Modelo: {moto.Modelo}, Placa: {moto.Placa}, Ano: {moto.Ano}, Quilometragem: {moto.Quilometragem}, Combustível: {moto.TipoCombustivel}, Disponível: {moto.IsDisponivel}, Alugado: {moto.IsAlugado}",
+                    FontSize = 14,
+                    TextColor = Colors.LightGray
+                });
             }
 
-            relatorio += "\nDisponibilidades:\n";
+            // Adicionar título "Disponibilidades"
+            stackLayout.Children.Add(new Label
+            {
+                Text = "Disponibilidades:",
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 16,
+                TextColor = Colors.White
+            });
             foreach (var disponibilidade in disponibilidades)
             {
-                relatorio += $"- Veículo: {disponibilidade.Modelo}, Tipo: {disponibilidade.TipoVeiculo}, " +
-                             $"Início: {disponibilidade.DataInicio.ToShortDateString()} {disponibilidade.HoraInicio}, " +
-                             $"Fim: {disponibilidade.DataFim.ToShortDateString()} {disponibilidade.HoraFim}, " +
-                             $"Disponível: {disponibilidade.IsDisponivel}\n";
+                stackLayout.Children.Add(new Label
+                {
+                    Text = $"- Veículo: {disponibilidade.Modelo}, Tipo: {disponibilidade.TipoVeiculo}, Início: {disponibilidade.DataInicio:dd/MM/yyyy} às {disponibilidade.HoraInicio}, Fim: {disponibilidade.DataFim:dd/MM/yyyy} às {disponibilidade.HoraFim}, Disponível: {disponibilidade.IsDisponivel}",
+                    FontSize = 14,
+                    TextColor = Colors.LightGray
+                });
             }
 
-            // Exibir o relatório no Frame
-            LabelRelatorio.Text = relatorio;
+            // Adicionar título "Reservas"
+            stackLayout.Children.Add(new Label
+            {
+                Text = "Reservas:",
+                FontAttributes = FontAttributes.Bold,
+                FontSize = 16,
+                TextColor = Colors.White
+            });
+            foreach (var reserva in reservas)
+            {
+                stackLayout.Children.Add(new Label
+                {
+                    Text = $"- Cliente ID: {reserva.UsuarioId}, Veículo: {reserva.ModeloVeiculo} ({reserva.VeiculoTipo}), Retirada: {reserva.DataRetirada:dd/MM/yyyy} às {reserva.HoraRetirada}, Devolução: {reserva.DataDevolucao:dd/MM/yyyy} às {reserva.HoraDevolucao}, Motivo Exclusão: {(string.IsNullOrEmpty(reserva.MotivoExclusao) ? "N/A" : reserva.MotivoExclusao)}, Disponível: {reserva.IsDisponivel}",
+                    FontSize = 14,
+                    TextColor = Colors.LightGray
+                });
+            }
+
+            // Atualizar o FrameRelatorio com o conteúdo gerado
+            FrameRelatorio.Content = new ScrollView { Content = stackLayout };
             FrameRelatorio.IsVisible = true;
         }
+
+
+
 
         private async void OnCadasVeiculosClicked(object sender, EventArgs e)
         {

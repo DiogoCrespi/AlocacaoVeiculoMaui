@@ -12,6 +12,7 @@ namespace AlocacaoVeiuculo.RentalManager.Model.Vehicles
         public double Quilometragem { get; set; }
         public string TipoCombustivel { get; set; }
         public string ImagemPath { get; set; }
+        public bool IsAlugado { get; set; } = true;
         public bool IsDisponivel { get; set; } = true;
     }
 }

@@ -44,12 +44,24 @@ namespace AlocacaoVeiuculo
 
         private async void OnPesquisarClicked(object sender, EventArgs e)
         {
+            // Captura os valores dos campos de entrada
             localRetirada = entryLocalRetirada.Text;
             dataRetirada = datePickerRetirada.Date;
             horaRetirada = timePickerRetirada.Time;
             dataDevolucao = datePickerDevolucao.Date;
             horaDevolucao = timePickerDevolucao.Time;
 
+            
+            DateTime dataHoraRetirada = dataRetirada.Add(horaRetirada);
+            DateTime dataHoraDevolucao = dataDevolucao.Add(horaDevolucao);
+
+            if (dataHoraRetirada >= dataHoraDevolucao)
+            {
+                await DisplayAlert("Erro nas Datas",
+                    "A data ou hora de retirada nao condizem com as de devolução.",
+                    "OK");
+                return; 
+            }
             var disponibilidadeData = new DisponibilidadeData();
             var veiculosDisponiveis = await disponibilidadeData.ObterVeiculosDisponiveisAsync(dataRetirada, horaRetirada, dataDevolucao, horaDevolucao);
 
@@ -113,6 +125,7 @@ namespace AlocacaoVeiuculo
                 }
             }
         }
+
 
 
 

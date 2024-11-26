@@ -513,10 +513,33 @@ namespace AlocacaoVeiuculo.Pages
             };
 
             await reservaData.AdicionarReservaAsync(reserva);
+
+            if (veiculoSelecionado.TipoVeiculo == "Carro")
+            {
+                var carroData = new CarroData();
+                var carro = await carroData.ObterCarroPorIdAsync(veiculoSelecionado.VeiculoId);
+                if (carro != null)
+                {
+                    carro.IsAlugado = true; // Marca o carro como alugado
+                    await carroData.AtualizarCarroAsync(carro);
+                }
+            }
+            else if (veiculoSelecionado.TipoVeiculo == "Moto")
+            {
+                var motoData = new MotoData();
+                var moto = await motoData.ObterMotoPorIdAsync(veiculoSelecionado.VeiculoId);
+                if (moto != null)
+                {
+                    moto.IsAlugado = true; // Marca a moto como alugada
+                    await motoData.AtualizarMotoAsync(moto);
+                }
+            }
+
             await DisplayAlert("Reserva Confirmada", "Seu aluguel foi registrado com sucesso!", "OK");
             CarregarReservas();
             AlugarVeiculoPanel.IsVisible = false;
         }
+
 
 
         //--------------------------------------------CancelarReserva------------------------------------
