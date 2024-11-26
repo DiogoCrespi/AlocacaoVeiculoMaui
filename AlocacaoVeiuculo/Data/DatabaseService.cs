@@ -18,9 +18,9 @@ namespace AlocacaoVeiuculo.Services
 
                 //// Verifica se o banco de dados existe e o exclui se necessário
                 //if (File.Exists(dbPath))
-               // {
-                //   File.Delete(dbPath);
-              //  }
+                //{
+                //  File.Delete(dbPath);
+                //}
 
                 // Criação direta das tabelas 
                 database = new SQLiteAsyncConnection(dbPath);

@@ -34,16 +34,34 @@
                     <StackLayout>
 
                         <!-- Picker para selecionar entre carro e moto -->
-                        <StackLayout Spacing="5">
-                            <Label Text="O que gostaria de cadastrar hoje?" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource White}" HorizontalOptions="Center" />
-                            <Label />
-                            <Picker x:Name="pickerTipoVeiculo" Title="Cadastrar Veículo" TitleColor="{StaticResource White}" SelectedIndexChanged="OnTipoVeiculoChanged">
-                                <Picker.Items>
-                                    <x:String>Carro</x:String>
-                                    <x:String>Moto</x:String>
-                                </Picker.Items>
-                            </Picker>
+                        <StackLayout Spacing="10" Padding="10" HorizontalOptions="Center">
+                            <Label Text="O que gostaria de cadastrar hoje?" 
+                               FontSize="24" 
+                               FontAttributes="Bold" 
+                               TextColor="{StaticResource White}" 
+                               HorizontalOptions="Center" />
+
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+                                <Button x:Name="btnCarro" 
+            Text="Carro" 
+            FontAttributes="Bold" 
+            TextColor="White" 
+            BackgroundColor="Gray" 
+            WidthRequest="100" 
+            Clicked="OnCarroButtonClicked" />
+
+                                <Button x:Name="btnMoto" 
+            Text="Moto" 
+            FontAttributes="Bold" 
+            TextColor="White" 
+            BackgroundColor="Gray" 
+            WidthRequest="100" 
+            Clicked="OnMotoButtonClicked" />
+                         
+
                         </StackLayout>
+                        </StackLayout>
+
 
                         <!-- Seção de Cadastro de Carro -->
                         <Frame x:Name="carroSection" IsVisible="False" Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">
@@ -122,13 +140,24 @@
                             </StackLayout>
                         </Frame>
 
-                        <!-- Picker para disponibilidade de veículo -->
-                        <Picker x:Name="pickerDisponibilidadeTipoVeiculo" Title="Disponibilidade do Veículo" TitleColor="{StaticResource White}" SelectedIndexChanged="OnTipoDisponibilidadeVeiculoChanged">
-                            <Picker.Items>
-                                <x:String>Carro</x:String>
-                                <x:String>Moto</x:String>
-                            </Picker.Items>
-                        </Picker>
+                        <!-- disponibilidade de veículo -->
+                        <Label Text="Disponibilizar Veiculos Selecione:" TextColor="{StaticResource White}" FontAttributes="Bold" />
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,10,0,10">
+                            
+                            <Button x:Name="btnDisponibilidadeCarro"
+                                Text="Carro"
+                                TextColor="White"
+                                BackgroundColor="Gray"
+                                Clicked="OnDisponibilidadeCarroClicked"
+                                Margin="0,0,5,0" />
+                            <Button x:Name="btnDisponibilidadeMoto"
+                                Text="Moto"
+                                TextColor="White"
+                                BackgroundColor="Gray"
+                                Clicked="OnDisponibilidadeMotoClicked"
+                                Margin="5,0,0,0" />
+                        </StackLayout>
+
 
                         <!-- Seção de Disponibilidade de Carro -->
                         <Frame x:Name="disponibilidadeCarroSection" IsVisible="False" Padding="10" BackgroundColor="{StaticResource EntryBackground}" CornerRadius="15" HasShadow="False" WidthRequest="500" Margin="0,20,0,0">

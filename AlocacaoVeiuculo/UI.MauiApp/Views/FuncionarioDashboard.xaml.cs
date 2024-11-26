@@ -1,20 +1,10 @@
-using Microsoft.Maui.Controls;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Linq;
-using System;
+
 using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 using AlocacaoVeiuculo.Data.Reservations;
 using AlocacaoVeiuculo.Data.Vehicles;
-using Microsoft.Maui;
+
 using AlocacaoVeiuculo.Data.User;
-using Microsoft.Maui.Controls;
-using AlocacaoVeiuculo.Data.Vehicles;
-using AlocacaoVeiuculo.Data.Reservations;
-using AlocacaoVeiuculo.RentalManager.Model.Users;
-using AlocacaoVeiuculo.RentalManager.Model.Reservations;
-using System.Linq;
-using System.Threading.Tasks;
+
 using SQLite;
 
 
@@ -45,7 +35,7 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerarRelatoriosClicked(object sender, EventArgs e)
         {
-            await DisplayAlert("Relatórios", "Gerando relatório...", "OK");
+           // await DisplayAlert("Relatórios", "Gerando relatório...", "OK");
 
             // Obter dados de cada tabela do banco
             var carros = await carroData.ObterCarrosAsync();

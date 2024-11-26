@@ -45,7 +45,7 @@
                     FontAttributes="Bold"
                     Clicked="OnCadasVeiculosClicked" />
             
-            <Button Text="🚗 Gerenciar Veículos" 
+            <Button Text="🚙 Gerenciar Veículos" 
                     BackgroundColor="{StaticResource ButtonBackground}" 
                     TextColor="{StaticResource ButtonText}" 
                     BorderColor="{StaticResource ButtonBorder}" 

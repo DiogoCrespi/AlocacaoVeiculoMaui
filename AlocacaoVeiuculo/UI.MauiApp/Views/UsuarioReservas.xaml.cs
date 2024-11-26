@@ -1,9 +1,6 @@
-using Microsoft.Maui.Controls;
+
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System;
-using System.Linq;
-using System.Collections.Generic;
+
 using AlocacaoVeiuculo.RentalManager.Model.Users;
 using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
@@ -18,6 +15,7 @@ namespace AlocacaoVeiuculo.Pages
         private ReservaData reservaData;
         private DisponibilidadeData disponibilidadeData;
         private Reserva reservaSelecionada;
+        private Disponibilidade veiculoSelecionado;
         private bool exibirReservasCanceladas = true;
         public ObservableCollection<Reserva> Reservas { get; set; }
         private string localRetirada;
@@ -77,7 +75,7 @@ namespace AlocacaoVeiuculo.Pages
                         if (carro != null)
                         {
                             reserva.ModeloVeiculo = carro.Modelo;
-                            reserva.IsDisponivel = carro.IsDisponivel;
+                            reserva.IsDisponivel = !carro.IsAlugado; // Baseado em IsAlugado
                         }
                         else
                         {
@@ -90,7 +88,7 @@ namespace AlocacaoVeiuculo.Pages
                         if (moto != null)
                         {
                             reserva.ModeloVeiculo = moto.Modelo;
-                            reserva.IsDisponivel = moto.IsDisponivel;
+                            reserva.IsDisponivel = !moto.IsAlugado; // Baseado em IsAlugado
                         }
                         else
                         {
@@ -106,6 +104,7 @@ namespace AlocacaoVeiuculo.Pages
                 await DisplayAlert("Erro", $"Falha ao carregar reservas: {ex.Message}", "OK");
             }
         }
+
 
         //--------------------------------------------
         //serve apenas para ocultar os que ja estao Excluidos preguica de mudar todo o codigo
@@ -367,39 +366,70 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
-        private void OnSelecionarCarrosClicked(object sender, EventArgs e)
+        private async void OnSelecionarCarrosClicked(object sender, EventArgs e)
         {
             tipoVeiculoSelecionado = "Carro";
-            GerarCaixasVeiculos();
+            await GerarCaixasVeiculos(); 
         }
 
-        private void OnSelecionarMotosClicked(object sender, EventArgs e)
+        private async void OnSelecionarMotosClicked(object sender, EventArgs e)
         {
             tipoVeiculoSelecionado = "Moto";
-            GerarCaixasVeiculos();
+            await GerarCaixasVeiculos();
         }
 
-        private Disponibilidade veiculoSelecionado;
-
-        private void GerarCaixasVeiculos()
+        private async Task GerarCaixasVeiculos()
         {
-            if (veiculosDisponiveis == null)
+            if (veiculosDisponiveis == null || !veiculosDisponiveis.Any())
             {
                 FrameCaixasVeiculos.IsVisible = false;
+                GridCaixasVeiculos.Children.Clear();
+                GridCaixasVeiculos.Children.Add(new Label
+                {
+                    Text = tipoVeiculoSelecionado == "Carro" ? "Nenhum carro disponível" : "Nenhuma moto disponível",
+                    TextColor = Colors.White,
+                    FontSize = 16,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                });
+                await DisplayAlert("Atenção", "Nenhum veículo disponível no momento.", "OK");
                 return;
             }
 
-            var veiculosFiltrados = veiculosDisponiveis
-                .Where(v => v.TipoVeiculo.Equals(tipoVeiculoSelecionado, StringComparison.OrdinalIgnoreCase) && v.IsDisponivel)
-                .ToList();
+            var veiculosFiltrados = new List<(Disponibilidade, bool isAlugado)>();
+
+            if (tipoVeiculoSelecionado == "Carro")
+            {
+                var carroData = new CarroData();
+                foreach (var disponibilidade in veiculosDisponiveis.Where(v => v.TipoVeiculo == "Carro"))
+                {
+                    var carro = await carroData.ObterCarroPorIdAsync(disponibilidade.VeiculoId);
+                    if (carro != null && !carro.IsAlugado)
+                    {
+                        veiculosFiltrados.Add((disponibilidade, carro.IsAlugado));
+                    }
+                }
+            }
+            else if (tipoVeiculoSelecionado == "Moto")
+            {
+                var motoData = new MotoData();
+                foreach (var disponibilidade in veiculosDisponiveis.Where(v => v.TipoVeiculo == "Moto"))
+                {
+                    var moto = await motoData.ObterMotoPorIdAsync(disponibilidade.VeiculoId);
+                    if (moto != null && !moto.IsAlugado)
+                    {
+                        veiculosFiltrados.Add((disponibilidade, moto.IsAlugado));
+                    }
+                }
+            }
 
             GridCaixasVeiculos.Children.Clear();
 
             if (veiculosFiltrados.Any())
             {
                 FrameCaixasVeiculos.IsVisible = true;
-
                 int colunas = 4;
+
                 GridCaixasVeiculos.ColumnDefinitions.Clear();
                 for (int i = 0; i < colunas; i++)
                 {
@@ -414,7 +444,7 @@ namespace AlocacaoVeiuculo.Pages
 
                 int linha = 0, coluna = 0;
 
-                foreach (var veiculo in veiculosFiltrados)
+                foreach (var (disponibilidade, isAlugado) in veiculosFiltrados)
                 {
                     var stackLayout = new StackLayout
                     {
@@ -424,28 +454,28 @@ namespace AlocacaoVeiuculo.Pages
                 {
                     new Image
                     {
-                        Source = string.IsNullOrEmpty(veiculo.ImagemPath) ? "placeholder.png" : ImageSource.FromFile(veiculo.ImagemPath),
+                        Source = string.IsNullOrEmpty(disponibilidade.ImagemPath) ? "placeholder.png" : ImageSource.FromFile(disponibilidade.ImagemPath),
                         HeightRequest = 120,
                         WidthRequest = 200,
                         Aspect = Aspect.AspectFill
                     },
                     new Label
                     {
-                        Text = $"Modelo: {veiculo.Modelo}",
+                        Text = $"Modelo: {disponibilidade.Modelo}",
                         TextColor = Colors.White,
                         FontAttributes = FontAttributes.Bold,
                         HorizontalOptions = LayoutOptions.Center
                     },
                     new Label
                     {
-                        Text = $"Combustível: {veiculo.TipoCombustivel}",
+                        Text = $"Combustível: {disponibilidade.TipoCombustivel}",
                         TextColor = Colors.White,
                         HorizontalOptions = LayoutOptions.Center
                     },
                     new Label
                     {
-                        Text = $"Disponível: {(veiculo.IsDisponivel ? "Sim" : "Não")}",
-                        TextColor = veiculo.IsDisponivel ? Colors.Green : Colors.Red,
+                        Text = $"Disponível: {(!isAlugado ? "Sim" : "Não")}",
+                        TextColor = !isAlugado ? Colors.Green : Colors.Red,
                         HorizontalOptions = LayoutOptions.Center
                     }
                 }
@@ -454,8 +484,8 @@ namespace AlocacaoVeiuculo.Pages
                     var frame = new Frame
                     {
                         Content = stackLayout,
-                        BackgroundColor = veiculoSelecionado == veiculo ? Colors.Gray : Colors.Transparent,
-                        BorderColor = veiculoSelecionado == veiculo ? Colors.Red : Colors.Gray,
+                        BackgroundColor = veiculoSelecionado == disponibilidade ? Colors.Gray : Colors.Transparent,
+                        BorderColor = veiculoSelecionado == disponibilidade ? Colors.Red : Colors.Gray,
                         CornerRadius = 10,
                         Padding = 5,
                         Margin = new Thickness(5),
@@ -464,7 +494,7 @@ namespace AlocacaoVeiuculo.Pages
 
                     frame.GestureRecognizers.Add(new TapGestureRecognizer
                     {
-                        Command = new Command(() => SelecionarVeiculo(veiculo))
+                        Command = new Command(() => SelecionarVeiculo(disponibilidade))
                     });
 
                     Grid.SetRow(frame, linha);
@@ -481,7 +511,9 @@ namespace AlocacaoVeiuculo.Pages
             }
             else
             {
+          
                 FrameCaixasVeiculos.IsVisible = false;
+             //   await DisplayAlert("Atenção", "Nenhum veículo disponível no momento.", "OK");
             }
         }
 
