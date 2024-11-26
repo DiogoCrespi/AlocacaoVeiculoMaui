@@ -12,10 +12,10 @@ namespace AlocacaoVeiuculo.RentalManager.Model.Reservations
         public TimeSpan HoraRetirada { get; set; }
         public DateTime DataDevolucao { get; set; }
         public TimeSpan HoraDevolucao { get; set; }
+        public int UsuarioId { get; set; }
+        public int VeiculoId { get; set; }
+        public string VeiculoTipo { get; set; } 
         public string MotivoModificacao { get; set; }
-        public int UsuarioId { get; set; } // ID do usuário para associar a reserva
-        public string VeiculoTipo { get; set; } // "Carro" ou "Moto"
-        public int VeiculoId { get; set; } 
         public string ModeloVeiculo { get; set; }
         public string MotivoExclusao { get; set; }
 

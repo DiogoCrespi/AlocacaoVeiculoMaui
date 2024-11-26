@@ -102,7 +102,12 @@
                        TextColor="{StaticResource LabelText}"
                        HorizontalOptions="Center" />
 
-
+                <!-- Frame para Gerenciamento de veiculos -->
+                <Frame x:Name="FrameGerenciarVeiculos" IsVisible="False">
+                    <ScrollView>
+                        <StackLayout x:Name="StackLayoutVeiculos" Spacing="10" />
+                    </ScrollView>
+                </Frame>
 
 
                 <!-- Frame para Gerenciamento de Reservas -->

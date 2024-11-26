@@ -106,6 +106,7 @@ namespace AlocacaoVeiuculo.Pages
         }
 
 
+
         //--------------------------------------------
         //serve apenas para ocultar os que ja estao Excluidos preguica de mudar todo o codigo
         private async void CarregarReservasNovo()
@@ -578,49 +579,61 @@ namespace AlocacaoVeiuculo.Pages
 
         private void OnCancelarReservaClicked(object sender, EventArgs e)
         {
+            // Ocultar outros painéis
             UsuarioDadosPanel.IsVisible = false;
             ReservasPanel.IsVisible = false;
             FrameCaixasVeiculos.IsVisible = false;
             AlugarVeiculoPanel.IsVisible = false;
 
-            if (Reservas == null || !Reservas.Any(r => r.IsDisponivel))
+            try
             {
-                DisplayAlert("Atenção", "Nenhuma reserva disponível para cancelar.", "OK");
-                return;
+                // Filtrar reservas disponíveis
+                var reservasDisponiveis = Reservas?.Where(r => r.IsDisponivel).ToList();
+
+                // Verificar se há reservas disponíveis
+                if (reservasDisponiveis == null || !reservasDisponiveis.Any())
+                {
+                    DisplayAlert("Atenção", "Nenhuma reserva disponível para cancelar.", "OK");
+                    return;
+                }
+
+                // Atualizar o grid de reservas disponíveis para cancelamento
+                AtualizarGridReservas(reservasDisponiveis);
+
+                // Exibir o painel de cancelamento
+                FrameCancelarReservas.IsVisible = true;
+                FrameReservas.IsVisible = true;
+                FrameConfirmacao.IsVisible = false;
             }
-
-            AtualizarGridReservas();
-
-            FrameCancelarReservas.IsVisible = true;
-            FrameReservas.IsVisible = true;
-            FrameConfirmacao.IsVisible = false;
+            catch (Exception ex)
+            {
+                DisplayAlert("Erro", $"Falha ao carregar reservas para cancelamento: {ex.Message}", "OK");
+            }
         }
 
 
-        private void AtualizarGridReservas()
+     private void AtualizarGridReservas(List<Reserva> reservasDisponiveis)
+{
+    GridReservas.Children.Clear();
+
+    if (reservasDisponiveis == null || !reservasDisponiveis.Any())
+    {
+        FrameReservas.IsVisible = false;
+        return;
+    }
+
+    FrameReservas.IsVisible = true;
+    int coluna = 0, linha = 0;
+
+    foreach (var reserva in reservasDisponiveis)
+    {
+        var stackLayout = new StackLayout
         {
-            GridReservas.Children.Clear();
-
-            var reservasDisponiveis = Reservas.Where(r => r.IsDisponivel).ToList();
-
-            if (!reservasDisponiveis.Any())
-            {
-                FrameReservas.IsVisible = false;
-                return;
-            }
-
-            FrameReservas.IsVisible = true;
-            int coluna = 0, linha = 0;
-
-            foreach (var reserva in reservasDisponiveis)
-            {
-                var stackLayout = new StackLayout
-                {
-                    Children =
+            Children =
             {
                 new Label
                 {
-                    Text = $"{reserva.VeiculoTipo}: {reserva.VeiculoId}",
+                    Text = $"{reserva.VeiculoTipo}: {reserva.ModeloVeiculo}",
                     TextColor = Colors.White,
                     FontAttributes = FontAttributes.Bold
                 },
@@ -635,35 +648,37 @@ namespace AlocacaoVeiuculo.Pages
                     TextColor = Colors.LightGray
                 }
             }
-                };
+        };
 
-                var frame = new Frame
-                {
-                    Content = stackLayout,
-                    BackgroundColor = Colors.DarkGray,
-                    BorderColor = Colors.Transparent,
-                    CornerRadius = 10,
-                    Padding = 5,
-                    Margin = new Thickness(5)
-                };
+        var frame = new Frame
+        {
+            Content = stackLayout,
+            BackgroundColor = Colors.DarkGray,
+            BorderColor = Colors.Transparent,
+            CornerRadius = 10,
+            Padding = 5,
+            Margin = new Thickness(5)
+        };
 
-                frame.GestureRecognizers.Add(new TapGestureRecognizer
-                {
-                    Command = new Command(() => SelecionarReserva(reserva, frame))
-                });
+        frame.GestureRecognizers.Add(new TapGestureRecognizer
+        {
+            Command = new Command(() => SelecionarReserva(reserva, frame))
+        });
 
-                Grid.SetRow(frame, linha);
-                Grid.SetColumn(frame, coluna);
-                GridReservas.Children.Add(frame);
+        Grid.SetRow(frame, linha);
+        Grid.SetColumn(frame, coluna);
+        GridReservas.Children.Add(frame);
 
-                coluna++;
-                if (coluna >= 6)
-                {
-                    coluna = 0;
-                    linha++;
-                }
-            }
+        coluna++;
+        if (coluna >= 6)
+        {
+            coluna = 0;
+            linha++;
         }
+    }
+}
+
+
 
         private void SelecionarReserva(Reserva reserva, Frame frame)
         {
