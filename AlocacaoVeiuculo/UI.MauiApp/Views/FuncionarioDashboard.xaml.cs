@@ -22,6 +22,9 @@ namespace AlocacaoVeiuculo.Pages
         //private readonly DisponibilidadeData disponibilidadeData;
        // private readonly ReservaData reservaData;
         private readonly SQLiteAsyncConnection database;
+        private object veiculoSelecionado;
+        private string tipoVeiculoSelecionado;
+        private string novaImagemPath;
 
         private bool exibirCanceladas = true;
 
@@ -37,7 +40,12 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerarRelatoriosClicked(object sender, EventArgs e)
         {
-           // await DisplayAlert("Relatórios", "Gerando relatório...", "OK");
+            FrameModificarReserva.IsVisible = false;
+            FrameGerenciarReservas.IsVisible = false;
+            FrameGerenciarReservas.IsVisible = false;
+            StackLayoutVeiculos.IsVisible = false;
+
+            // await DisplayAlert("Relatórios", "Gerando relatório...", "OK");
 
             // Obter dados de cada tabela do banco
             var carros = await carroData.ObterCarrosAsync();
@@ -149,6 +157,8 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnCadasVeiculosClicked(object sender, EventArgs e)
         {
+            FrameModificarReserva.IsVisible = false;
+            FrameRelatorio.IsVisible = false;
             try
             {
                 var gerenciarVeiculosPage = new CadastrarVeiculoPage(); // Instancie a página desejada
@@ -162,7 +172,12 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerenciarVeiculosClicked(object sender, EventArgs e)
         {
+            FrameModificarVeiculo.IsVisible = false;
+            StackLayoutVeiculos.IsVisible = true;
             HeaderGrid.IsVisible = true;
+            FrameGerenciarReservas.IsVisible = false;
+            FrameRelatorio.IsVisible = false;
+            FrameModificarReserva.IsVisible = false;
 
             try
             {
@@ -172,7 +187,7 @@ namespace AlocacaoVeiuculo.Pages
                 if ((carros == null || !carros.Any()) && (motos == null || !motos.Any()))
                 {
                     await DisplayAlert("Atenção", "Nenhum veículo encontrado.", "OK");
-                    FrameGerenciarVeiculos.IsVisible = false;
+                    FrameModificarVeiculo.IsVisible = false;
                     return;
                 }
 
@@ -377,8 +392,8 @@ namespace AlocacaoVeiuculo.Pages
                         StackLayoutVeiculos.Children.Add(stackLayout);
                     }
                 }
-
-                FrameGerenciarVeiculos.IsVisible = true;
+                FrameGerenciarReservas.IsVisible = false;
+              // FrameModificarVeiculo.IsVisible = true;
             }
             catch (Exception ex)
             {
@@ -388,8 +403,10 @@ namespace AlocacaoVeiuculo.Pages
 
 
 
+
         private async Task CancelarVeiculo(int veiculoId, string tipoVeiculo)
         {
+            FrameGerenciarReservas.IsVisible = false;
             try
             {
                 string motivoCancelamento = await DisplayPromptAsync(
@@ -443,7 +460,7 @@ namespace AlocacaoVeiuculo.Pages
                     var carro = await carroData.ObterCarroPorIdAsync(veiculoId);
                     if (carro != null)
                     {
-                        await ExibirFormularioModificacao(carro, tipoVeiculo);
+                        ExibirFormularioModificacao(carro, tipoVeiculo);
                     }
                 }
                 else if (tipoVeiculo == "Moto")
@@ -451,7 +468,7 @@ namespace AlocacaoVeiuculo.Pages
                     var moto = await motoData.ObterMotoPorIdAsync(veiculoId);
                     if (moto != null)
                     {
-                        await ExibirFormularioModificacao(moto, tipoVeiculo);
+                        ExibirFormularioModificacao(moto, tipoVeiculo);
                     }
                 }
             }
@@ -461,84 +478,121 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
-        private async Task ExibirFormularioModificacao(object veiculo, string tipoVeiculo)
+        private void ExibirFormularioModificacao(object veiculo, string tipoVeiculo)
+        {
+            veiculoSelecionado = veiculo;
+            tipoVeiculoSelecionado = tipoVeiculo;
+
+            string tipoCombustivelAtual = tipoVeiculo == "Carro" ? ((Carro)veiculo).TipoCombustivel : ((Moto)veiculo).TipoCombustivel;
+            bool disponibilidadeAtual = tipoVeiculo == "Carro" ? ((Carro)veiculo).IsDisponivel : ((Moto)veiculo).IsDisponivel;
+
+            LabelTipoCombustivelAtual.Text = $"Combustível Atual: {tipoCombustivelAtual}";
+            PickerNovoTipoCombustivel.ItemsSource = new List<string> { "Gasolina", "Álcool", "Diesel", "Elétrico" };
+            PickerNovoTipoCombustivel.SelectedItem = tipoCombustivelAtual;
+
+            SwitchDisponibilidade.IsToggled = disponibilidadeAtual;
+
+            FrameModificarVeiculo.IsVisible = true;
+        }
+
+
+        private async void OnSelecionarImagemClicked(object sender, EventArgs e)
         {
             try
             {
-                if (veiculo == null)
+                var result = await FilePicker.PickAsync(new PickOptions
                 {
-                    await DisplayAlert("Erro", "Veículo inválido.", "OK");
-                    return;
-                }
+                    PickerTitle = "Selecione uma nova imagem para o veículo",
+                    FileTypes = FilePickerFileType.Images
+                });
 
-                string veiculoModelo = tipoVeiculo == "Carro" ? ((Carro)veiculo).Modelo : ((Moto)veiculo).Modelo;
-                string veiculoPlaca = tipoVeiculo == "Carro" ? ((Carro)veiculo).Placa : ((Moto)veiculo).Placa;
-
-                string novoModelo = await DisplayPromptAsync(
-                    "Modificar Veículo",
-                    $"Modelo atual: {veiculoModelo}\nInforme o novo modelo:",
-                    initialValue: veiculoModelo,
-                    maxLength: 50);
-
-                if (string.IsNullOrWhiteSpace(novoModelo))
+                if (result != null)
                 {
-                    await DisplayAlert("Erro", "O modelo é obrigatório.", "OK");
-                    return;
+                    novaImagemPath = result.FullPath;
+
+                    // Exibir um alerta para confirmar a seleção
+                    await DisplayAlert("Imagem Selecionada", $"Nova imagem selecionada: {novaImagemPath}", "OK");
                 }
-
-                string novaPlaca = await DisplayPromptAsync(
-                    "Modificar Veículo",
-                    $"Placa atual: {veiculoPlaca}\nInforme a nova placa:",
-                    initialValue: veiculoPlaca,
-                    maxLength: 10);
-
-                if (string.IsNullOrWhiteSpace(novaPlaca))
-                {
-                    await DisplayAlert("Erro", "A placa é obrigatória.", "OK");
-                    return;
-                }
-
-                string motivoModificacao = await DisplayPromptAsync(
-                    "Motivo da Modificação",
-                    "Informe o motivo para a modificação:",
-                    maxLength: 100);
-
-                if (string.IsNullOrWhiteSpace(motivoModificacao))
-                {
-                    await DisplayAlert("Erro", "O motivo da modificação é obrigatório.", "OK");
-                    return;
-                }
-
-                if (tipoVeiculo == "Carro")
-                {
-                    var carro = (Carro)veiculo;
-                    carro.Modelo = novoModelo;
-                    carro.Placa = novaPlaca;
-                    carro.MotivoModificacao = motivoModificacao;
-
-                    await carroData.AtualizarCarroAsync(carro);
-                }
-                else if (tipoVeiculo == "Moto")
-                {
-                    var moto = (Moto)veiculo;
-                    moto.Modelo = novoModelo;
-                    moto.Placa = novaPlaca;
-                    moto.MotivoModificacao = motivoModificacao;
-
-                    await motoData.AtualizarMotoAsync(moto);
-                }
-
-                await DisplayAlert("Sucesso", "Veículo modificado com sucesso.", "OK");
-                OnGerenciarVeiculosClicked(null, null);
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Erro", $"Falha ao modificar o veículo: {ex.Message}", "OK");
+                await DisplayAlert("Erro", $"Falha ao selecionar imagem: {ex.Message}", "OK");
             }
         }
 
 
+        private async void OnSalvarModificacoesVeiculoClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                if (veiculoSelecionado == null)
+                {
+                    await DisplayAlert("Erro", "Nenhum veículo selecionado para modificação.", "OK");
+                    return;
+                }
 
+                if (string.IsNullOrWhiteSpace(EntryMotivoModificacaoVeiculo.Text))
+                {
+                    await DisplayAlert("Erro", "Informe o motivo da modificação.", "OK");
+                    return;
+                }
+
+                if (tipoVeiculoSelecionado == "Carro")
+                {
+                    var carro = (Carro)veiculoSelecionado;
+
+                    // Atualizar os campos selecionados
+                    if (PickerNovoTipoCombustivel.SelectedItem != null)
+                    {
+                        carro.TipoCombustivel = PickerNovoTipoCombustivel.SelectedItem.ToString();
+                    }
+
+                    carro.IsDisponivel = SwitchDisponibilidade.IsToggled;
+
+                    if (!string.IsNullOrEmpty(novaImagemPath))
+                    {
+                        carro.ImagemPath = novaImagemPath;
+                    }
+
+                    carro.MotivoModificacao = EntryMotivoModificacaoVeiculo.Text;
+
+                    // Salvar no banco de dados
+                    await carroData.AtualizarCarroAsync(carro);
+                }
+                else if (tipoVeiculoSelecionado == "Moto")
+                {
+                    var moto = (Moto)veiculoSelecionado;
+
+                    // Atualizar os campos selecionados
+                    if (PickerNovoTipoCombustivel.SelectedItem != null)
+                    {
+                        moto.TipoCombustivel = PickerNovoTipoCombustivel.SelectedItem.ToString();
+                    }
+
+                    moto.IsDisponivel = SwitchDisponibilidade.IsToggled;
+
+                    if (!string.IsNullOrEmpty(novaImagemPath))
+                    {
+                        moto.ImagemPath = novaImagemPath;
+                    }
+
+                    moto.MotivoModificacao = EntryMotivoModificacaoVeiculo.Text;
+
+                    // Salvar no banco de dados
+                    await motoData.AtualizarMotoAsync(moto);
+                }
+
+                await DisplayAlert("Sucesso", "Veículo modificado com sucesso.", "OK");
+
+                FrameGerenciarReservas.IsVisible = false;
+                FrameModificarVeiculo.IsVisible = false;
+                OnGerenciarVeiculosClicked(null, null);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao salvar as modificações: {ex.Message}", "OK");
+            }
+        }
 
 
 
@@ -565,8 +619,12 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerenciarReservasClicked(object sender, EventArgs e)
         {
-
+            FrameModificarReserva.IsVisible = false;
+            StackLayoutVeiculos.IsVisible = false;
+            FrameModificarVeiculo.IsVisible = false;
+            FrameRelatorio.IsVisible = false;
             HeaderGrid.IsVisible = true;
+            FrameGerenciarReservas.IsVisible = true;
 
             try
             {
@@ -709,6 +767,27 @@ namespace AlocacaoVeiuculo.Pages
 
                 reserva.IsDisponivel = false;
                 reserva.MotivoExclusao = motivoExclusao;
+
+                // Atualizar o veículo associado à reserva
+                if (reserva.VeiculoTipo == "Carro")
+                {
+                    var carro = await carroData.ObterCarroPorIdAsync(reserva.VeiculoId);
+                    if (carro != null)
+                    {
+                        carro.IsAlugado = false;
+                        await carroData.AtualizarCarroAsync(carro);
+                    }
+                }
+                else if (reserva.VeiculoTipo == "Moto")
+                {
+                    var moto = await motoData.ObterMotoPorIdAsync(reserva.VeiculoId);
+                    if (moto != null)
+                    {
+                        moto.IsAlugado = false;
+                        await motoData.AtualizarMotoAsync(moto);
+                    }
+                }
+
                 await reservaData.AtualizarReservaAsync(reserva);
 
                 await DisplayAlert("Sucesso", "Reserva cancelada com sucesso.", "OK");
@@ -722,6 +801,7 @@ namespace AlocacaoVeiuculo.Pages
                 await DisplayAlert("Erro", $"Falha ao cancelar a reserva: {ex.Message}", "OK");
             }
         }
+
 
         private async Task NotificarUsuarioReservaExcluida(int reservaId, string motivo)
         {

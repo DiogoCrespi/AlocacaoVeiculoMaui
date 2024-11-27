@@ -44,7 +44,7 @@
                     Padding="10,5"
                     FontAttributes="Bold"
                     Clicked="OnCadasVeiculosClicked" />
-            
+
             <Button Text="🚙 Gerenciar Veículos" 
                     BackgroundColor="{StaticResource ButtonBackground}" 
                     TextColor="{StaticResource ButtonText}" 
@@ -103,11 +103,67 @@
                        HorizontalOptions="Center" />
 
                 <!-- Frame para Gerenciamento de veiculos -->
-                <Frame x:Name="FrameGerenciarVeiculos" IsVisible="False">
-                    <ScrollView>
-                        <StackLayout x:Name="StackLayoutVeiculos" Spacing="10" />
-                    </ScrollView>
+                <Frame x:Name="FrameModificarVeiculo"
+                       IsVisible="False"
+                       BackgroundColor="{StaticResource Gray600}"
+                       Padding="20"
+                       CornerRadius="10"
+                       Margin="0,20,0,20"
+                       HasShadow="True">
+                    <StackLayout Spacing="15">
+                        <Label Text="Modificar Veículo"
+                               FontSize="Large"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource LabelText}"
+                               HorizontalOptions="Center" />
+
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label x:Name="LabelTipoCombustivelAtual"
+                                   Text="Combustível Atual: "
+                                   TextColor="{StaticResource LabelText}" />
+                            <Picker x:Name="PickerNovoTipoCombustivel"
+                                    Title="Selecione o Tipo de Combustível"
+                                    BackgroundColor="{StaticResource EntryBackground}"
+                                    TextColor="{StaticResource ButtonText}" />
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="Disponível:"
+                                   TextColor="{StaticResource LabelText}" />
+                            <Switch x:Name="SwitchDisponibilidade"
+                                    IsToggled="True"
+                                    HorizontalOptions="End" />
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label x:Name="LabelImagemAtual"
+                                   Text="Imagem Atual: "
+                                   TextColor="{StaticResource LabelText}" />
+                            <Button Text="Selecionar Nova Imagem"
+                                    BackgroundColor="{StaticResource ButtonBackground}"
+                                    TextColor="{StaticResource ButtonText}"
+                                    Clicked="OnSelecionarImagemClicked" />
+                        </StackLayout>
+
+                        <Entry x:Name="EntryMotivoModificacaoVeiculo"
+                               Placeholder="Informe o motivo da modificação"
+                               BackgroundColor="{StaticResource EntryBackground}"
+                               TextColor="{StaticResource LabelText}" />
+
+                        <Button Text="Salvar Modificações"
+                                BackgroundColor="{StaticResource ButtonBackground}"
+                                TextColor="{StaticResource ButtonText}"
+                                Clicked="OnSalvarModificacoesVeiculoClicked" />
+                    </StackLayout>
                 </Frame>
+
+                <!-- Listagem de veículos -->
+                <ScrollView>
+                    <StackLayout x:Name="StackLayoutVeiculos" Spacing="15" Padding="10">
+                        <!-- Os veículos serão carregados dinamicamente aqui -->
+                    </StackLayout>
+                </ScrollView>
+
 
 
                 <!-- Frame para Gerenciamento de Reservas -->
@@ -168,8 +224,8 @@
                    CornerRadius="10"
                    Margin="0,20,0,20"
                    HasShadow="True">
-                  
-                    
+
+
                     <StackLayout Spacing="15">
                         <Label Text="Modificar Reserva"
                            FontSize="Large"
@@ -235,8 +291,8 @@
                             Placeholder="Informe o motivo da modificação" 
                             BackgroundColor="{StaticResource EntryBackground}" 
                             TextColor="{StaticResource LabelText}" />
-                        
-                        
+
+
                         <!-- Botão para Salvar Modificações -->
                         <Button Text="Salvar Modificações"
                             BackgroundColor="{StaticResource ButtonBackground}"
@@ -270,7 +326,7 @@
 
                             <!-- Seção de informações -->
                             <StackLayout Spacing="15">
-                           
+
                                 <!-- Detalhes adicionais -->
                                 <Label x:Name="LabelRelatorio"
                                         Text="Detalhes adicionais sobre a reserva ou veículo podem ser exibidos aqui."
@@ -282,10 +338,10 @@
                     </ScrollView>
                 </Frame>
 
-                
-                
-                
-                
+
+
+
+
             </StackLayout>
         </ScrollView>
 
