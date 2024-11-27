@@ -38,5 +38,10 @@ namespace AlocacaoVeiuculo.Data.User
             var usuario = await ObterUsuarioPorNomeAsync(nome);
             return usuario != null;
         }
+
+        public Task<Usuario> ObterUsuarioPorIdAsync(int id)
+        {
+            return database.Table<Usuario>().FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

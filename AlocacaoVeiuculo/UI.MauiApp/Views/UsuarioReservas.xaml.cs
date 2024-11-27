@@ -584,6 +584,9 @@ namespace AlocacaoVeiuculo.Pages
             ReservasPanel.IsVisible = false;
             FrameCaixasVeiculos.IsVisible = false;
             AlugarVeiculoPanel.IsVisible = false;
+            FrameCancelarReservas.IsVisible = true;
+            FrameReservas.IsVisible = true;
+            FrameConfirmacao.IsVisible = false;
 
             try
             {

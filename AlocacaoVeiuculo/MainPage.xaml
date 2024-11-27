@@ -55,24 +55,6 @@
         <AbsoluteLayout>
             <!-- Botão "Cadastrar Veículo" posicionado -->
             <Button 
-                Text="Cadastrar Veículo" 
-                BackgroundColor="{StaticResource ButtonBackground}" 
-                TextColor="{StaticResource ButtonText}" 
-                BorderColor="{StaticResource ButtonBorder}" 
-                BorderWidth="1" 
-                Clicked="OnCadastrarVeiculoClicked"  
-                FontAttributes="Bold" 
-                CornerRadius="7"  
-                WidthRequest="150"
-                HeightRequest="30"
-                AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize" 
-                AbsoluteLayout.LayoutFlags="PositionProportional" 
-                HorizontalOptions="Start" 
-                VerticalOptions="Start"
-                IsVisible="{Binding IsAdmin}" />
-
-            <!-- Botão "Painel Funcionario" posicionado -->
-            <Button 
                 Text="Painel Funcionario" 
                 BackgroundColor="{StaticResource ButtonBackground}" 
                 TextColor="{StaticResource ButtonText}" 
@@ -83,12 +65,11 @@
                 CornerRadius="7"  
                 WidthRequest="150"
                 HeightRequest="30"
-                AbsoluteLayout.LayoutBounds="0.16, 0, AutoSize, AutoSize" 
+                AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize" 
                 AbsoluteLayout.LayoutFlags="PositionProportional" 
                 HorizontalOptions="Start" 
                 VerticalOptions="Start"
                 IsVisible="{Binding IsAdmin}" />
-       
 
 
         <!-- Botão "Entrar" posicionado no canto superior direito -->

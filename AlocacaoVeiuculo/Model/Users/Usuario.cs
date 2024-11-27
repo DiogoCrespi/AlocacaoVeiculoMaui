@@ -12,6 +12,8 @@ namespace AlocacaoVeiuculo.RentalManager.Model.Users
         public string Cpf { get; set; }
         public DateTime DataNascimento { get; set; }
         public string Telefone { get; set; }
+        public string MotivoExclusao { get; set; }
+        public string MotivoModificacao { get; set; }
         public bool IsDisponivel { get; set; } = true;
     }
 }

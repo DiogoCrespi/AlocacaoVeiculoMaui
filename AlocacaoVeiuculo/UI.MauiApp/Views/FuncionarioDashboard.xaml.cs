@@ -1,7 +1,7 @@
 
 using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
-
+using AlocacaoVeiuculo.RentalManager.Model.Users;
 using AlocacaoVeiuculo.Data.Reservations;
 using AlocacaoVeiuculo.Data.Vehicles;
 
@@ -17,6 +17,7 @@ namespace AlocacaoVeiuculo.Pages
         private DisponibilidadeData disponibilidadeData = new DisponibilidadeData();
         private ReservaData reservaData;
         private Reserva reservaSelecionada;
+        private Usuario usuarioSelecionado;
         private readonly CarroData carroData;
         private readonly MotoData motoData;
         //private readonly DisponibilidadeData disponibilidadeData;
@@ -25,6 +26,7 @@ namespace AlocacaoVeiuculo.Pages
         private object veiculoSelecionado;
         private string tipoVeiculoSelecionado;
         private string novaImagemPath;
+
 
         private bool exibirCanceladas = true;
 
@@ -40,6 +42,8 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerarRelatoriosClicked(object sender, EventArgs e)
         {
+            FrameModificarUsuario.IsVisible = false;
+            FrameGerenciarUsuarios.IsVisible = false;
             FrameModificarReserva.IsVisible = false;
             FrameGerenciarReservas.IsVisible = false;
             FrameGerenciarReservas.IsVisible = false;
@@ -157,6 +161,8 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnCadasVeiculosClicked(object sender, EventArgs e)
         {
+            FrameModificarUsuario.IsVisible = false;
+            FrameGerenciarUsuarios.IsVisible = false;
             FrameModificarReserva.IsVisible = false;
             FrameRelatorio.IsVisible = false;
             try
@@ -172,6 +178,8 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerenciarVeiculosClicked(object sender, EventArgs e)
         {
+            FrameModificarUsuario.IsVisible = false;
+            FrameGerenciarUsuarios.IsVisible = false;
             FrameModificarVeiculo.IsVisible = false;
             StackLayoutVeiculos.IsVisible = true;
             HeaderGrid.IsVisible = true;
@@ -599,10 +607,229 @@ namespace AlocacaoVeiuculo.Pages
 
 
 
+        //------------------------------------------------
+        private async void OnGerenciarUsuariosClicked(object sender, EventArgs e)
+        {
+
+            FrameModificarUsuario.IsVisible = false;
+            StackLayoutVeiculos.IsVisible = false;
+            FrameGerenciarReservas.IsVisible = false;
+            FrameRelatorio.IsVisible = false;
+            HeaderGrid.IsVisible = true;
+
+            try
+            {
+                var usuarios = await new UsuarioData().ObterUsuariosAsync();
+
+                if (usuarios == null || !usuarios.Any())
+                {
+                    await DisplayAlert("Atenção", "Nenhum usuário encontrado.", "OK");
+                    FrameGerenciarUsuarios.IsVisible = false;
+                    return;
+                }
+
+                StackLayoutUsuarios.Children.Clear();
+
+                foreach (var usuario in usuarios)
+                {
+                    var stackLayout = new StackLayout
+                    {
+                        Margin = new Thickness(0, 10),
+                        Children =
+                {
+                    new Label
+                    {
+                        Text = $"Nome: {usuario.Nome}",
+                        TextColor = Colors.White,
+                        FontAttributes = FontAttributes.Bold,
+                        FontSize = 16
+                    },
+                    new Label
+                    {
+                        Text = $"CPF: {usuario.Cpf}",
+                        TextColor = Colors.LightGray,
+                        FontSize = 14
+                    },
+                    new Label
+                    {
+                        Text = $"Telefone: {usuario.Telefone}",
+                        TextColor = Colors.LightGray,
+                        FontSize = 14
+                    },
+                    new Label
+                    {
+                        Text = $"Disponível: {usuario.IsDisponivel}",
+                        TextColor = usuario.IsDisponivel ? Colors.Green : Colors.Red,
+                        FontSize = 14
+                    }
+                }
+                    };
+
+                    if (!usuario.IsDisponivel)
+                    {
+                        // Exibir motivo de exclusão em vermelho
+                        stackLayout.Children.Add(new Label
+                        {
+                            Text = $"Motivo da Exclusão: {usuario.MotivoExclusao}",
+                            TextColor = Colors.Red,
+                            FontAttributes = FontAttributes.Bold,
+                            FontSize = 14
+                        });
+                    }
+                    else if (!string.IsNullOrWhiteSpace(usuario.MotivoModificacao))
+                    {
+                        // Exibir motivo de modificação em amarelo
+                        stackLayout.Children.Add(new Label
+                        {
+                            Text = $"Motivo da Edição: {usuario.MotivoModificacao}",
+                            TextColor = Colors.Yellow,
+                            FontAttributes = FontAttributes.Bold,
+                            FontSize = 14
+                        });
+                    }
+
+                    // Adicionar botões condicionais
+                    var botoesStack = new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        Spacing = 10
+                    };
+
+                    if (usuario.IsDisponivel)
+                    {
+                        botoesStack.Children.Add(new Button
+                        {
+                            Text = "Excluir Usuário",
+                            BackgroundColor = Colors.Red,
+                            TextColor = Colors.White,
+                            Command = new Command(async () => await ExcluirUsuario(usuario.Id))
+                        });
+                    }
+
+                    botoesStack.Children.Add(new Button
+                    {
+                        Text = "Modificar Usuário",
+                        BackgroundColor = Colors.Blue,
+                        TextColor = Colors.White,
+                        Command = new Command(() => ModificarUsuario(usuario))
+                    });
+
+
+                    stackLayout.Children.Add(botoesStack);
+
+                    StackLayoutUsuarios.Children.Add(stackLayout);
+                }
+
+                FrameGerenciarUsuarios.IsVisible = true;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Ocorreu um erro ao carregar os usuários: {ex.Message}", "OK");
+            }
+        }
+
+        private async Task ExcluirUsuario(int usuarioId)
+        {
+            try
+            {
+                var usuarioData = new UsuarioData();
+                var usuario = await usuarioData.ObterUsuarioPorIdAsync(usuarioId);
+
+                if (usuario != null && usuario.Nome == "admin" && usuario.Senha == "admin123")
+                {
+                    await DisplayAlert("Erro", "A conta de administrador não pode ser desativada.", "OK");
+                    return;
+                }
+
+                string motivoExclusao = await DisplayPromptAsync(
+                    "Excluir Usuário",
+                    "Informe o motivo da exclusão:",
+                    "OK",
+                    "Cancelar");
+
+                if (string.IsNullOrWhiteSpace(motivoExclusao))
+                {
+                    await DisplayAlert("Erro", "O motivo da exclusão é obrigatório.", "OK");
+                    return;
+                }
+
+                usuario.IsDisponivel = false;
+                usuario.MotivoExclusao = motivoExclusao;
+                await usuarioData.AtualizarUsuarioAsync(usuario);
+
+                await DisplayAlert("Sucesso", "Usuário excluído com sucesso.", "OK");
+                OnGerenciarUsuariosClicked(null, null);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao excluir o usuário: {ex.Message}", "OK");
+            }
+        }
+
+
+        private void ModificarUsuario(Usuario usuario)
+        {
+            usuarioSelecionado = usuario;
+
+            // Preenche os campos com os dados atuais do usuário
+            LabelNomeAtual.Text = $"Nome Atual: {usuario.Nome}";
+            EntryNovoNome.Text = usuario.Nome;
+
+            LabelTelefoneAtual.Text = $"Telefone Atual: {usuario.Telefone}";
+            EntryNovoTelefone.Text = usuario.Telefone;
+
+            SwitchDisponibilidadeUsuario.IsToggled = usuario.IsDisponivel;
+
+            // Torna o frame visível
+            FrameModificarUsuario.IsVisible = true;
+
+            // Oculta outros frames
+            FrameGerenciarUsuarios.IsVisible = false;
+        }
+
+        private async void OnSalvarModificacoesUsuarioClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                if (usuarioSelecionado == null)
+                {
+                    await DisplayAlert("Erro", "Nenhum usuário selecionado para modificação.", "OK");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(EntryMotivoModificacaoUsuario.Text))
+                {
+                    await DisplayAlert("Erro", "Informe o motivo da modificação.", "OK");
+                    return;
+                }
+
+                // Atualiza os dados do usuário
+                usuarioSelecionado.Nome = EntryNovoNome.Text;
+                usuarioSelecionado.Telefone = EntryNovoTelefone.Text;
+                usuarioSelecionado.IsDisponivel = SwitchDisponibilidadeUsuario.IsToggled;
+                usuarioSelecionado.MotivoModificacao = EntryMotivoModificacaoUsuario.Text;
+
+                // Salva no banco de dados
+                var usuarioData = new UsuarioData();
+                await usuarioData.AtualizarUsuarioAsync(usuarioSelecionado);
+
+                await DisplayAlert("Sucesso", "Usuário modificado com sucesso.", "OK");
+
+                // Atualiza a lista de usuários e oculta o frame
+                OnGerenciarUsuariosClicked(null, null);
+                FrameModificarUsuario.IsVisible = false;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao salvar as modificações: {ex.Message}", "OK");
+            }
+        }
 
 
 
 
+
+        //------------------------------------------------
 
 
 
@@ -619,6 +846,8 @@ namespace AlocacaoVeiuculo.Pages
 
         private async void OnGerenciarReservasClicked(object sender, EventArgs e)
         {
+            FrameModificarUsuario.IsVisible = false;
+            FrameGerenciarUsuarios.IsVisible = false;
             FrameModificarReserva.IsVisible = false;
             StackLayoutVeiculos.IsVisible = false;
             FrameModificarVeiculo.IsVisible = false;

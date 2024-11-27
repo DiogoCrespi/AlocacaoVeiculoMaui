@@ -34,6 +34,16 @@ namespace AlocacaoVeiuculo
             var usuario = await usuarioData.ObterUsuarioPorNomeAsync(nome);
             if (usuario != null && usuario.Senha == senha)
             {
+                if (!usuario.IsDisponivel)
+                {
+                    // Mostrar o motivo da exclusão e reativar o usuário
+                    await DisplayAlert("Conta Desativada", $"Motivo da exclusão: {usuario.MotivoExclusao}", "OK");
+                    usuario.IsDisponivel = true;
+                    usuario.MotivoExclusao = null;
+                    await usuarioData.AtualizarUsuarioAsync(usuario);
+                    await DisplayAlert("Conta Reativada", "Sua conta foi reativada com sucesso. Bem-vindo de volta!", "OK");
+                }
+
                 string mensagem = $"Nome: {nome}\nSenha: {usuario.Senha}\nCPF: {usuario.Cpf}\nData de Nascimento: {usuario.DataNascimento.ToShortDateString()}\nTelefone: {usuario.Telefone}";
                 await DisplayAlert("Usuário Encontrado", mensagem, "OK");
 
@@ -87,7 +97,8 @@ namespace AlocacaoVeiuculo
                 Senha = senha,
                 Cpf = cpf,
                 DataNascimento = dataNascimento,
-                Telefone = telefone
+                Telefone = telefone,
+                IsDisponivel = true // Garante que o usuário seja ativado ao ser criado
             };
 
             await usuarioData.AdicionarUsuarioAsync(novoUsuario);
