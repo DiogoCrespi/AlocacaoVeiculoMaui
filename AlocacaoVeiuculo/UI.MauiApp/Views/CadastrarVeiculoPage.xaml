@@ -74,7 +74,6 @@
                                     <Picker.Items>
                                         <x:String>Gasolina</x:String>
                                         <x:String>Álcool</x:String>
-                                        <x:String>Diesel</x:String>
                                         <x:String>Elétrico</x:String>
                                     </Picker.Items>
                                 </Picker>

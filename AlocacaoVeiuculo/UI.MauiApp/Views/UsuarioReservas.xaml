@@ -54,20 +54,6 @@
                     FontAttributes="Bold"
                     Clicked="OnSolicitarAluguelClicked" />
 
-
-            <Button Text="😿 Cancelar Reserva" 
-                    BackgroundColor="{StaticResource ButtonBackground}" 
-                    TextColor="{StaticResource ButtonText}" 
-                    BorderColor="{StaticResource ButtonBorder}" 
-                    BorderWidth="1" 
-                    CornerRadius="10"
-                    Margin="0,5,0,5"
-                    Padding="10,5"
-                    FontAttributes="Bold"
-                    Clicked="OnCancelarReservaClicked" />
-
-
-
             <StackLayout VerticalOptions="EndAndExpand">
                 <Label Text="© 2024 Empresa" 
                        TextColor="{StaticResource Gray300}" 
@@ -85,8 +71,6 @@
                        FontAttributes="Bold"
                        TextColor="{StaticResource LabelText}"
                        HorizontalOptions="Center" />
-                
-
 
                 <!-- Painel de dados do usuário -->
                 <Frame x:Name="UsuarioDadosPanel" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
@@ -100,32 +84,23 @@
                         <Label x:Name="UsuarioTelefone" FontSize="Small" TextColor="{StaticResource Gray300}" />
                     </StackLayout>
                 </Frame>
+                
+           
 
-
-
-                <!-- Título e Botão -->
-                <Grid Grid.Row="0" ColumnDefinitions="*,Auto" x:Name="HeaderToggleCanceladasButton" IsVisible="false">
-                    <Button Grid.Column="1"
-                    x:Name="ToggleCanceladasButton"
-                    Text="Ocultar Reservas Canceladas"
-                    BackgroundColor="{StaticResource ButtonBackground}"
-                    TextColor="{StaticResource ButtonText}"
-                    BorderColor="{StaticResource ButtonBorder}"
-                    BorderWidth="1"
-                    CornerRadius="10"
-                    Padding="10,5"
-                    HorizontalOptions="End"
-                    VerticalOptions="Center"
-                    Clicked="OnToggleReservasCanceladasClicked" />
-                </Grid>
                 <!-- Painel de reservas -->
-                <Frame x:Name="ReservasPanel" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
+                <Frame x:Name="ReservasPanel" 
+                       IsVisible="False" 
+                       BackgroundColor="{StaticResource Gray600}" 
+                       Padding="15" 
+                       CornerRadius="10" 
+                       Margin="0,20,0,20" 
+                       HasShadow="True">
                     <ScrollView>
-                        <StackLayout x:Name="ReservasPanelContent" />
-                        
+                        <StackLayout x:Name="ReservasPanelContent">
+                            <!-- Reservas Dinâmicas -->
+                        </StackLayout>
                     </ScrollView>
                 </Frame>
-                
 
                 <!-- Painel para Alugar Veículo -->
                 <Frame x:Name="AlugarVeiculoPanel" IsVisible="False" BackgroundColor="{StaticResource Gray600}" Padding="15" CornerRadius="10" Margin="0,20,0,20" HasShadow="True">
@@ -182,92 +157,6 @@
                         <!-- Caixas dinâmicas de veículos -->
                     </Grid>
                 </Frame>
-
-
-
-
-
-
-
-
-
-
-
-                <!-- Frame para Cancelar Reservas -->
-                <Frame x:Name="FrameCancelarReservas"
-       IsVisible="False"
-       BackgroundColor="{StaticResource Gray600}"
-       Padding="20"
-       CornerRadius="10"
-       Margin="0,20,0,20"
-       HasShadow="True">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0"
-               Text="Cancelar Reservas"
-               FontSize="Large"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               TextColor="{StaticResource LabelText}"
-               Margin="0,0,0,10"/>
-                        <Frame x:Name="FrameReservas"
-               Grid.Row="1"
-               IsVisible="True"
-               BackgroundColor="{StaticResource Gray600}"
-               Padding="15"
-               CornerRadius="10"
-               HasShadow="True">
-                            <Grid x:Name="GridReservas" ColumnSpacing="10" RowSpacing="10">
-                                <!-- Caixas dinâmicas para reservas -->
-                            </Grid>
-                        </Frame>
-                        <Frame x:Name="FrameConfirmacao"
-               Grid.Row="2"
-               IsVisible="False"
-               BackgroundColor="{StaticResource Gray600}"
-               Padding="20"
-               CornerRadius="10"
-               VerticalOptions="Center"
-               HorizontalOptions="Center">
-                            <StackLayout Spacing="20">
-                                <Label Text="Deseja mesmo cancelar a reserva?"
-                       TextColor="{StaticResource LabelText}"
-                       FontSize="Medium"
-                       HorizontalOptions="Center"/>
-                                <Image Source="cancela_nao_plz.jpg"
-                       HeightRequest="150"
-                       WidthRequest="150"
-                       HorizontalOptions="Center"/>
-                                <Grid ColumnDefinitions="*,*">
-                                    <Button Text="Cancelar"
-                            BackgroundColor="{StaticResource ButtonBackground}"
-                            TextColor="{StaticResource ButtonText}"
-                            BorderColor="{StaticResource ButtonBorder}"
-                            BorderWidth="1"
-                            FontAttributes="Bold"
-                            CornerRadius="10"
-                            Grid.Column="0"
-                            Clicked="OnCancelConfirmacaoClicked"/>
-                                    <Button Text="Confirmar"
-                            BackgroundColor="{StaticResource ButtonBackground}"
-                            TextColor="{StaticResource ButtonText}"
-                            BorderColor="{StaticResource ButtonBorder}"
-                            BorderWidth="1"
-                            FontAttributes="Bold"
-                            CornerRadius="10"
-                            Grid.Column="1"
-                            Clicked="OnConfirmarCancelamentoClicked"/>
-                                </Grid>
-                            </StackLayout>
-                        </Frame>
-                    </Grid>
-                </Frame>
-
-   
 
             </StackLayout>
         </ScrollView>
