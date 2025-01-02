@@ -5,6 +5,9 @@ using AlocacaoVeiuculo.Pages;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AlocacaoVeiuculo.RentalManager.Model.Users;
+using System.Net.Http;
+using System.Text.Json;
+using AlocacaoVeiuculo.Model.Map;
 
 namespace AlocacaoVeiuculo
 {
@@ -41,6 +44,76 @@ namespace AlocacaoVeiuculo
 
             IsAdmin = false;
         }
+
+
+        private async void OnLocalRetiradaTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(e.NewTextValue))
+            {
+                listViewSugestoes.IsVisible = false;
+                return;
+            }
+
+            string url = $"https://nominatim.openstreetmap.org/search?format=json&q={Uri.EscapeDataString(e.NewTextValue)}&countrycodes=BR";
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "YourAppName/1.0");
+
+            try
+            {
+                var response = await httpClient.GetStringAsync(url);
+                var resultados = JsonSerializer.Deserialize<List<LocalSugestao>>(response);
+
+                // Filtra por cidade de Medianeira
+                resultados = resultados?.Where(r => r.display_name.Contains("Medianeira", StringComparison.OrdinalIgnoreCase)).ToList();
+
+                listViewSugestoes.ItemsSource = resultados;
+                listViewSugestoes.IsVisible = resultados.Any();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao buscar sugestões: {ex.Message}", "OK");
+            }
+        }
+
+
+        private void OnSugestaoSelecionada(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is LocalSugestao sugestao)
+            {
+                entryLocalRetirada.Text = sugestao.display_name;
+                listViewSugestoes.IsVisible = false;
+            }
+        }
+
+
+
+        private async void OnAbrirMapaClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var mapaPage = new MapaPage(); // Página separada para exibir o mapa
+                mapaPage.LocalSelecionado += OnLocalSelecionado;
+                await Navigation.PushAsync(mapaPage);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao abrir o mapa: {ex.Message}", "OK");
+            }
+        }
+
+        private void OnLocalSelecionado(object sender, string local)
+        {
+            entryLocalRetirada.Text = local; // Atualiza o campo de entrada com o local selecionado no mapa
+        }
+
+
+
+
+
+
+
+
+
 
         private async void OnPesquisarClicked(object sender, EventArgs e)
         {

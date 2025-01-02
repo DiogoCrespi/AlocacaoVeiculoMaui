@@ -25,8 +25,21 @@
 
         <!-- Formulário de pesquisa com fundo transparente -->
         <StackLayout BackgroundColor="{StaticResource BackgroundOverlay}" Padding="15" Margin="25" Grid.Row="1" Spacing="10" VerticalOptions="End">
-            <Label Text="Retirar o carro em" TextColor="{StaticResource White}" FontAttributes="Bold"/>
-            <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}"/>
+            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start">
+                <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" TextChanged="OnLocalRetiradaTextChanged" Grid.Column="0"/>
+                <Button Text="🗺" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnAbrirMapaClicked" Grid.Column="1" />
+            </Grid>
+
+            <ListView x:Name="listViewSugestoes"
+                      IsVisible="False"
+                      ItemSelected="OnSugestaoSelecionada"
+                      BackgroundColor="{StaticResource BackgroundOverlay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding display_name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <Grid ColumnDefinitions="*,*" Padding="0">
                 <StackLayout Grid.Column="0" Spacing="5">
@@ -72,7 +85,7 @@
                 IsVisible="{Binding IsAdmin}" />
 
 
-        <!-- Botão "Entrar" posicionado no canto superior direito -->
+            <!-- Botão "Entrar" posicionado no canto superior direito -->
             <Button    
                 Text="Entrar" 
                 BackgroundColor="{StaticResource ButtonBackground}" 

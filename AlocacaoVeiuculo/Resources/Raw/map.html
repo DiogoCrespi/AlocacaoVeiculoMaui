@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecionar Local</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+
+        #confirmButton {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <button id="confirmButton">Confirmar Local</button>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script>
+        // Inicializa o mapa focado em Medianeira
+        var map = L.map('map').setView([-25.2938, -54.0946], 14);
+
+        // Adiciona o tile layer do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Variável para armazenar o marcador
+        var marker;
+
+        // Adiciona o marcador quando o usuário clica no mapa
+        map.on('click', function(e) {
+            if (marker) {
+                marker.setLatLng(e.latlng);
+            } else {
+                marker = L.marker(e.latlng).addTo(map);
+            }
+
+            // Salva a latitude e longitude como uma propriedade global
+            window.selectedLocation = e.latlng;
+        });
+
+        // Evento para confirmar a seleção
+        document.getElementById('confirmButton').addEventListener('click', function() {
+            if (window.selectedLocation) {
+                // Envia a localização selecionada de volta ao aplicativo MAUI
+                const message = JSON.stringify(window.selectedLocation);
+                window.external.notify(message);
+            } else {
+                alert('Por favor, selecione um local clicando no mapa.');
+            }
+        });
+    </script>
+</body>
+</html>

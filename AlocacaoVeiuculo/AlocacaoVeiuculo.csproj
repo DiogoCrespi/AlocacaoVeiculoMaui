@@ -57,11 +57,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Model\NovaPasta1\**" />
 	  <AndroidResource Remove="UI.MauiApp\NovaPasta1\**" />
+	  <Compile Remove="Model\NovaPasta1\**" />
 	  <Compile Remove="UI.MauiApp\NovaPasta1\**" />
+	  <EmbeddedResource Remove="Model\NovaPasta1\**" />
 	  <EmbeddedResource Remove="UI.MauiApp\NovaPasta1\**" />
+	  <MauiCss Remove="Model\NovaPasta1\**" />
 	  <MauiCss Remove="UI.MauiApp\NovaPasta1\**" />
+	  <MauiXaml Remove="Model\NovaPasta1\**" />
 	  <MauiXaml Remove="UI.MauiApp\NovaPasta1\**" />
+	  <None Remove="Model\NovaPasta1\**" />
 	  <None Remove="UI.MauiApp\NovaPasta1\**" />
 	</ItemGroup>
 
@@ -99,6 +105,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UI.MauiApp\Views\FuncionarioDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UI.MauiApp\Views\MapaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UI.MauiApp\Views\UsuarioReservas.xaml">

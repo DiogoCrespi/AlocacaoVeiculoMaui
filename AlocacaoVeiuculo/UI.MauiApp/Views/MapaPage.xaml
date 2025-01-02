@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AlocacaoVeiuculo.Pages.MapaPage"
+             Title="Selecione o Local no Mapa">
+
+    <Grid>
+        <WebView x:Name="webViewMapa" />
+        <Button Text="Confirmar Local"
+            BackgroundColor="Green"
+            TextColor="White"
+            Clicked="OnConfirmarLocalClicked"
+            VerticalOptions="End"
+            HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>
+
+ 
