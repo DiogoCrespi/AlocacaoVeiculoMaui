@@ -8,6 +8,8 @@ using AlocacaoVeiuculo.RentalManager.Model.Users;
 using System.Net.Http;
 using System.Text.Json;
 using AlocacaoVeiuculo.Model.Map;
+ 
+
 
 namespace AlocacaoVeiuculo
 {
@@ -44,6 +46,69 @@ namespace AlocacaoVeiuculo
 
             IsAdmin = false;
         }
+
+
+        private async void OnUsarLocalizacaoAtualClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+
+                if (status != PermissionStatus.Granted)
+                {
+                    // Solicita permissão
+                    status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    var location = await Geolocation.GetLastKnownLocationAsync();
+
+                    if (location != null)
+                    {
+                        string latitude = location.Latitude.ToString();
+                        string longitude = location.Longitude.ToString();
+
+                        string url = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}";
+                        using var httpClient = new HttpClient();
+                        httpClient.DefaultRequestHeaders.Add("User-Agent", "YourAppName/1.0");
+
+                        var response = await httpClient.GetStringAsync(url);
+                        var localizacao = JsonSerializer.Deserialize<LocalSugestao>(response);
+
+                        if (localizacao != null)
+                        {
+                            entryLocalRetirada.Text = localizacao.display_name;
+                        }
+                        else
+                        {
+                            await DisplayAlert("Erro", "Não foi possível obter o endereço atual.", "OK");
+                        }
+                    }
+                    else
+                    {
+                        await DisplayAlert("Erro", "Não foi possível acessar a localização atual.", "OK");
+                    }
+                }
+                else
+                {
+                    // Redireciona para as configurações se o acesso for negado
+                    bool abrirConfiguracoes = await DisplayAlert("Permissão Negada",
+                        "O acesso à localização é necessário. Deseja abrir as configurações para permitir o acesso?",
+                        "Sim", "Não");
+
+                    if (abrirConfiguracoes)
+                    {
+                        AppInfo.ShowSettingsUI();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao obter localização: {ex.Message}", "OK");
+            }
+        }
+
 
 
         private async void OnLocalRetiradaTextChanged(object sender, TextChangedEventArgs e)

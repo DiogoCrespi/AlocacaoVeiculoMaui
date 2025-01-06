@@ -4,6 +4,7 @@
              x:Class="AlocacaoVeiuculo.MainPage"
              BackgroundColor="{StaticResource Black}"
              Title="Aluguel de carros">
+    
 
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*" Padding="10">
 
@@ -25,10 +26,18 @@
 
         <!-- Formulário de pesquisa com fundo transparente -->
         <StackLayout BackgroundColor="{StaticResource BackgroundOverlay}" Padding="15" Margin="25" Grid.Row="1" Spacing="10" VerticalOptions="End">
-            <Grid ColumnDefinitions="*,Auto" VerticalOptions="Start">
-                <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" TextChanged="OnLocalRetiradaTextChanged" Grid.Column="0"/>
-                <Button Text="🗺" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource ButtonBackground}" TextColor="{StaticResource ButtonText}" Clicked="OnAbrirMapaClicked" Grid.Column="1" />
+   
+            
+            <Grid ColumnDefinitions="*,Auto,Auto" VerticalOptions="Start">
+                <Entry x:Name="entryLocalRetirada" Placeholder="Informe uma cidade ou aeroporto" 
+           TextColor="{StaticResource White}" BackgroundColor="{StaticResource EntryBackground}" 
+           TextChanged="OnLocalRetiradaTextChanged" Grid.Column="0"/>
+                <Button Text="📍" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource ButtonBackground}" 
+         TextColor="{StaticResource ButtonText}" Clicked="OnUsarLocalizacaoAtualClicked" Grid.Column="2" />
+                <Button Text="🗺" WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource ButtonBackground}" 
+            TextColor="{StaticResource ButtonText}" Clicked="OnAbrirMapaClicked" Grid.Column="1" />
             </Grid>
+
 
             <ListView x:Name="listViewSugestoes"
                       IsVisible="False"

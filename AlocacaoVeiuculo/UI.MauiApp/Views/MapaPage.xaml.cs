@@ -10,7 +10,7 @@ namespace AlocacaoVeiuculo.Pages
 
         public MapaPage()
         {
-           // InitializeComponent();
+            InitializeComponent();
             CarregarMapa();
         }
 
@@ -26,8 +26,13 @@ namespace AlocacaoVeiuculo.Pages
                 stream.CopyTo(fileStream);
             }
 
-           // webViewMapa.Source = new Uri(mapFilePath);
+            // Define a URL para o WebView
+            webViewMapa.Source = new UrlWebViewSource
+            {
+                Url = $"file://{mapFilePath}"
+            };
         }
+
 
         private void OnConfirmarLocalClicked(object sender, EventArgs e)
         {

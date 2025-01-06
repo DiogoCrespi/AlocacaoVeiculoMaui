@@ -50,10 +50,10 @@
             maxZoom: 19,
         }).addTo(map);
 
-        // Variável para armazenar o marcador
+        // Variï¿½vel para armazenar o marcador
         var marker;
 
-        // Adiciona o marcador quando o usuário clica no mapa
+        // Adiciona o marcador quando o usuï¿½rio clica no mapa
         map.on('click', function(e) {
             if (marker) {
                 marker.setLatLng(e.latlng);
@@ -65,10 +65,10 @@
             window.selectedLocation = e.latlng;
         });
 
-        // Evento para confirmar a seleção
+        // Evento para confirmar a seleï¿½ï¿½o
         document.getElementById('confirmButton').addEventListener('click', function() {
             if (window.selectedLocation) {
-                // Envia a localização selecionada de volta ao aplicativo MAUI
+                // Envia a localizaï¿½ï¿½o selecionada de volta ao aplicativo MAUI
                 const message = JSON.stringify(window.selectedLocation);
                 window.external.notify(message);
             } else {
