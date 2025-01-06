@@ -16,29 +16,41 @@ namespace AlocacaoVeiuculo.Pages
 
         private void CarregarMapa()
         {
-            string mapFilePath = Path.Combine(FileSystem.AppDataDirectory, "map.html");
+            string mapFilePath = Path.Combine(AppContext.BaseDirectory, "Resources\\Raw\\map.html");
 
             if (!File.Exists(mapFilePath))
             {
-                var assembly = typeof(MapaPage).Assembly;
-                using var stream = assembly.GetManifestResourceStream("AlocacaoVeiuculo.Resources.Raw.map.html");
-                using var fileStream = File.Create(mapFilePath);
-                stream.CopyTo(fileStream);
+                throw new FileNotFoundException("O arquivo map.html não foi encontrado no diretório de saída.");
             }
 
-            // Define a URL para o WebView
             webViewMapa.Source = new UrlWebViewSource
             {
-                Url = $"file://{mapFilePath}"
+                Url = $"file:///{mapFilePath.Replace("\\", "/")}"
             };
         }
 
-
-        private void OnConfirmarLocalClicked(object sender, EventArgs e)
+        private async void OnConfirmarLocalClicked(object sender, EventArgs e)
         {
-            string localSelecionado = "Latitude, Longitude"; // Substituir com lógica real
-            LocalSelecionado?.Invoke(this, localSelecionado);
-            Navigation.PopAsync();
+            try
+            {
+                var resultado = await webViewMapa.EvaluateJavaScriptAsync("JSON.stringify(window.selectedLocation)");
+                if (!string.IsNullOrWhiteSpace(resultado) && resultado != "null")
+                {
+                    LocalSelecionado?.Invoke(this, resultado);
+                    await DisplayAlert("Local Selecionado", $"Local: {resultado}", "OK");
+
+                    // Navega de volta para a página inicial (MainPage)
+                    await Navigation.PopToRootAsync();
+                }
+                else
+                {
+                    await DisplayAlert("Erro", "Nenhum local foi selecionado no mapa.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erro", $"Falha ao confirmar local: {ex.Message}", "OK");
+            }
         }
     }
 }

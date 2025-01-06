@@ -40,15 +40,17 @@
 
 
             <ListView x:Name="listViewSugestoes"
-                      IsVisible="False"
-                      ItemSelected="OnSugestaoSelecionada"
-                      BackgroundColor="{StaticResource BackgroundOverlay}">
+          IsVisible="False"
+          ItemSelected="OnSugestaoSelecionada"
+          BackgroundColor="{StaticResource BackgroundOverlay}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding display_name}" />
+                        <TextCell Text="{Binding DisplayName}" />
+                      
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
 
             <Grid ColumnDefinitions="*,*" Padding="0">
                 <StackLayout Grid.Column="0" Spacing="5">

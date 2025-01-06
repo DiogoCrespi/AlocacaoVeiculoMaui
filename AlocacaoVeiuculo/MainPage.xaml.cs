@@ -8,7 +8,8 @@ using AlocacaoVeiuculo.RentalManager.Model.Users;
 using System.Net.Http;
 using System.Text.Json;
 using AlocacaoVeiuculo.Model.Map;
- 
+using System.Globalization;
+
 
 
 namespace AlocacaoVeiuculo
@@ -56,7 +57,6 @@ namespace AlocacaoVeiuculo
 
                 if (status != PermissionStatus.Granted)
                 {
-                    // Solicita permissão
                     status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
                 }
 
@@ -66,23 +66,34 @@ namespace AlocacaoVeiuculo
 
                     if (location != null)
                     {
-                        string latitude = location.Latitude.ToString();
-                        string longitude = location.Longitude.ToString();
+                        string latitude = location.Latitude.ToString("F6", CultureInfo.InvariantCulture); // Formata latitude
+                        string longitude = location.Longitude.ToString("F6", CultureInfo.InvariantCulture); // Formata longitude
 
                         string url = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}";
+
                         using var httpClient = new HttpClient();
                         httpClient.DefaultRequestHeaders.Add("User-Agent", "YourAppName/1.0");
 
-                        var response = await httpClient.GetStringAsync(url);
-                        var localizacao = JsonSerializer.Deserialize<LocalSugestao>(response);
+                        var response = await httpClient.GetAsync(url);
 
-                        if (localizacao != null)
+                        if (response.IsSuccessStatusCode)
                         {
-                            entryLocalRetirada.Text = localizacao.display_name;
+                            var jsonResponse = await response.Content.ReadAsStringAsync();
+                            var jsonDocument = JsonDocument.Parse(jsonResponse);
+
+                            // Extraindo o campo "display_name" do JSON
+                            if (jsonDocument.RootElement.TryGetProperty("display_name", out var displayName))
+                            {
+                                entryLocalRetirada.Text = displayName.GetString();
+                            }
+                            else
+                            {
+                                await DisplayAlert("Erro", "Não foi possível interpretar o endereço retornado.", "OK");
+                            }
                         }
                         else
                         {
-                            await DisplayAlert("Erro", "Não foi possível obter o endereço atual.", "OK");
+                            await DisplayAlert("Erro", $"Falha ao buscar endereço: {response.ReasonPhrase} (Código {response.StatusCode})", "OK");
                         }
                     }
                     else
@@ -92,7 +103,6 @@ namespace AlocacaoVeiuculo
                 }
                 else
                 {
-                    // Redireciona para as configurações se o acesso for negado
                     bool abrirConfiguracoes = await DisplayAlert("Permissão Negada",
                         "O acesso à localização é necessário. Deseja abrir as configurações para permitir o acesso?",
                         "Sim", "Não");
@@ -128,11 +138,8 @@ namespace AlocacaoVeiuculo
                 var response = await httpClient.GetStringAsync(url);
                 var resultados = JsonSerializer.Deserialize<List<LocalSugestao>>(response);
 
-                // Filtra por cidade de Medianeira
-                resultados = resultados?.Where(r => r.display_name.Contains("Medianeira", StringComparison.OrdinalIgnoreCase)).ToList();
-
-                listViewSugestoes.ItemsSource = resultados;
-                listViewSugestoes.IsVisible = resultados.Any();
+                listViewSugestoes.ItemsSource = resultados; // Configura a lista de sugestões
+                listViewSugestoes.IsVisible = resultados.Any(); // Torna o ListView visível se houver resultados
             }
             catch (Exception ex)
             {
@@ -140,15 +147,15 @@ namespace AlocacaoVeiuculo
             }
         }
 
-
         private void OnSugestaoSelecionada(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is LocalSugestao sugestao)
             {
-                entryLocalRetirada.Text = sugestao.display_name;
+                entryLocalRetirada.Text = sugestao.DisplayName; 
                 listViewSugestoes.IsVisible = false;
             }
         }
+
 
 
 

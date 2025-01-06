@@ -72,6 +72,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiAsset Remove="Resources\Raw\AboutAssets.txt" />
+	  <MauiAsset Remove="Resources\Raw\map.html" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\cadastroveiculoimagem.png" />
 	  <MauiImage Remove="Resources\Images\car_cad.png" />
 	  <MauiImage Remove="Resources\Images\car_cadastro.png" />
@@ -88,6 +93,16 @@
 	  <None Remove="Resources\Images\cat_login.png" />
 	  <None Remove="Resources\Images\Logo.png" />
 	  <None Remove="Resources\Images\nao_cancela.jpg" />
+	  <None Remove="Resources\Raw\AboutAssets.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Resources\Raw\AboutAssets.txt">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Resources\Raw\map.html">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<ItemGroup>
