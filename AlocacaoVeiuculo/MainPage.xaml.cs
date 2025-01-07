@@ -44,6 +44,9 @@ namespace AlocacaoVeiuculo
             horaRetirada = DateTime.Now.TimeOfDay;
             dataDevolucao = DateTime.Now;
             horaDevolucao = DateTime.Now.TimeOfDay;
+            DateTime defaultDevolucao = DateTime.Now.AddDays(7);
+            datePickerDevolucao.Date = defaultDevolucao;
+            horaDevolucao = defaultDevolucao.TimeOfDay; 
 
             IsAdmin = false;
         }
@@ -179,6 +182,7 @@ namespace AlocacaoVeiuculo
         }
 
 
+ 
 
 
 
@@ -186,26 +190,28 @@ namespace AlocacaoVeiuculo
 
 
 
-
-        private async void OnPesquisarClicked(object sender, EventArgs e)
+       private async void OnPesquisarClicked(object sender, EventArgs e)
         {
-            // Captura os valores dos campos de entrada
             localRetirada = entryLocalRetirada.Text;
             dataRetirada = datePickerRetirada.Date;
             horaRetirada = timePickerRetirada.Time;
             dataDevolucao = datePickerDevolucao.Date;
             horaDevolucao = timePickerDevolucao.Time;
 
-            
-            DateTime dataHoraRetirada = dataRetirada.Add(horaRetirada);
-            DateTime dataHoraDevolucao = dataDevolucao.Add(horaDevolucao);
+            // Validar se as datas são válidas (não caem em finais de semana)
+            if (dataRetirada.DayOfWeek == DayOfWeek.Saturday || dataRetirada.DayOfWeek == DayOfWeek.Sunday ||
+                dataDevolucao.DayOfWeek == DayOfWeek.Saturday || dataDevolucao.DayOfWeek == DayOfWeek.Sunday)
+            {
+                await DisplayAlert("Erro nas Datas", "Retirada ou devolução não podem ser feitas em finais de semana.", "OK");
+                return;
+            }
 
-            if (dataHoraRetirada >= dataHoraDevolucao)
+            if (dataRetirada >= dataDevolucao)
             {
                 await DisplayAlert("Erro nas Datas",
-                    "A data ou hora de retirada nao condizem com as de devolução.",
+                    "A data ou hora de retirada não condizem com as de devolução.",
                     "OK");
-                return; 
+                return;
             }
             var disponibilidadeData = new DisponibilidadeData();
             var veiculosDisponiveis = await disponibilidadeData.ObterVeiculosDisponiveisAsync(dataRetirada, horaRetirada, dataDevolucao, horaDevolucao);

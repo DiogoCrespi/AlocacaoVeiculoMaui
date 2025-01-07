@@ -33,18 +33,19 @@ namespace AlocacaoVeiuculo.Pages
         {
             try
             {
-                var resultado = await webViewMapa.EvaluateJavaScriptAsync("JSON.stringify(window.selectedLocation)");
+                // Obter o endereço selecionado
+                var resultado = await webViewMapa.EvaluateJavaScriptAsync("JSON.stringify(window.selectedAddress)");
                 if (!string.IsNullOrWhiteSpace(resultado) && resultado != "null")
                 {
-                    LocalSelecionado?.Invoke(this, resultado);
-                    await DisplayAlert("Local Selecionado", $"Local: {resultado}", "OK");
+                    LocalSelecionado?.Invoke(this, resultado.Trim('"')); // Remover aspas do JSON
+                    await DisplayAlert("Local Selecionado", $"Endereço: {resultado.Trim('"')}", "OK");
 
                     // Navega de volta para a página inicial (MainPage)
                     await Navigation.PopToRootAsync();
                 }
                 else
                 {
-                    await DisplayAlert("Erro", "Nenhum local foi selecionado no mapa.", "OK");
+                    await DisplayAlert("Erro", "Nenhum endereço foi encontrado.", "OK");
                 }
             }
             catch (Exception ex)
@@ -52,5 +53,6 @@ namespace AlocacaoVeiuculo.Pages
                 await DisplayAlert("Erro", $"Falha ao confirmar local: {ex.Message}", "OK");
             }
         }
+
     }
 }

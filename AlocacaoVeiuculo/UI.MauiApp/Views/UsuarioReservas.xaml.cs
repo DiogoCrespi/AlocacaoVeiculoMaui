@@ -5,6 +5,8 @@ using AlocacaoVeiuculo.RentalManager.Model.Reservations;
 using AlocacaoVeiuculo.RentalManager.Model.Vehicles;
 using AlocacaoVeiuculo.Data.Vehicles;
 using AlocacaoVeiuculo.Data.Reservations;
+using System.Globalization;
+using System.Text.Json;
 
 namespace AlocacaoVeiuculo.Pages
 {
@@ -51,6 +53,7 @@ namespace AlocacaoVeiuculo.Pages
             timePickerRetirada.Time = horaRetirada;
             datePickerDevolucao.Date = dataDevolucao;
             timePickerDevolucao.Time = horaDevolucao;
+
 
             AlugarVeiculoPanel.IsVisible = true;
         }
@@ -255,6 +258,15 @@ namespace AlocacaoVeiuculo.Pages
             }
         }
 
+
+
+
+
+
+
+
+
+
         private async void OnSolicitarAluguelClicked(object sender, EventArgs e)
         {
             AlugarVeiculoPanel.IsVisible = !AlugarVeiculoPanel.IsVisible;
@@ -273,6 +285,27 @@ namespace AlocacaoVeiuculo.Pages
                 FrameCaixasVeiculos.IsVisible = false;
             }
         }
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private async void OnSelecionarCarrosClicked(object sender, EventArgs e)
         {
@@ -435,6 +468,18 @@ namespace AlocacaoVeiuculo.Pages
             if (veiculoSelecionado == null)
             {
                 await DisplayAlert("Erro", "Selecione um veículo antes de finalizar.", "OK");
+                return;
+            }
+            if (datePickerRetirada.Date.DayOfWeek == DayOfWeek.Saturday || datePickerRetirada.Date.DayOfWeek == DayOfWeek.Sunday ||
+     datePickerDevolucao.Date.DayOfWeek == DayOfWeek.Saturday || datePickerDevolucao.Date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                await DisplayAlert("Erro", "Retirada ou devolução não podem ser feitas em finais de semana.", "OK");
+                return;
+            }
+
+            if (datePickerRetirada.Date >= datePickerDevolucao.Date)
+            {
+                await DisplayAlert("Erro", "A data de retirada deve ser anterior à data de devolução.", "OK");
                 return;
             }
 

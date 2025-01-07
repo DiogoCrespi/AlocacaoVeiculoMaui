@@ -55,16 +55,26 @@
             <Grid ColumnDefinitions="*,*" Padding="0">
                 <StackLayout Grid.Column="0" Spacing="5">
                     <Label Text="Data e hora de retirada" TextColor="{StaticResource White}" FontAttributes="Bold"/>
-                    <DatePicker x:Name="datePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
+                    <DatePicker x:Name="datePickerRetirada"   Format="dd/MM/yyyy" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
                     <TimePicker x:Name="timePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" Format="t"/>
                 </StackLayout>
 
                 <StackLayout Grid.Column="1" Spacing="5">
                     <Label Text="Data e hora de devolução" TextColor="{StaticResource White}" FontAttributes="Bold"/>
-                    <DatePicker x:Name="datePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
+                    <DatePicker x:Name="datePickerDevolucao"   Format="dd/MM/yyyy" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
                     <TimePicker x:Name="timePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" Format="t"/>
                 </StackLayout>
             </Grid>
+
+
+
+ 
+
+
+
+
+
+
 
             <Button Text="Pesquisar" 
                     BackgroundColor="{StaticResource ButtonBackground}" 

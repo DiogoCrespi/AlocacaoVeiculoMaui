@@ -108,10 +108,23 @@
                         <Label Text="Alugar Veículo" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource LabelText}" />
                         <BoxView HeightRequest="1" BackgroundColor="{StaticResource Gray400}" Margin="0,5,0,10"/>
                         <Entry x:Name="entryLocalRetirada" Placeholder="Local de Retirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
-                        <DatePicker x:Name="datePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
-                        <TimePicker x:Name="timePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
-                        <DatePicker x:Name="datePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
-                        <TimePicker x:Name="timePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource ButtonText}" />
+                        
+                        
+                        <Grid ColumnDefinitions="*,*" Padding="0">
+                            <StackLayout Grid.Column="0" Spacing="5">
+                                <Label Text="Data e hora de retirada" TextColor="{StaticResource White}" FontAttributes="Bold"/>
+                                <DatePicker x:Name="datePickerRetirada"   Format="dd/MM/yyyy" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
+                                <TimePicker x:Name="timePickerRetirada" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" Format="t"/>
+                            </StackLayout>
+
+                            <StackLayout Grid.Column="1" Spacing="5">
+                                <Label Text="Data e hora de devolução" TextColor="{StaticResource White}" FontAttributes="Bold"/>
+                                <DatePicker x:Name="datePickerDevolucao"   Format="dd/MM/yyyy" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}"/>
+                                <TimePicker x:Name="timePickerDevolucao" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" Format="t"/>
+                            </StackLayout>
+                        </Grid>
+
+
                         <Grid ColumnDefinitions="*,*">
                             <Button Grid.Column="0" 
                                 Text="Selecionar Carros" 

@@ -30,7 +30,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Formulário de Cadastro de Veículo -->
-                <Frame Grid.Column="0" Padding="15" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="{StaticResource BackgroundOverlay}" CornerRadius="15">
+                <Frame Grid.Column="0" Padding="25" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="{StaticResource BackgroundOverlay}" CornerRadius="15">
                     <StackLayout>
 
                         <!-- Picker para selecionar entre carro e moto -->
@@ -43,20 +43,20 @@
 
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
                                 <Button x:Name="btnCarro" 
-            Text="Carro" 
-            FontAttributes="Bold" 
-            TextColor="White" 
-            BackgroundColor="Gray" 
-            WidthRequest="100" 
-            Clicked="OnCarroButtonClicked" />
+                                    Text="Carro" 
+                                    FontAttributes="Bold" 
+                                    TextColor="White" 
+                                    BackgroundColor="{StaticResource ButtonBackground}"  
+                                    WidthRequest="100" 
+                                    Clicked="OnCarroButtonClicked" />
 
                                 <Button x:Name="btnMoto" 
-            Text="Moto" 
-            FontAttributes="Bold" 
-            TextColor="White" 
-            BackgroundColor="Gray" 
-            WidthRequest="100" 
-            Clicked="OnMotoButtonClicked" />
+                                    Text="Moto" 
+                                    FontAttributes="Bold" 
+                                    TextColor="White" 
+                                    BackgroundColor="{StaticResource ButtonBackground}" 
+                                    WidthRequest="100" 
+                                    Clicked="OnMotoButtonClicked" />
                          
 
                         </StackLayout>
@@ -140,22 +140,39 @@
                         </Frame>
 
                         <!-- disponibilidade de veículo -->
-                        <Label Text="Disponibilizar Veiculos Selecione:" TextColor="{StaticResource White}" FontAttributes="Bold" />
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,10,0,10">
-                            
-                            <Button x:Name="btnDisponibilidadeCarro"
-                                Text="Carro"
-                                TextColor="White"
-                                BackgroundColor="Gray"
-                                Clicked="OnDisponibilidadeCarroClicked"
-                                Margin="0,0,5,0" />
-                            <Button x:Name="btnDisponibilidadeMoto"
-                                Text="Moto"
-                                TextColor="White"
-                                BackgroundColor="Gray"
-                                Clicked="OnDisponibilidadeMotoClicked"
-                                Margin="5,0,0,0" />
+                        <Label Text="Para Disponibilizar Veiculos Selecione:" 
+                             FontSize="20" 
+                             FontAttributes="Bold" 
+                             TextColor="{StaticResource White}" 
+                             HorizontalOptions="Center" />
+                              
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="20,10,0,10" Spacing="20">
+                             
+                            <Button x:Name="btnDisponibilidadeCarro" 
+                                  Text="Carro" 
+                                  FontAttributes="Bold" 
+                                  TextColor="White" 
+                                  BackgroundColor="{StaticResource ButtonBackground}"  
+                                  WidthRequest="100" 
+                                  Clicked="OnDisponibilidadeCarroClicked" />
+
+                            <Button x:Name="btnDisponibilidadeMoto" 
+                                  Text="Moto" 
+                                  FontAttributes="Bold" 
+                                  TextColor="White" 
+                                  BackgroundColor="{StaticResource ButtonBackground}" 
+                                  WidthRequest="100" 
+                                  Clicked="OnDisponibilidadeMotoClicked" />
                         </StackLayout>
+
+
+
+
+
+
+
+
+
 
 
                         <!-- Seção de Disponibilidade de Carro -->
@@ -163,11 +180,11 @@
                             <StackLayout Spacing="5">
                                 <Picker x:Name="pickerDisponibilidadeCarro" Title="Selecione o Carro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
                                 <Label Text="Data de Início" TextColor="{StaticResource White}" FontAttributes="Bold" />
-                                <DatePicker x:Name="dateInicioDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                                <DatePicker x:Name="dateInicioDisponibilidadeCarro" Format="dd/MM/yyyy"  BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
                                 <Label Text="Hora de Início" TextColor="{StaticResource White}" FontAttributes="Bold" />
                                 <TimePicker x:Name="timeInicioDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
                                 <Label Text="Data de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
-                                <DatePicker x:Name="dateFimDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
+                                <DatePicker x:Name="dateFimDisponibilidadeCarro" Format="dd/MM/yyyy"  BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
                                 <Label Text="Hora de Fim" TextColor="{StaticResource White}" FontAttributes="Bold" />
                                 <TimePicker x:Name="timeFimDisponibilidadeCarro" BackgroundColor="{StaticResource EntryBackground}" TextColor="{StaticResource White}" />
                                 <Button Text="Salvar Disponibilidade do Carro" 
